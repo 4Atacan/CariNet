@@ -1,0 +1,10 @@
+# husky node_modules/.bin'i PATH'e ekler → pnpm'e gerek yok (git-bash'te pnpm shim'i yok).
+lint-staged
+
+# §11.6 — sir sizintisi kapisi. gitleaks kurulu degilse uyarir, commit'i engellemez.
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --config .gitleaks.toml
+else
+  echo "UYARI: gitleaks kurulu degil — sir taramasi ATLANDI (CI'da yine de calisir)."
+  echo "  Kurulum: winget install gitleaks   |   scoop install gitleaks"
+fi

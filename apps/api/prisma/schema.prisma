@@ -1,0 +1,601 @@
+// CariNet — Prisma semasi. Kaynak: CLAUDE.md §7.
+// Kural #1: para DECIMAL(18,2), kur DECIMAL(18,4). Kural #2: `balance` kolonu YOK.
+// Kural #3: tenant tablolarinda seller_id ZORUNLU. Kural #4: finansal kayitta is_cancelled, hard delete yok.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------- enumlar (packages/shared ile birebir)
+
+enum TransactionType {
+  DEBIT
+  CREDIT
+}
+
+enum DocumentType {
+  SALES_INVOICE
+  PAYMENT
+  TRANSFER_RECEIPT
+  REFUND
+  OPENING_BALANCE
+  OTHER
+}
+
+enum SellerMemberRole {
+  ADMIN
+  STAFF
+}
+
+enum IntentStatus {
+  PENDING
+  CONFIRMED
+  EXPIRED
+  CANCELLED
+}
+
+enum CollectChannel {
+  BANK_TRANSFER
+  CARD_POS
+}
+
+enum ImportSourceType {
+  EXCEL_GENERIC
+  PRESET_LOGO
+  PRESET_MIKRO
+  PRESET_NETSIS
+  PRESET_ETA
+  UBL_XML
+  WIZARD
+  BANK_STATEMENT
+}
+
+enum ImportStatus {
+  PENDING
+  PARSED
+  COMMITTED
+  FAILED
+  CANCELLED
+}
+
+enum ImportRowStatus {
+  PENDING
+  VALID
+  ERROR
+  COMMITTED
+}
+
+enum NotificationType {
+  NEW_INVOICE
+  DUE_REMINDER
+  COLLECTION_CONFIRMED
+  CAMPAIGN
+  SYSTEM
+}
+
+// ---------------------------------------------------------------- kimlik (§6.2)
+
+/// Tenant koku. slug misafir odeme URL'inde kullanilir.
+model Seller {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  logoUrl   String?  @map("logo_url")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  members        SellerMember[]
+  buyerAccounts  BuyerAccount[]
+  representatives Representative[]
+  transactions   Transaction[]
+  invoices       Invoice[]
+  products       Product[]
+  stocks         Stock[]
+  campaigns      Campaign[]
+  bankAccounts   SellerBankAccount[]
+  posConfigs     SellerPosConfig[]
+  collectIntents CollectIntent[]
+  statementRows  BankStatementRow[]
+  importBatches  ImportBatch[]
+  invites        Invite[]
+  notifications  Notification[]
+  auditLogs      AuditLog[]
+
+  @@map("sellers")
+}
+
+/// Kuresel kimlik (§6.2). Yetki uyeliklerden gelir; burada rol kolonu YOK.
+/// isPlatformAdmin: §7'de olmayan tek ek alan — PLATFORM_ADMIN rolunun tasiyicisi.
+model User {
+  id              String   @id @default(cuid())
+  email           String?  @unique
+  phone           String?  @unique
+  fullName        String   @map("full_name")
+  passwordHash    String   @map("password_hash")
+  totpSecret      String?  @map("totp_secret")
+  isPlatformAdmin Boolean  @default(false) @map("is_platform_admin")
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  sellerMemberships   SellerMember[]
+  accountMemberships  AccountMembership[]
+  invitesSent         AccountMembership[] @relation("InvitedBy")
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  notifications       Notification[]
+  auditLogs           AuditLog[]
+
+  @@map("users")
+}
+
+/// Satici personeli (§6.2)
+model SellerMember {
+  id        String           @id @default(cuid())
+  userId    String           @map("user_id")
+  sellerId  String           @map("seller_id")
+  role      SellerMemberRole
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  seller Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sellerId])
+  @@index([sellerId])
+  @@map("seller_members")
+}
+
+/// Cari hesap. (seller_id, account_code) benzersiz.
+model BuyerAccount {
+  id               String   @id @default(cuid())
+  sellerId         String   @map("seller_id")
+  accountCode      String   @map("account_code")
+  title            String
+  vknTckn          String?  @map("vkn_tckn")
+  creditLimit      Decimal  @default(0) @map("credit_limit") @db.Decimal(18, 2)
+  representativeId String?  @map("representative_id")
+  isActive         Boolean  @default(true) @map("is_active")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  seller         Seller               @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  representative Representative?      @relation(fields: [representativeId], references: [id], onDelete: SetNull)
+  memberships    AccountMembership[]
+  codeHistory    AccountCodeHistory[]
+  transactions   Transaction[]
+  invoices       Invoice[]
+  addresses      Address[]
+  invites        Invite[]
+  collectIntents CollectIntent[]
+  notifications  Notification[]
+
+  @@unique([sellerId, accountCode])
+  @@index([sellerId])
+  @@index([sellerId, vknTckn])
+  @@map("buyer_accounts")
+}
+
+/// Havale aciklamalari eski cari koduyla gelebilir → eslestirme icin tarihce.
+model AccountCodeHistory {
+  id             String   @id @default(cuid())
+  buyerAccountId String   @map("buyer_account_id")
+  oldCode        String   @map("old_code")
+  changedAt      DateTime @default(now()) @map("changed_at")
+
+  buyerAccount BuyerAccount @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
+
+  @@index([buyerAccountId])
+  @@index([oldCode])
+  @@map("account_code_history")
+}
+
+/// Coklu hesap koprusu (§6.2) — kullanici↔cari 1-1 DEGILDIR.
+model AccountMembership {
+  id             String    @id @default(cuid())
+  userId         String    @map("user_id")
+  buyerAccountId String    @map("buyer_account_id")
+  invitedById    String?   @map("invited_by")
+  lastActiveAt   DateTime? @map("last_active_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  buyerAccount BuyerAccount @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
+  invitedBy    User?        @relation("InvitedBy", fields: [invitedById], references: [id], onDelete: SetNull)
+
+  @@unique([userId, buyerAccountId])
+  @@index([buyerAccountId])
+  @@map("account_memberships")
+}
+
+/// Davet/QR akisi: /j/{sellerSlug}/{token}
+model Invite {
+  id             String    @id @default(cuid())
+  sellerId       String    @map("seller_id")
+  buyerAccountId String    @map("buyer_account_id")
+  tokenHash      String    @unique @map("token_hash")
+  expiresAt      DateTime  @map("expires_at")
+  usedAt         DateTime? @map("used_at")
+  createdById    String?   @map("created_by")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  seller       Seller       @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyerAccount BuyerAccount @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
+
+  @@index([sellerId])
+  @@index([buyerAccountId])
+  @@map("invites")
+}
+
+model Representative {
+  id       String  @id @default(cuid())
+  sellerId String  @map("seller_id")
+  fullName String  @map("full_name")
+  phone    String?
+  email    String?
+
+  seller        Seller         @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyerAccounts BuyerAccount[]
+
+  @@index([sellerId])
+  @@map("representatives")
+}
+
+// ---------------------------------------------------------------- finansal cekirdek
+
+/// Sistemin kalbi (kural #2 / #4). Bakiye BU tablodan turetilir; silme yok, is_cancelled var.
+model Transaction {
+  id              String          @id @default(cuid())
+  sellerId        String          @map("seller_id")
+  buyerAccountId  String          @map("buyer_account_id")
+  type            TransactionType
+  documentType    DocumentType    @map("document_type")
+  documentNo      String?         @map("document_no")
+  documentDate    DateTime        @map("document_date") @db.Date
+  dueDate         DateTime?       @map("due_date") @db.Date
+  amount          Decimal         @db.Decimal(18, 2)
+  currencyCode    String          @default("TRY") @map("currency_code") @db.Char(3)
+  exchangeRate    Decimal         @default(1) @map("exchange_rate") @db.Decimal(18, 4)
+  description     String?
+  invoiceId       String?         @map("invoice_id")
+  collectIntentId String?         @map("collect_intent_id")
+  importBatchId   String?         @map("import_batch_id")
+  isCancelled     Boolean         @default(false) @map("is_cancelled")
+  createdById     String?         @map("created_by")
+  createdAt       DateTime        @default(now()) @map("created_at")
+
+  seller        Seller         @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyerAccount  BuyerAccount   @relation(fields: [buyerAccountId], references: [id])
+  invoice       Invoice?       @relation(fields: [invoiceId], references: [id])
+  collectIntent CollectIntent? @relation(fields: [collectIntentId], references: [id])
+  importBatch   ImportBatch?   @relation(fields: [importBatchId], references: [id])
+
+  @@index([sellerId, buyerAccountId, documentDate])
+  @@index([sellerId, dueDate])
+  @@index([importBatchId])
+  @@map("transactions")
+}
+
+model Invoice {
+  id             String    @id @default(cuid())
+  sellerId       String    @map("seller_id")
+  buyerAccountId String    @map("buyer_account_id")
+  invoiceNo      String    @map("invoice_no")
+  invoiceDate    DateTime  @map("invoice_date") @db.Date
+  dueDate        DateTime? @map("due_date") @db.Date
+  currencyCode   String    @default("TRY") @map("currency_code") @db.Char(3)
+  exchangeRate   Decimal   @default(1) @map("exchange_rate") @db.Decimal(18, 4)
+  netTotal       Decimal   @map("net_total") @db.Decimal(18, 2)
+  taxTotal       Decimal   @map("tax_total") @db.Decimal(18, 2)
+  grandTotal     Decimal   @map("grand_total") @db.Decimal(18, 2)
+  ublUuid        String?   @map("ubl_uuid")
+  isCancelled    Boolean   @default(false) @map("is_cancelled")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  seller       Seller        @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyerAccount BuyerAccount  @relation(fields: [buyerAccountId], references: [id])
+  items        InvoiceItem[]
+  transactions Transaction[]
+
+  @@unique([sellerId, invoiceNo])
+  @@index([sellerId, buyerAccountId])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id           String  @id @default(cuid())
+  invoiceId    String  @map("invoice_id")
+  lineNo       Int     @map("line_no")
+  name         String
+  unit         String  @default("ADET")
+  quantity     Decimal @db.Decimal(18, 4)
+  unitPrice    Decimal @map("unit_price") @db.Decimal(18, 2)
+  taxRate      Decimal @map("tax_rate") @db.Decimal(5, 2)
+  netTotal     Decimal @map("net_total") @db.Decimal(18, 2)
+  taxAmount    Decimal @map("tax_amount") @db.Decimal(18, 2)
+  lineTotal    Decimal @map("line_total") @db.Decimal(18, 2)
+  exchangeRate Decimal @default(1) @map("exchange_rate") @db.Decimal(18, 4)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@unique([invoiceId, lineNo])
+  @@map("invoice_items")
+}
+
+// ---------------------------------------------------------------- katalog
+
+model Product {
+  id           String   @id @default(cuid())
+  sellerId     String   @map("seller_id")
+  code         String
+  name         String
+  unit         String   @default("ADET")
+  price        Decimal? @db.Decimal(18, 2)
+  currencyCode String   @default("TRY") @map("currency_code") @db.Char(3)
+  imageUrl     String?  @map("image_url")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  seller Seller  @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  stock  Stock?
+
+  @@unique([sellerId, code])
+  @@index([sellerId])
+  @@map("products")
+}
+
+model Stock {
+  id        String   @id @default(cuid())
+  sellerId  String   @map("seller_id")
+  productId String   @unique @map("product_id")
+  quantity  Decimal  @default(0) @db.Decimal(18, 4)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  seller  Seller  @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([sellerId])
+  @@map("stocks")
+}
+
+model Campaign {
+  id        String   @id @default(cuid())
+  sellerId  String   @map("seller_id")
+  title     String
+  body      String
+  imageUrl  String?  @map("image_url")
+  startsAt  DateTime @map("starts_at")
+  endsAt    DateTime @map("ends_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  seller Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@index([sellerId, startsAt, endsAt])
+  @@map("campaigns")
+}
+
+model Address {
+  id             String @id @default(cuid())
+  buyerAccountId String @map("buyer_account_id")
+  label          String
+  fullAddress    String @map("full_address")
+  city           String
+
+  buyerAccount BuyerAccount @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
+
+  @@index([buyerAccountId])
+  @@map("addresses")
+}
+
+// ---------------------------------------------------------------- tahsilat (§8)
+
+/// IBAN degisikligi kritik islemdir (2FA + audit).
+model SellerBankAccount {
+  id         String   @id @default(cuid())
+  sellerId   String   @map("seller_id")
+  bankName   String   @map("bank_name")
+  iban       String
+  holderName String   @map("holder_name")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  seller Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@index([sellerId])
+  @@map("seller_bank_accounts")
+}
+
+/// Saticinin KENDI POS'u (kural #5). Anahtarlar AES-256-GCM sifreli saklanir.
+model SellerPosConfig {
+  id         String   @id @default(cuid())
+  sellerId   String   @map("seller_id")
+  provider   String
+  merchantId String   @map("merchant_id")
+  apiKeyEnc  String   @map("api_key_enc")
+  secretEnc  String   @map("secret_enc")
+  isActive   Boolean  @default(false) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  seller Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@index([sellerId])
+  @@map("seller_pos_configs")
+}
+
+model CollectIntent {
+  id                String         @id @default(cuid())
+  sellerId          String         @map("seller_id")
+  buyerAccountId    String?        @map("buyer_account_id")
+  amount            Decimal        @db.Decimal(18, 2)
+  currencyCode      String         @default("TRY") @map("currency_code") @db.Char(3)
+  channel           CollectChannel
+  referenceCode     String         @unique @map("reference_code")
+  installmentCount  Int?           @map("installment_count")
+  providerRef       String?        @map("provider_ref")
+  status            IntentStatus   @default(PENDING)
+  expiresAt         DateTime       @map("expires_at")
+  confirmedById     String?        @map("confirmed_by")
+  confirmedAt       DateTime?      @map("confirmed_at")
+  createdAt         DateTime       @default(now()) @map("created_at")
+
+  seller       Seller            @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyerAccount BuyerAccount?     @relation(fields: [buyerAccountId], references: [id])
+  transactions Transaction[]
+  /// 1-1 geri iliski: FK bank_statement_rows.matched_intent_id uzerinde (§7 statement_row_id).
+  statementRow BankStatementRow?
+
+  @@index([sellerId, status])
+  @@map("collect_intents")
+}
+
+model BankStatementRow {
+  id              String   @id @default(cuid())
+  sellerId        String   @map("seller_id")
+  importId        String   @map("import_id")
+  rowNo           Int      @map("row_no")
+  txDate          DateTime @map("tx_date") @db.Date
+  amount          Decimal  @db.Decimal(18, 2)
+  description     String
+  matchedIntentId String?  @unique @map("matched_intent_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  seller       Seller         @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  import       ImportBatch    @relation(fields: [importId], references: [id], onDelete: Cascade)
+  matchedIntent CollectIntent? @relation(fields: [matchedIntentId], references: [id])
+
+  @@index([sellerId, importId])
+  @@map("bank_statement_rows")
+}
+
+// ---------------------------------------------------------------- import (§6.6 / §9)
+
+model ImportBatch {
+  id         String           @id @default(cuid())
+  sellerId   String           @map("seller_id")
+  sourceType ImportSourceType @map("source_type")
+  fileUrl    String?          @map("file_url")
+  fileHash   String?          @map("file_hash")
+  status     ImportStatus     @default(PENDING)
+  totals     Json?
+  createdById String?         @map("created_by")
+  createdAt  DateTime         @default(now()) @map("created_at")
+
+  seller        Seller             @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  rows          ImportRow[]
+  transactions  Transaction[]
+  statementRows BankStatementRow[]
+
+  @@index([sellerId, status])
+  @@index([sellerId, fileHash])
+  @@map("import_batches")
+}
+
+model ImportRow {
+  id      String          @id @default(cuid())
+  batchId String          @map("batch_id")
+  rowNo   Int             @map("row_no")
+  raw     Json
+  parsed  Json?
+  status  ImportRowStatus @default(PENDING)
+  error   String?
+
+  batch ImportBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@unique([batchId, rowNo])
+  @@map("import_rows")
+}
+
+// ---------------------------------------------------------------- yardimci
+
+model Notification {
+  id             String           @id @default(cuid())
+  userId         String           @map("user_id")
+  sellerId       String           @map("seller_id")
+  buyerAccountId String?          @map("buyer_account_id")
+  title          String
+  body           String
+  type           NotificationType
+  readAt         DateTime?        @map("read_at")
+  createdAt      DateTime         @default(now()) @map("created_at")
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  seller       Seller        @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyerAccount BuyerAccount? @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+  @@map("notifications")
+}
+
+/// TCMB cronu doldurur. Tenant disi (global).
+model ExchangeRate {
+  id           String   @id @default(cuid())
+  date         DateTime @db.Date
+  currencyCode String   @map("currency_code") @db.Char(3)
+  rate         Decimal  @db.Decimal(18, 4)
+
+  @@unique([date, currencyCode])
+  @@map("exchange_rates")
+}
+
+/// Finansal degisimde ZORUNLU (kural #4).
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorUserId String?  @map("actor_user_id")
+  sellerId    String?  @map("seller_id")
+  action      String
+  entity      String
+  entityId    String?  @map("entity_id")
+  before      Json?
+  after       Json?
+  ip          String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  actor  User?   @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+  seller Seller? @relation(fields: [sellerId], references: [id], onDelete: SetNull)
+
+  @@index([sellerId, createdAt])
+  @@index([entity, entityId])
+  @@map("audit_logs")
+}
+
+/// Rotasyon + reuse tespiti (§6.3). token_hash = sha256(token).
+model RefreshToken {
+  id           String    @id @default(cuid())
+  userId       String    @map("user_id")
+  membershipCtx String?  @map("membership_ctx")
+  familyId     String    @map("family_id")
+  tokenHash    String    @unique @map("token_hash")
+  expiresAt    DateTime  @map("expires_at")
+  revokedAt    DateTime? @map("revoked_at")
+  replacedById String?   @map("replaced_by")
+  userAgent    String?   @map("user_agent")
+  ip           String?
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@map("refresh_tokens")
+}
+
+/// Sifre sifirlama (§7'de yok — Faz 0 gereksinimi "sifre sifirlama" icin eklendi).
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("password_reset_tokens")
+}

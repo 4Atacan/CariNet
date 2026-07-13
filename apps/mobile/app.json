@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "CariNet",
+    "slug": "carinet",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "carinet",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.carinet.app"
+    },
+    "android": {
+      "package": "com.carinet.app"
+    },
+    "plugins": ["expo-router", "expo-secure-store"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

@@ -1,0 +1,14 @@
+# Depoda her zaman LF; calisma kopyasi platforma birakilir.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+
+pnpm-lock.yaml -diff
+graphify-out/graph.json -diff

@@ -1,0 +1,17 @@
+title = "CariNet gitleaks yapilandirmasi"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ornek/CI degerleri — gercek sir degil"
+paths = [
+  '''\.env\.example$''',
+  '''pnpm-lock\.yaml$''',
+]
+regexes = [
+  '''change-me-.*-secret''',
+  '''ci-(access|refresh)-secret-must-be-at-least-32-chars''',
+  '''0{64}''',
+  '''CariNet2026!''',
+]

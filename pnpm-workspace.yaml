@@ -1,0 +1,30 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# Expo/Metro gecisli bagimliliklari (@expo/metro-runtime, @babel/runtime...) izole
+# node_modules'te cozemez. Expo'nun pnpm icin resmi onerisi: hoisted linker.
+nodeLinker: hoisted
+
+# Hoisted kurulumda TEK React olmali; iki surum "useContext of null" verir.
+# Expo SDK 53 ve Next 15 ayni React 19'u kullanir.
+overrides:
+  react: 19.0.0
+  react-dom: 19.0.0
+
+# Derleme betigi calistirmasina izin verilen paketler (pnpm >=10 gereksinimi).
+# Yalniz bilinen, kaciniilmaz native/derleyici paketleri.
+allowBuilds:
+  esbuild: true
+  prisma: true
+  '@prisma/client': true
+  '@prisma/engines': true
+  argon2: true
+  '@nestjs/core': true
+  unrs-resolver: true
+  sharp: true
+  '@swc/core': true
+  protobufjs: true
+  core-js: true
+  # telemetri paketi — derleme betigi calistirmasin
+  '@scarf/scarf': false

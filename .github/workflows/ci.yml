@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Testlerin kullandigi degerler — gercek sir DEGIL (kural #10).
+  DATABASE_URL: postgresql://carinet:carinet@localhost:5432/carinet?schema=public
+  JWT_ACCESS_SECRET: ci-access-secret-must-be-at-least-32-chars
+  JWT_REFRESH_SECRET: ci-refresh-secret-must-be-at-least-32-chars
+  JWT_ACCESS_TTL: 15m
+  JWT_REFRESH_TTL: 30d
+  MASTER_ENCRYPTION_KEY: '0000000000000000000000000000000000000000000000000000000000000000'
+  SMTP_HOST: localhost
+  SMTP_PORT: '1025'
+  PANEL_ORIGIN: http://localhost:3000
+
+jobs:
+  gitleaks:
+    name: Sir taramasi (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  quality:
+    name: lint · typecheck · test · build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: carinet
+          POSTGRES_PASSWORD: carinet
+          POSTGRES_DB: carinet
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U carinet"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Bagimliliklar (lockfile zorunlu — §11.7)
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma istemcisi
+        run: pnpm --filter @carinet/api db:generate
+
+      - name: Lint (sifir uyari)
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit testler
+        run: pnpm test
+
+      - name: Semayi uygula
+        run: pnpm --filter @carinet/api exec prisma migrate deploy
+
+      - name: e2e testler (auth + cross-tenant izolasyon — kural #3)
+        run: pnpm --filter @carinet/api test:e2e
+
+      - name: Build
+        run: pnpm build
+
+  audit:
+    name: Bagimlilik denetimi
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: pnpm audit (yuksek ve uzeri)
+        run: pnpm audit --audit-level high
