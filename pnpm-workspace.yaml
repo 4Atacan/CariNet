@@ -6,11 +6,19 @@ packages:
 # node_modules'te cozemez. Expo'nun pnpm icin resmi onerisi: hoisted linker.
 nodeLinker: hoisted
 
+# DIKKAT: pnpm 11 bu ayarlari .npmrc'den DEGIL buradan okur.
+# RN/Expo tarball'lari buyuk (~25 MB); varsayilan 60 sn zaman asimi yavas aglarda yetmiyor.
+fetchTimeout: 600000
+fetchRetries: 5
+networkConcurrency: 4
+
 # Hoisted kurulumda TEK React olmali; iki surum "useContext of null" verir.
-# Expo SDK 53 ve Next 15 ayni React 19'u kullanir.
+# Expo SDK 54 ve Next 15 ayni React 19.1'i kullanir.
 overrides:
-  react: 19.0.0
-  react-dom: 19.0.0
+  react: 19.1.0
+  react-dom: 19.1.0
+  # Tipler de tek surum olmali; iki @types/react "ReactNode is not assignable" hatasi verir.
+  '@types/react': 19.1.2
 
 # Derleme betigi calistirmasina izin verilen paketler (pnpm >=10 gereksinimi).
 # Yalniz bilinen, kaciniilmaz native/derleyici paketleri.

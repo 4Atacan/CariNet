@@ -2,18 +2,18 @@
 
 ## Corpus Check
 
-- 156 files · ~42,086 words
+- 171 files · ~51,408 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
 
-- 1439 nodes · 2220 edges · 152 communities (82 shown, 70 thin omitted)
+- 1602 nodes · 2628 edges · 182 communities (88 shown, 94 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 11 edges (avg confidence: 0.55)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
 
-- Built from commit: `c4831d8d`
+- Built from commit: `f9ad184b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -158,6 +158,36 @@
 - typescript
 - unplugin-swc
 - vite-tsconfig-paths
+- layout.tsx
+- turbo.json
+- dev
+- @carinet/shared
+- expo-constants
+- expo-secure-store
+- react
+- react-dom
+- react-native-linear-gradient
+- @hookform/resolvers
+- next
+- @radix-ui/react-dialog
+- @radix-ui/react-label
+- @radix-ui/react-slot
+- react
+- react-dom
+- react-hook-form
+- recharts
+- zod
+- ApiOperation
+- ApiTags
+- Body
+- Controller
+- CurrentUser
+- Get
+- Param
+- Patch
+- Post
+- Query
+- Roles
 
 ## God Nodes (most connected - your core abstractions)
 
@@ -166,11 +196,11 @@
 3. `ImportsRepository` - 25 edges
 4. `AuthController` - 24 edges
 5. `AuthService` - 23 edges
-6. `globalEnv` - 21 edges
-7. `BuyersService` - 20 edges
+6. `apiPost()` - 21 edges
+7. `globalEnv` - 21 edges
 8. `toDecimal()` - 19 edges
-9. `ImportsService` - 18 edges
-10. `compilerOptions` - 17 edges
+9. `CLAUDE.md — CariNet · B2B Cari Hesap Platformu (Ana Beyin)` - 18 edges
+10. `ImportsService` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
 
@@ -180,16 +210,16 @@
   apps/api/test/setup/test-app.ts → apps/api/src/app.module.ts
 - `BalanceMovement` --references--> `TransactionType` [EXTRACTED]
   packages/shared/src/money.ts → packages/shared/src/enums.ts
-- `LoginScreen()` --calls--> `useSession` [EXTRACTED]
-  apps/mobile/app/giris.tsx → apps/mobile/src/store/session.ts
-- `reset()` --references--> `@prisma/client` [EXTRACTED]
-  apps/api/prisma/seed.ts → apps/api/package.json
+- `HomeScreen()` --calls--> `apiGet()` [EXTRACTED]
+  apps/mobile/app/ana-sayfa.tsx → apps/mobile/src/lib/api.ts
+- `HomeScreen()` --calls--> `apiPost()` [EXTRACTED]
+  apps/mobile/app/ana-sayfa.tsx → apps/mobile/src/lib/api.ts
 
 ## Import Cycles
 
 - None detected.
 
-## Communities (152 total, 70 thin omitted)
+## Communities (182 total, 94 thin omitted)
 
 ### Community 0 - "money.ts"
 
@@ -203,23 +233,23 @@ Nodes (15): devDependencies, @carinet/config, @nestjs/cli, tsx, @types/adm-zip, 
 
 ### Community 2 - "dependencies"
 
-Cohesion: 0.04
-Nodes (44): dependencies, @carinet/shared, @hookform/resolvers, next, react, react-dom, react-hook-form, @tanstack/react-query (+36 more)
+Cohesion: 0.12
+Nodes (17): devDependencies, @carinet/config, eslint, tailwindcss, @tailwindcss/postcss, @types/node, @types/react, @types/react-dom (+9 more)
 
 ### Community 3 - "auth.controller.ts"
 
-Cohesion: 0.07
+Cohesion: 0.08
 Nodes (37): CurrentUser, NoTenant(), Public(), RefreshRoute(), Roles(), JwtAuthGuard, Injectable, RolesGuard (+29 more)
 
 ### Community 4 - "globalEnv"
 
-Cohesion: 0.05
-Nodes (39): ^build, coverage/**, DATABASE_URL, .env, EXPO_PUBLIC_API_URL, JWT_ACCESS_SECRET, JWT_ACCESS_TTL, JWT_REFRESH_SECRET (+31 more)
+Cohesion: 0.10
+Nodes (21): DATABASE_URL, EXPO_PUBLIC_API_URL, JWT_ACCESS_SECRET, JWT_ACCESS_TTL, JWT_REFRESH_SECRET, JWT_REFRESH_TTL, MAIL_FROM, MASTER_ENCRYPTION_KEY (+13 more)
 
 ### Community 5 - "dependencies"
 
-Cohesion: 0.13
-Nodes (15): dependencies, @carinet/shared, expo-constants, expo-secure-store, react, react-dom, react-native, @tanstack/react-query (+7 more)
+Cohesion: 0.12
+Nodes (17): dependencies, @babel/runtime, expo-linking, expo-status-bar, react-native, react-native-gifted-charts, react-native-screens, react-native-svg (+9 more)
 
 ### Community 6 - "package.json"
 
@@ -238,8 +268,8 @@ Nodes (31): husky, lint-staged, devDependencies, @carinet/config, husky, lint-st
 
 ### Community 9 - "ana-sayfa.tsx"
 
-Cohesion: 0.07
-Nodes (33): HomeScreen(), MeResponse, styles, package, typedRoutes, expo, android, experiments (+25 more)
+Cohesion: 0.08
+Nodes (32): Dashboard, HomeScreen(), MeResponse, styles, fromDate(), RANGES, StatementLine, StatementScreen() (+24 more)
 
 ### Community 10 - "auth.module.ts"
 
@@ -253,8 +283,8 @@ Nodes (3): AuthRepository, Inject, Injectable
 
 ### Community 12 - "page.tsx"
 
-Cohesion: 0.11
-Nodes (15): config, metadata, BuyerAccountRow, MeResponse, PanelPage(), QueryProvider(), api(), ApiError (+7 more)
+Cohesion: 0.10
+Nodes (58): BuyerDetailPage(), BuyersPage(), NewBuyerForm(), EMPTY_ITEM, InvoiceFormValues, InvoicesPage(), NewInvoiceForm(), safeTotals() (+50 more)
 
 ### Community 13 - "exports"
 
@@ -283,8 +313,8 @@ Nodes (19): compilerOptions, declaration, declarationMap, esModuleInterop, force
 
 ### Community 18 - "buyers.service.ts"
 
-Cohesion: 0.15
-Nodes (6): BuyersRepository, Inject, Injectable, BuyersService, toBuyerDto(), Injectable
+Cohesion: 0.18
+Nodes (5): BuyersRepository, Injectable, BuyersService, toBuyerDto(), Injectable
 
 ### Community 19 - "compilerOptions"
 
@@ -293,8 +323,8 @@ Nodes (17): compilerOptions, allowJs, declaration, declarationMap, incremental, 
 
 ### Community 20 - "prisma.module.ts"
 
-Cohesion: 0.23
-Nodes (10): AuditEntry, REPRESENTATIVE_SELECT, BUYER_SELECT, BuyerRef, InvoiceSummaryDto, InvoiceWithItems, BUYER_SELECT, PRISMA (+2 more)
+Cohesion: 0.06
+Nodes (32): 0. Kimlik ve Kapsam, 10. API Sözleşmesi, 11. Güvenlik (8 katman — Faz 5'in release kapısı; "öneri" değil GEREKSİNİM), 12. Kodlama Standartları, 13. Geliştirme Fazları (sıralı; "bitti kriteri" sağlanmadan faz kapanmaz), 14. Yapılmayacaklar (açık yasaklar), 15. Definition of Done (her görev), 16. AI Çalışma Protokolü (Claude Code) (+24 more)
 
 ### Community 21 - "AuthService"
 
@@ -318,8 +348,8 @@ Nodes (12): @prisma/client, day(), main(), prisma, referenceCode(), reset(), dec
 
 ### Community 25 - "app.module.ts"
 
-Cohesion: 0.13
-Nodes (5): ImportsRepository, Inject, Injectable, ImportsService, Injectable
+Cohesion: 0.11
+Nodes (6): ImportsRepository, Inject, Injectable, ImportsService, readCutoff(), Injectable
 
 ### Community 26 - "TokenService"
 
@@ -358,8 +388,8 @@ Nodes (4): base, nest, next, reactNative
 
 ### Community 33 - "BuyersController"
 
-Cohesion: 0.14
-Nodes (18): BuyersController, CreateBuyerDto, ListBuyersQueryDto, SELLER_SIDE, SetActiveDto, StatementQueryDto, ApiOperation, ApiTags (+10 more)
+Cohesion: 0.29
+Nodes (6): CreateBuyerDto, ListBuyersQueryDto, SELLER_SIDE, SetActiveDto, StatementQueryDto, UpdateBuyerDto
 
 ### Community 34 - "tenant-guard.extension.ts"
 
@@ -373,8 +403,8 @@ Nodes (3): sha256(), MailService, Injectable
 
 ### Community 36 - "index.ts"
 
-Cohesion: 0.13
-Nodes (9): InvoicesRepository, Inject, Injectable, InvoicesService, toInvoiceDto(), toInvoiceSummary(), toIsoDate(), Inject (+1 more)
+Cohesion: 0.10
+Nodes (16): CancelInvoiceDto, CreateInvoiceDto, ListInvoicesQueryDto, BUYER_SELECT, InvoicesRepository, Injectable, BuyerRef, InvoicesService (+8 more)
 
 ### Community 37 - "exclude"
 
@@ -393,8 +423,8 @@ Nodes (3): AllExceptionsFilter, HTTP_TO_CODE, Catch
 
 ### Community 41 - "PrismaModule"
 
-Cohesion: 0.33
-Nodes (4): PrismaModule, Global, Inject, Module
+Cohesion: 0.12
+Nodes (17): dependencies, @carinet/shared, class-variance-authority, clsx, lucide-react, @radix-ui/react-select, tailwind-merge, @tanstack/react-query (+9 more)
 
 ### Community 42 - "metro.config.js"
 
@@ -413,8 +443,8 @@ Nodes (3): GRAPHIFY_REBUILD_LOG, post-checkout script, PYTHONHASHSEED
 
 ### Community 50 - "@nestjs/common"
 
-Cohesion: 0.11
-Nodes (19): BuyerDto, BuyerWithBalance, BuyerWithRepresentative, toIsoDate(), BalanceRawRow, LedgerRepository, SIGNED_TRY, StatementFilter (+11 more)
+Cohesion: 0.15
+Nodes (16): LedgerModule, Module, BalanceRawRow, LedgerRepository, SIGNED_TRY, StatementFilter, StatementRawRow, toDateParam() (+8 more)
 
 ### Community 63 - "pino"
 
@@ -428,8 +458,8 @@ Nodes (20): BuyerAccountRow, buyerAccountRowSchema, CancelImportInput, cancelImp
 
 ### Community 93 - "TransactionsRepository"
 
-Cohesion: 0.12
-Nodes (12): CancelTransactionDto, CreateTransactionDto, ListTransactionsQueryDto, TransactionsRepository, Inject, Injectable, toIsoDate(), toTransactionDto() (+4 more)
+Cohesion: 0.13
+Nodes (12): CancelTransactionDto, CreateTransactionDto, ListTransactionsQueryDto, BUYER_SELECT, TransactionsRepository, Injectable, toIsoDate(), toTransactionDto() (+4 more)
 
 ### Community 94 - "TransactionsController"
 
@@ -443,13 +473,13 @@ Nodes (11): InvoicesController, ApiOperation, ApiTags, Body, Controller, Current
 
 ### Community 96 - "app.module.ts"
 
-Cohesion: 0.17
-Nodes (11): BuyersModule, Module, CancelInvoiceDto, CreateInvoiceDto, ListInvoicesQueryDto, InvoicesModule, Module, LedgerModule (+3 more)
+Cohesion: 0.33
+Nodes (6): BuyersModule, Module, InvoicesModule, Module, TransactionsModule, Module
 
 ### Community 97 - "buyers.service.ts"
 
-Cohesion: 0.18
-Nodes (8): AuditModule, Global, Module, AuditService, jsonReplacer(), toJson(), Inject, Injectable
+Cohesion: 0.15
+Nodes (13): AuditModule, Global, Module, AuditEntry, AuditService, jsonReplacer(), toJson(), Injectable (+5 more)
 
 ### Community 98 - "devDependencies"
 
@@ -483,28 +513,48 @@ Nodes (19): CollectChannel, collectChannelSchema, DocumentType, documentTypeSche
 
 ### Community 113 - "@types/cookie-parser"
 
-Cohesion: 0.17
-Nodes (7): assertFile(), formatIssues(), readCutoff(), ROW_SCHEMA, StagedRow, summarize(), toJson()
+Cohesion: 0.22
+Nodes (4): assertFile(), formatIssues(), summarize(), toJson()
 
 ### Community 117 - "@types/passport-jwt"
 
-Cohesion: 0.26
-Nodes (12): atUtcMidnight(), cellToDate(), cellToMoney(), cellToRate(), cellToText(), CellValue, EXCEL_EPOCH_UTC, neutralizeFormula() (+4 more)
+Cohesion: 0.24
+Nodes (13): ImportTarget, atUtcMidnight(), cellToDate(), cellToMoney(), cellToRate(), cellToText(), CellValue, EXCEL_EPOCH_UTC (+5 more)
+
+### Community 119 - "@babel/runtime"
+
+Cohesion: 0.12
+Nodes (16): 2026-07-13 · Faz 0 — Iskelet ve Temel, 2026-07-14 · Faz 1 — Cekirdek MVP, Bitti kriteri kontrolu (Faz 0), Bitti kriteri kontrolu (Faz 1), CLAUDE.md ile UYUSMAZLIK (§16.4 — bildirildi, onaysiz kural degistirilmedi), CLAUDE.md ile UYUSMAZLIK (§16.4 — bildiriliyor, onaysiz kural degistirilmedi), Kararlar, Kararlar (+8 more)
+
+### Community 121 - "expo-linking"
+
+Cohesion: 0.12
+Nodes (15): package, typedRoutes, expo, android, experiments, ios, name, newArchEnabled (+7 more)
+
+### Community 123 - "expo-status-bar"
+
+Cohesion: 0.21
+Nodes (12): ^build, coverage/**, dependsOn, dependsOn, tasks, build, lint, test (+4 more)
+
+### Community 127 - "react-native-screens"
+
+Cohesion: 0.18
+Nodes (10): name, private, scripts, build, dev, lint, start, test (+2 more)
 
 ### Community 133 - "Global"
 
-Cohesion: 0.20
-Nodes (7): StorageModule, Module, StorageService, Injectable, ImportsModule, Module, Global
+Cohesion: 0.10
+Nodes (17): StorageModule, Module, StorageService, Injectable, ImportsModule, Module, ROW_SCHEMA, StagedRow (+9 more)
 
 ### Community 134 - "Param"
 
-Cohesion: 0.15
-Nodes (13): ApiBody, ApiConsumes, ApiOperation, ApiTags, ImportsController, UploadedFile, Controller, CurrentUser (+5 more)
+Cohesion: 0.21
+Nodes (11): ApiOperation, ApiTags, BuyersController, ImportsController, Controller, CurrentUser, Get, Param (+3 more)
 
 ### Community 135 - "Query"
 
-Cohesion: 0.33
-Nodes (10): asArray(), attr(), isNode(), Node, partyIdentifier(), pick(), sumStrings(), text() (+2 more)
+Cohesion: 0.49
+Nodes (8): asArray(), attr(), isNode(), Node, partyIdentifier(), pick(), sumStrings(), text()
 
 ### Community 136 - "buyers.ts"
 
@@ -513,50 +563,60 @@ Nodes (12): accountCodeSchema, BuyerListQuery, buyerListQuerySchema, CreateBuyer
 
 ### Community 137 - "import-mapping.ts"
 
-Cohesion: 0.20
-Nodes (8): ImportTarget, autoMap(), ColumnMapping, IMPORT_FIELDS, ImportField, normalizeHeader(), REQUIRED_FIELDS, TARGET_FIELDS
+Cohesion: 0.22
+Nodes (7): autoMap(), ColumnMapping, IMPORT_FIELDS, ImportField, normalizeHeader(), REQUIRED_FIELDS, TARGET_FIELDS
 
 ### Community 138 - "imports.controller.ts"
 
-Cohesion: 0.22
-Nodes (8): BatchesQueryDto, CancelDto, CommitDto, filePipe, ReportQueryDto, RowsQueryDto, SaveTemplateDto, UploadDto
+Cohesion: 0.14
+Nodes (12): ApiBody, ApiConsumes, BatchesQueryDto, CancelDto, CommitDto, filePipe, ReportQueryDto, RowsQueryDto (+4 more)
 
 ### Community 139 - ".constructor"
 
-Cohesion: 0.25
-Nodes (6): Inject, CELL_READERS, ExcelParser, ParsedSheet, toCellValue(), Injectable
+Cohesion: 0.33
+Nodes (5): config, .next/**, !.next/cache/**, outputs, dist/**
 
 ### Community 140 - "HealthController"
 
-Cohesion: 0.25
-Nodes (6): HealthController, ApiOperation, ApiTags, Controller, Get, Inject
+Cohesion: 0.08
+Nodes (17): Inject, REPRESENTATIVE_SELECT, Inject, HealthController, ApiOperation, ApiTags, Controller, Get (+9 more)
 
 ### Community 141 - "transactions.ts"
 
 Cohesion: 0.25
 Nodes (7): CancelTransactionInput, cancelTransactionSchema, CreateTransactionInput, createTransactionSchema, isoDateSchema, TransactionListQuery, transactionListQuerySchema
 
+### Community 153 - "turbo.json"
+
+Cohesion: 0.50
+Nodes (3): .env, globalDependencies, $schema
+
+### Community 154 - "dev"
+
+Cohesion: 0.67
+Nodes (3): cache, persistent, dev
+
 ## Knowledge Gaps
 
-- **501 isolated node(s):** `name`, `version`, `private`, `dev`, `build` (+496 more)
+- **569 isolated node(s):** `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)`, `3. Depo Yapısı`, `4. Ortam ve Komutlar` (+564 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **70 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **94 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PrismaService` connect `prisma.module.ts` to `buyers.service.ts`, `index.ts`, `PrismaModule`, `AuthRepository`, `HealthController`, `buyers.service.ts`, `@nestjs/common`, `expo`, `TransactionsRepository`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Why does `Public()` connect `auth.controller.ts` to `HealthController`, `prisma.module.ts`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
-- **Why does `PRISMA` connect `prisma.module.ts` to `@nestjs/common`, `expo`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **What connects `name`, `version`, `private` to the rest of the system?**
-  _501 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `BuyersController` connect `Param` to `app.module.ts`, `BuyersController`?**
+  _High betweenness centrality (0.027) - this node is a cross-community bridge._
+- **Why does `PrismaService` connect `HealthController` to `buyers.service.ts`, `index.ts`, `auth.module.ts`, `AuthRepository`, `@nestjs/common`, `expo`, `TransactionsRepository`?**
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+- **Why does `ImportsController` connect `Param` to `app.module.ts`, `imports.controller.ts`, `Global`?**
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+- **What connects `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)` to the rest of the system?**
+  _569 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.044444444444444446 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected._
 - **Should `auth.controller.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07472613458528951 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07605633802816901 - nodes in this community are weakly interconnected._

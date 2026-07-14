@@ -2,7 +2,7 @@
 
 ## Corpus Check
 
-- 171 files · ~51,408 words
+- 171 files · ~51,513 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -13,7 +13,7 @@
 
 ## Graph Freshness
 
-- Built from commit: `f9ad184b`
+- Built from commit: `fad04379`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -524,7 +524,7 @@ Nodes (13): ImportTarget, atUtcMidnight(), cellToDate(), cellToMoney(), cellToRa
 ### Community 119 - "@babel/runtime"
 
 Cohesion: 0.12
-Nodes (16): 2026-07-13 · Faz 0 — Iskelet ve Temel, 2026-07-14 · Faz 1 — Cekirdek MVP, Bitti kriteri kontrolu (Faz 0), Bitti kriteri kontrolu (Faz 1), CLAUDE.md ile UYUSMAZLIK (§16.4 — bildirildi, onaysiz kural degistirilmedi), CLAUDE.md ile UYUSMAZLIK (§16.4 — bildiriliyor, onaysiz kural degistirilmedi), Kararlar, Kararlar (+8 more)
+Nodes (16): 2026-07-13 · Faz 0 — Iskelet ve Temel, 2026-07-14 · Faz 1 — Cekirdek MVP, Bitti kriteri kontrolu (Faz 0), Bitti kriteri kontrolu (Faz 1), CLAUDE.md ile UYUSMAZLIK (§16.4 — bildiriliyor, onaysiz kural degistirilmedi), CLAUDE.md ile UYUSMAZLIK → **COZULDU (kullanici onayi, 14.07.2026)**, Kararlar, Kararlar (+8 more)
 
 ### Community 121 - "expo-linking"
 

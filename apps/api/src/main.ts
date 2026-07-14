@@ -16,8 +16,12 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix('v1');
   app.use(helmet());
   app.use(cookieParser());
+  // §11.2 CORS allowlist. Prod'da YALNIZ panel origin'i; dev'de Expo web onizlemesi de eklenir.
+  const devOrigins = ['http://localhost:8081', 'http://localhost:19006'];
   app.enableCors({
-    origin: [config.get('PANEL_ORIGIN', { infer: true })], // §11.2 CORS allowlist
+    origin: isProd
+      ? [config.get('PANEL_ORIGIN', { infer: true })]
+      : [config.get('PANEL_ORIGIN', { infer: true }), ...devOrigins],
     credentials: true,
   });
   app.enableShutdownHooks();
