@@ -3,6 +3,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ArrowRightLeft,
+  BarChart3,
   FileText,
   LayoutDashboard,
   LogOut,
@@ -28,6 +29,7 @@ const NAV = [
   { href: '/panel/cariler', label: tr.nav.buyers, icon: Users },
   { href: '/panel/hareketler', label: tr.nav.transactions, icon: ArrowRightLeft },
   { href: '/panel/faturalar', label: tr.nav.invoices, icon: FileText },
+  { href: '/panel/raporlar', label: tr.nav.reports, icon: BarChart3 },
   { href: '/panel/ice-aktarim', label: tr.nav.imports, icon: Upload },
   { href: '/panel/gecis-sihirbazi', label: tr.nav.wizard, icon: Wand2 },
   { href: '/panel/temsilciler', label: tr.nav.representatives, icon: UserRound },

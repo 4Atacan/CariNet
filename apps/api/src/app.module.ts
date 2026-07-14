@@ -13,10 +13,12 @@ import { TenantContextMiddleware } from './common/middleware/tenant-context.midd
 import { AuditModule } from './common/audit/audit.module';
 import { StorageModule } from './common/storage/storage.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { AddressesModule } from './modules/addresses/addresses.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BuyersModule } from './modules/buyers/buyers.module';
 import { ImportsModule } from './modules/imports/imports.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
+import { ReportsModule } from './modules/reports/reports.module';
 import { RepresentativesModule } from './modules/representatives/representatives.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { HealthController } from './modules/health/health.controller';
@@ -38,6 +40,8 @@ import { HealthController } from './modules/health/health.controller';
     TransactionsModule,
     InvoicesModule,
     ImportsModule,
+    ReportsModule,
+    AddressesModule,
   ],
   controllers: [HealthController],
   providers: [

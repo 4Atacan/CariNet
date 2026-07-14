@@ -102,6 +102,38 @@ export interface InvoiceDetail extends InvoiceSummary {
   }[];
 }
 
+export interface Address {
+  id: string;
+  buyerAccountId: string;
+  label: string;
+  fullAddress: string;
+  city: string;
+}
+
+export type AgingBucket = 'NOT_DUE' | 'D0_30' | 'D31_60' | 'D61_90' | 'D90_PLUS';
+
+export interface RiskDetail {
+  buyerAccountId: string;
+  accountCode: string;
+  title: string;
+  creditLimit: MoneyString;
+  balance: MoneyString;
+  overdue: MoneyString;
+  notDue: MoneyString;
+  buckets: Record<AgingBucket, MoneyString>;
+  limitUsagePercent: number | null;
+  averageDueDate: string | null;
+  averageOverdueDays: number;
+  openItems: {
+    id: string;
+    remaining: MoneyString;
+    dueDate: string | null;
+    documentDate: string;
+    overdueDays: number;
+    bucket: AgingBucket;
+  }[];
+}
+
 export interface ImportTotals {
   rowCount: number;
   validCount: number;

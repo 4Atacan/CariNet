@@ -2,18 +2,18 @@
 
 ## Corpus Check
 
-- 171 files · ~51,513 words
+- 172 files · ~51,602 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
 
-- 1602 nodes · 2628 edges · 182 communities (88 shown, 94 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 11 edges (avg confidence: 0.55)
+- 1596 nodes · 2623 edges · 161 communities (91 shown, 70 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.53)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
 
-- Built from commit: `fad04379`
+- Built from commit: `50b930d0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -84,9 +84,7 @@
 - passport-jwt
 - pino
 - pino-http
-- reflect-metadata
 - rxjs
-- zod
 - next-env.d.ts
 - applypatch-msg
 - commit-msg
@@ -114,32 +112,20 @@
 - errors.ts
 - package.json
 - @nestjs/config
-- dotenv
 - dotenv-cli
 - eslint
 - @nestjs/cli
-- @nestjs/schematics
 - @nestjs/testing
 - pino-pretty
 - prisma
-- supertest
 - @types/cookie-parser
-- @types/express
-- @types/node
 - @types/nodemailer
 - @types/passport-jwt
 - vitest
 - @babel/runtime
-- expo
 - expo-linking
-- expo-router
 - expo-status-bar
-- @hookform/resolvers
-- react-hook-form
-- react-native-safe-area-context
 - react-native-screens
-- zod
-- zustand
 - Global
 - Param
 - Query
@@ -155,18 +141,10 @@
 - otplib
 - @swc/core
 - @types/multer
-- typescript
 - unplugin-swc
-- vite-tsconfig-paths
 - layout.tsx
 - turbo.json
 - dev
-- @carinet/shared
-- expo-constants
-- expo-secure-store
-- react
-- react-dom
-- react-native-linear-gradient
 - @hookform/resolvers
 - next
 - @radix-ui/react-dialog
@@ -204,8 +182,6 @@
 
 ## Surprising Connections (you probably didn't know these)
 
-- `bootstrap()` --indirect_call--> `AppModule` [INFERRED]
-  apps/api/src/main.ts → apps/api/src/app.module.ts
 - `createTestApp()` --indirect_call--> `AppModule` [INFERRED]
   apps/api/test/setup/test-app.ts → apps/api/src/app.module.ts
 - `BalanceMovement` --references--> `TransactionType` [EXTRACTED]
@@ -214,12 +190,14 @@
   apps/mobile/app/ana-sayfa.tsx → apps/mobile/src/lib/api.ts
 - `HomeScreen()` --calls--> `apiPost()` [EXTRACTED]
   apps/mobile/app/ana-sayfa.tsx → apps/mobile/src/lib/api.ts
+- `HomeScreen()` --calls--> `balanceColor()` [EXTRACTED]
+  apps/mobile/app/ana-sayfa.tsx → apps/mobile/src/lib/format.ts
 
 ## Import Cycles
 
 - None detected.
 
-## Communities (182 total, 94 thin omitted)
+## Communities (161 total, 70 thin omitted)
 
 ### Community 0 - "money.ts"
 
@@ -228,8 +206,8 @@ Nodes (27): TransactionType, add(), applyRate(), BalanceMovement, computeBalance
 
 ### Community 1 - "devDependencies"
 
-Cohesion: 0.13
-Nodes (15): devDependencies, @carinet/config, @nestjs/cli, tsx, @types/adm-zip, @types/cookie-parser, @types/passport-jwt, @types/supertest (+7 more)
+Cohesion: 0.12
+Nodes (17): devDependencies, dotenv, @nestjs/schematics, supertest, tsx, @types/adm-zip, @types/express, @types/supertest (+9 more)
 
 ### Community 2 - "dependencies"
 
@@ -248,8 +226,8 @@ Nodes (21): DATABASE_URL, EXPO_PUBLIC_API_URL, JWT_ACCESS_SECRET, JWT_ACCESS_TTL
 
 ### Community 5 - "dependencies"
 
-Cohesion: 0.12
-Nodes (17): dependencies, @babel/runtime, expo-linking, expo-status-bar, react-native, react-native-gifted-charts, react-native-screens, react-native-svg (+9 more)
+Cohesion: 0.04
+Nodes (45): @carinet/shared, zod, dependencies, @babel/runtime, @carinet/shared, expo, expo-constants, expo-linking (+37 more)
 
 ### Community 6 - "package.json"
 
@@ -293,8 +271,8 @@ Nodes (26): eslint-config-prettier, @eslint/js, globals, dependencies, eslint-co
 
 ### Community 14 - "scripts"
 
-Cohesion: 0.15
-Nodes (12): main, name, private, scripts, android, build, dev, ios (+4 more)
+Cohesion: 0.25
+Nodes (8): scripts, android, build, dev, ios, lint, test, typecheck
 
 ### Community 15 - "auth.ts"
 
@@ -349,7 +327,7 @@ Nodes (12): @prisma/client, day(), main(), prisma, referenceCode(), reset(), dec
 ### Community 25 - "app.module.ts"
 
 Cohesion: 0.11
-Nodes (6): ImportsRepository, Inject, Injectable, ImportsService, readCutoff(), Injectable
+Nodes (5): ImportsRepository, Inject, Injectable, ImportsService, Injectable
 
 ### Community 26 - "TokenService"
 
@@ -378,8 +356,8 @@ Nodes (13): compilerOptions, outDir, rootDir, types, exclude, extends, include, 
 
 ### Community 31 - "test-app.ts"
 
-Cohesion: 0.27
-Nodes (9): AppModule, Module, bootstrap(), createTestApp(), decodeJwt(), loadSeedIds(), rawPrisma, SeedIds (+1 more)
+Cohesion: 0.33
+Nodes (8): AppModule, Module, createTestApp(), decodeJwt(), loadSeedIds(), rawPrisma, SeedIds, USERS
 
 ### Community 32 - "base.js"
 
@@ -388,8 +366,8 @@ Nodes (4): base, nest, next, reactNative
 
 ### Community 33 - "BuyersController"
 
-Cohesion: 0.29
-Nodes (6): CreateBuyerDto, ListBuyersQueryDto, SELLER_SIDE, SetActiveDto, StatementQueryDto, UpdateBuyerDto
+Cohesion: 0.25
+Nodes (3): StorageService, Injectable, Inject
 
 ### Community 34 - "tenant-guard.extension.ts"
 
@@ -441,6 +419,11 @@ Nodes (4): GRAPHIFY_CHANGED, GRAPHIFY_REBUILD_LOG, post-commit script, PYTHONHAS
 Cohesion: 0.50
 Nodes (3): GRAPHIFY_REBUILD_LOG, post-checkout script, PYTHONHASHSEED
 
+### Community 46 - "@carinet/shared"
+
+Cohesion: 0.40
+Nodes (4): main, name, private, version
+
 ### Community 50 - "@nestjs/common"
 
 Cohesion: 0.15
@@ -448,8 +431,8 @@ Nodes (16): LedgerModule, Module, BalanceRawRow, LedgerRepository, SIGNED_TRY, S
 
 ### Community 63 - "pino"
 
-Cohesion: 0.22
-Nodes (9): adm-zip, dependencies, adm-zip, @aws-sdk/client-s3, pino, rxjs, @aws-sdk/client-s3, pino (+1 more)
+Cohesion: 0.12
+Nodes (17): adm-zip, dependencies, adm-zip, decimal.js, @nestjs/jwt, @nestjs/swagger, nestjs-zod, passport (+9 more)
 
 ### Community 66 - "rxjs"
 
@@ -483,8 +466,8 @@ Nodes (13): AuditModule, Global, Module, AuditEntry, AuditService, jsonReplacer(
 
 ### Community 98 - "devDependencies"
 
-Cohesion: 0.18
-Nodes (11): devDependencies, @carinet/config, eslint, @types/node, @types/react, typescript, @carinet/config, eslint (+3 more)
+Cohesion: 0.17
+Nodes (12): @carinet/config, @types/node, typescript, devDependencies, @carinet/config, @types/node, @types/react, typescript (+4 more)
 
 ### Community 99 - "common.ts"
 
@@ -506,6 +489,11 @@ Nodes (5): AppError, AppErrorDetails, ERROR_MESSAGES, ErrorCode, HTTP_STATUS_BY_
 Cohesion: 0.33
 Nodes (5): name, prisma, seed, private, version
 
+### Community 106 - "eslint"
+
+Cohesion: 0.67
+Nodes (3): eslint, eslint, eslint
+
 ### Community 107 - "@nestjs/cli"
 
 Cohesion: 0.10
@@ -513,13 +501,13 @@ Nodes (19): CollectChannel, collectChannelSchema, DocumentType, documentTypeSche
 
 ### Community 113 - "@types/cookie-parser"
 
-Cohesion: 0.22
-Nodes (4): assertFile(), formatIssues(), summarize(), toJson()
+Cohesion: 0.17
+Nodes (7): assertFile(), formatIssues(), readCutoff(), ROW_SCHEMA, StagedRow, summarize(), toJson()
 
 ### Community 117 - "@types/passport-jwt"
 
-Cohesion: 0.24
-Nodes (13): ImportTarget, atUtcMidnight(), cellToDate(), cellToMoney(), cellToRate(), cellToText(), CellValue, EXCEL_EPOCH_UTC (+5 more)
+Cohesion: 0.26
+Nodes (12): atUtcMidnight(), cellToDate(), cellToMoney(), cellToRate(), cellToText(), CellValue, EXCEL_EPOCH_UTC, neutralizeFormula() (+4 more)
 
 ### Community 119 - "@babel/runtime"
 
@@ -543,18 +531,18 @@ Nodes (10): name, private, scripts, build, dev, lint, start, test (+2 more)
 
 ### Community 133 - "Global"
 
-Cohesion: 0.10
-Nodes (17): StorageModule, Module, StorageService, Injectable, ImportsModule, Module, ROW_SCHEMA, StagedRow (+9 more)
+Cohesion: 0.19
+Nodes (10): StorageModule, Module, ImportsModule, Module, CELL_READERS, ExcelParser, ParsedSheet, toCellValue() (+2 more)
 
 ### Community 134 - "Param"
 
-Cohesion: 0.21
-Nodes (11): ApiOperation, ApiTags, BuyersController, ImportsController, Controller, CurrentUser, Get, Param (+3 more)
+Cohesion: 0.12
+Nodes (21): ApiBody, ApiConsumes, ApiOperation, ApiTags, BuyersController, CreateBuyerDto, ListBuyersQueryDto, SELLER_SIDE (+13 more)
 
 ### Community 135 - "Query"
 
-Cohesion: 0.49
-Nodes (8): asArray(), attr(), isNode(), Node, partyIdentifier(), pick(), sumStrings(), text()
+Cohesion: 0.33
+Nodes (10): asArray(), attr(), isNode(), Node, partyIdentifier(), pick(), sumStrings(), text() (+2 more)
 
 ### Community 136 - "buyers.ts"
 
@@ -563,13 +551,13 @@ Nodes (12): accountCodeSchema, BuyerListQuery, buyerListQuerySchema, CreateBuyer
 
 ### Community 137 - "import-mapping.ts"
 
-Cohesion: 0.22
-Nodes (7): autoMap(), ColumnMapping, IMPORT_FIELDS, ImportField, normalizeHeader(), REQUIRED_FIELDS, TARGET_FIELDS
+Cohesion: 0.20
+Nodes (8): ImportTarget, autoMap(), ColumnMapping, IMPORT_FIELDS, ImportField, normalizeHeader(), REQUIRED_FIELDS, TARGET_FIELDS
 
 ### Community 138 - "imports.controller.ts"
 
-Cohesion: 0.14
-Nodes (12): ApiBody, ApiConsumes, BatchesQueryDto, CancelDto, CommitDto, filePipe, ReportQueryDto, RowsQueryDto (+4 more)
+Cohesion: 0.22
+Nodes (8): BatchesQueryDto, CancelDto, CommitDto, filePipe, ReportQueryDto, RowsQueryDto, SaveTemplateDto, UploadDto
 
 ### Community 139 - ".constructor"
 
@@ -598,24 +586,24 @@ Nodes (3): cache, persistent, dev
 
 ## Knowledge Gaps
 
-- **569 isolated node(s):** `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)`, `3. Depo Yapısı`, `4. Ortam ve Komutlar` (+564 more)
+- **557 isolated node(s):** `name`, `version`, `private`, `main`, `dev` (+552 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **94 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **70 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `BuyersController` connect `Param` to `app.module.ts`, `BuyersController`?**
+- **Why does `BuyersController` connect `Param` to `app.module.ts`?**
   _High betweenness centrality (0.027) - this node is a cross-community bridge._
-- **Why does `PrismaService` connect `HealthController` to `buyers.service.ts`, `index.ts`, `auth.module.ts`, `AuthRepository`, `@nestjs/common`, `expo`, `TransactionsRepository`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
 - **Why does `ImportsController` connect `Param` to `app.module.ts`, `imports.controller.ts`, `Global`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
-- **What connects `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)` to the rest of the system?**
-  _569 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `PrismaService` connect `HealthController` to `buyers.service.ts`, `index.ts`, `auth.module.ts`, `AuthRepository`, `@nestjs/common`, `expo`, `TransactionsRepository`?**
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **What connects `name`, `version`, `private` to the rest of the system?**
+  _557 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `devDependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected._
 - **Should `auth.controller.ts` be split into smaller, more focused modules?**

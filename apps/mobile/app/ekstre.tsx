@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { type MoneyString } from '@carinet/shared';
 import { apiGetPaged } from '@/lib/api';
 import { balanceColor, money, trDate } from '@/lib/format';
+import { shareStatementPdf } from '@/lib/pdf';
 import { tr } from '@/lib/tr';
 
 interface StatementLine {
@@ -32,6 +33,8 @@ const RANGES = [
 /** §13 Faz 1 — Ekstre: tarih filtresi + yuruyen bakiye + sonsuz kaydirma. */
 export default function StatementScreen() {
   const [range, setRange] = useState<(typeof RANGES)[number]['key']>('all');
+  const [sharing, setSharing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const from = fromDate(RANGES.find((r) => r.key === range)!.days);
 
@@ -56,7 +59,24 @@ export default function StatementScreen() {
         <Pressable onPress={() => router.back()}>
           <Text style={styles.back}>‹ {tr.common.back}</Text>
         </Pressable>
-        <Text style={styles.title}>{tr.statement.title}</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>{tr.statement.title}</Text>
+          <Pressable
+            style={styles.pdfButton}
+            disabled={sharing}
+            onPress={() => {
+              setSharing(true);
+              shareStatementPdf('ekstre')
+                .catch(() => setError(tr.common.error))
+                .finally(() => setSharing(false));
+            }}
+          >
+            <Text style={styles.pdfButtonText}>
+              {sharing ? tr.statement.preparing : tr.statement.sharePdf}
+            </Text>
+          </Pressable>
+        </View>
+        {error ? <Text style={styles.error}>{error}</Text> : null}
       </View>
 
       <View style={styles.filters}>
@@ -135,7 +155,22 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#f8fafc' },
   header: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 4 },
   back: { color: '#64748b', fontSize: 14 },
-  title: { fontSize: 22, fontWeight: '700', color: '#0f172a', marginTop: 4 },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  title: { fontSize: 22, fontWeight: '700', color: '#0f172a' },
+  pdfButton: {
+    borderWidth: 1,
+    borderColor: '#0f172a',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  pdfButtonText: { fontSize: 12, fontWeight: '600', color: '#0f172a' },
+  error: { color: '#b91c1c', fontSize: 12, marginTop: 6 },
   filters: { flexDirection: 'row', gap: 8, paddingHorizontal: 20, paddingVertical: 12 },
   chip: {
     borderWidth: 1,

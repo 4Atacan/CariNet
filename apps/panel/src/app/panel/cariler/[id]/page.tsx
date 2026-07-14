@@ -4,11 +4,21 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import { type MoneyString } from '@carinet/shared';
 import { DataTable } from '@/components/data-table';
 import { Alert, Badge, Button, Card, Field, Input, PageHeader, Stat } from '@/components/ui';
-import { ApiError, apiGet, apiGetPaged, apiPatch, apiPost, qs } from '@/lib/api';
+import {
+  ApiError,
+  apiBlob,
+  apiDelete,
+  apiGet,
+  apiGetPaged,
+  apiPatch,
+  apiPost,
+  qs,
+} from '@/lib/api';
 import { tr } from '@/lib/tr';
-import { type BuyerDetail, type StatementLine } from '@/lib/types';
+import { type Address, type BuyerDetail, type RiskDetail, type StatementLine } from '@/lib/types';
 import { balanceTone, money, trDate } from '@/lib/utils';
 
 const LIMIT = 20;
@@ -95,6 +105,12 @@ export default function BuyerDetailPage() {
         action={
           b ? (
             <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => void downloadStatementPdf(id, b.accountCode)}
+              >
+                {tr.reports.pdf}
+              </Button>
               <Button variant="outline" onClick={() => invite.mutate()}>
                 {tr.buyers.invite}
               </Button>
@@ -176,6 +192,160 @@ export default function BuyerDetailPage() {
         onPageChange={setPage}
         isLoading={statement.isLoading}
       />
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        <AgingCard buyerAccountId={id} />
+        <AddressesCard buyerAccountId={id} />
+      </div>
     </>
   );
+}
+
+/** Risk foyu ozeti — yaslandirma kovalari (§13 Faz 2). */
+function AgingCard({ buyerAccountId }: { buyerAccountId: string }) {
+  const risk = useQuery({
+    queryKey: ['risk', buyerAccountId],
+    queryFn: () => apiGet<RiskDetail>(`/reports/risk/${buyerAccountId}`),
+  });
+
+  const data = risk.data;
+  if (!data) return <Card>{tr.common.loading}</Card>;
+
+  const buckets: [string, MoneyString][] = [
+    ['0-30', data.buckets.D0_30],
+    ['31-60', data.buckets.D31_60],
+    ['61-90', data.buckets.D61_90],
+    ['90+', data.buckets.D90_PLUS],
+    [tr.reports.notDue, data.buckets.NOT_DUE],
+  ];
+
+  return (
+    <Card>
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-sm font-medium text-slate-900">{tr.reports.aging}</p>
+        {data.limitUsagePercent !== null ? (
+          <Badge
+            tone={
+              data.limitUsagePercent > 100 ? 'red' : data.limitUsagePercent > 80 ? 'amber' : 'slate'
+            }
+          >
+            {tr.reports.limitUsage}: %{data.limitUsagePercent}
+          </Badge>
+        ) : null}
+      </div>
+
+      <ul className="divide-y divide-slate-100 text-sm">
+        {buckets.map(([label, value]) => (
+          <li key={label} className="flex items-center justify-between py-1.5">
+            <span className="text-slate-600">{label}</span>
+            <span
+              className={`tabular-nums ${Number(value) > 0 ? 'text-slate-900' : 'text-slate-300'}`}
+            >
+              {money(value)}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-3 flex items-center justify-between border-t border-slate-200 pt-3 text-sm">
+        <span className="font-medium text-slate-900">{tr.reports.overdue}</span>
+        <span className="tabular-nums font-medium text-red-600">{money(data.overdue)}</span>
+      </div>
+      {data.averageDueDate ? (
+        <p className="mt-2 text-xs text-slate-500">
+          {tr.reports.averageDue}: {trDate(data.averageDueDate)}
+          {data.averageOverdueDays > 0 ? ` (+${data.averageOverdueDays} gun)` : ''}
+        </p>
+      ) : null}
+    </Card>
+  );
+}
+
+function AddressesCard({ buyerAccountId }: { buyerAccountId: string }) {
+  const queryClient = useQueryClient();
+  const [form, setForm] = useState({ label: '', fullAddress: '', city: '' });
+
+  const addresses = useQuery({
+    queryKey: ['addresses', buyerAccountId],
+    queryFn: () => apiGet<Address[]>(`/addresses${qs({ buyerAccountId })}`),
+  });
+
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: ['addresses', buyerAccountId] });
+
+  const create = useMutation({
+    mutationFn: () => apiPost('/addresses', { ...form, buyerAccountId }),
+    onSuccess: async () => {
+      setForm({ label: '', fullAddress: '', city: '' });
+      await invalidate();
+    },
+  });
+
+  const remove = useMutation({
+    mutationFn: (addressId: string) => apiDelete(`/addresses/${addressId}`),
+    onSuccess: invalidate,
+  });
+
+  return (
+    <Card>
+      <p className="mb-3 text-sm font-medium text-slate-900">{tr.addresses.title}</p>
+
+      <ul className="mb-4 divide-y divide-slate-100 text-sm">
+        {(addresses.data ?? []).map((address) => (
+          <li key={address.id} className="flex items-start justify-between gap-3 py-2">
+            <span>
+              <span className="font-medium text-slate-900">{address.label}</span>
+              <span className="block text-xs text-slate-500">
+                {address.fullAddress} · {address.city}
+              </span>
+            </span>
+            <Button size="sm" variant="ghost" onClick={() => remove.mutate(address.id)}>
+              {tr.addresses.delete}
+            </Button>
+          </li>
+        ))}
+        {(addresses.data ?? []).length === 0 ? (
+          <li className="py-2 text-slate-500">{tr.common.empty}</li>
+        ) : null}
+      </ul>
+
+      <div className="grid gap-2 sm:grid-cols-3">
+        <Input
+          placeholder={tr.addresses.label}
+          value={form.label}
+          onChange={(e) => setForm((f) => ({ ...f, label: e.target.value }))}
+        />
+        <Input
+          placeholder={tr.addresses.fullAddress}
+          value={form.fullAddress}
+          onChange={(e) => setForm((f) => ({ ...f, fullAddress: e.target.value }))}
+        />
+        <div className="flex gap-2">
+          <Input
+            placeholder={tr.addresses.city}
+            value={form.city}
+            onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
+          />
+          <Button
+            size="sm"
+            disabled={!form.label || !form.fullAddress || !form.city}
+            onClick={() => create.mutate()}
+          >
+            {tr.addresses.add}
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+/** PDF zarf disinda ham ikili doner → fetch + blob (cookie ile, kural #9). */
+async function downloadStatementPdf(buyerAccountId: string, accountCode: string): Promise<void> {
+  const blob = await apiBlob(`/reports/statement-pdf/${buyerAccountId}`);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `ekstre-${accountCode}.pdf`;
+  link.click();
+  URL.revokeObjectURL(url);
 }

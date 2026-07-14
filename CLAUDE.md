@@ -328,11 +328,11 @@ Conventional Commits (`feat(api): …`, `docs: …`) · `main` + `feature/*` · 
 
 > Kod tarafı 14.07.2026'da tamamlandı (PROGRESS.md). Kalan iki madde pilot verisi gerektirir.
 
-### Faz 2 — Finansal Raporlar (2–3 hafta)
+### Faz 2 — Finansal Raporlar (2–3 hafta) — ✅ TAMAMLANDI (14.07.2026)
 
-- [ ] Risk Föyü (açık bakiye, vadesi geçen, yaşlandırma 0-30/31-60/61-90/90+, limit %)
-- [ ] Dönemsel Bakiye (raw SQL+grafik) · Ortalama Vade (ağırlıklı util+test) · Adresler · Ekstre PDF (pdfmake)+paylaş · panel özet raporu
-      **✅ Bitti:** rapor rakamları seed ile elle hesaplananlara eşit (snapshot testleri).
+- [x] Risk Föyü (açık bakiye, vadesi geçen, yaşlandırma 0-30/31-60/61-90/90+, limit %) — tahsilat FIFO ile en eski borçtan düşülür
+- [x] Dönemsel Bakiye (raw SQL+grafik) · Ortalama Vade (ağırlıklı util+test) · Adresler · Ekstre PDF (pdfmake)+paylaş · panel özet raporu
+      **✅ Bitti:** rapor rakamları elle hesaplananlara eşit (`reports.e2e-spec.ts` — kontrollü cari, beklenen değerler testte elle yazılı).
 
 ### Faz 3 — Tahsilat: İki Kanal (3–4 hafta) → §8
 

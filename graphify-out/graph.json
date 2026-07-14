@@ -4,14 +4,704 @@
   "graph": {},
   "nodes": [
     {
+      "label": "main.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/main.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_api_src_main",
+      "community": 65,
+      "norm_label": "main.ts"
+    },
+    {
+      "label": "bootstrap()",
+      "file_type": "code",
+      "source_file": "apps/api/src/main.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "apps_api_src_main_bootstrap",
+      "community": 65,
+      "norm_label": "bootstrap()"
+    },
+    {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_mobile_package",
+      "community": 46,
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "apps_mobile_package_name",
+      "community": 46,
+      "norm_label": "name"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "apps_mobile_package_version",
+      "community": 46,
+      "norm_label": "version"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "apps_mobile_package_private",
+      "community": 46,
+      "norm_label": "private"
+    },
+    {
+      "label": "main",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "apps_mobile_package_main",
+      "community": 46,
+      "norm_label": "main"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "apps_mobile_package_scripts",
+      "community": 14,
+      "norm_label": "scripts"
+    },
+    {
+      "label": "dev",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "apps_mobile_package_scripts_dev",
+      "community": 14,
+      "norm_label": "dev"
+    },
+    {
+      "label": "android",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "apps_mobile_package_scripts_android",
+      "community": 14,
+      "norm_label": "android"
+    },
+    {
+      "label": "ios",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "apps_mobile_package_scripts_ios",
+      "community": 14,
+      "norm_label": "ios"
+    },
+    {
+      "label": "build",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "apps_mobile_package_scripts_build",
+      "community": 14,
+      "norm_label": "build"
+    },
+    {
+      "label": "lint",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "apps_mobile_package_scripts_lint",
+      "community": 14,
+      "norm_label": "lint"
+    },
+    {
+      "label": "typecheck",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "apps_mobile_package_scripts_typecheck",
+      "community": 14,
+      "norm_label": "typecheck"
+    },
+    {
+      "label": "test",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "apps_mobile_package_scripts_test",
+      "community": 14,
+      "norm_label": "test"
+    },
+    {
+      "label": "dependencies",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies",
+      "community": 5,
+      "norm_label": "dependencies"
+    },
+    {
+      "label": "@babel/runtime",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_babel_runtime",
+      "community": 5,
+      "norm_label": "@babel/runtime"
+    },
+    {
+      "label": "@babel/runtime",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "babel_runtime",
+      "community": 5,
+      "norm_label": "@babel/runtime"
+    },
+    {
+      "label": "@carinet/shared",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_carinet_shared",
+      "community": 5,
+      "norm_label": "@carinet/shared"
+    },
+    {
+      "label": "@carinet/shared",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "carinet_shared",
+      "community": 5,
+      "norm_label": "@carinet/shared"
+    },
+    {
+      "label": "@hookform/resolvers",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_hookform_resolvers",
+      "community": 5,
+      "norm_label": "@hookform/resolvers"
+    },
+    {
+      "label": "@hookform/resolvers",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "hookform_resolvers",
+      "community": 5,
+      "norm_label": "@hookform/resolvers"
+    },
+    {
+      "label": "@tanstack/react-query",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_tanstack_react_query",
+      "community": 5,
+      "norm_label": "@tanstack/react-query"
+    },
+    {
+      "label": "@tanstack/react-query",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "tanstack_react_query",
+      "community": 5,
+      "norm_label": "@tanstack/react-query"
+    },
+    {
+      "label": "expo",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_expo",
+      "community": 5,
+      "norm_label": "expo"
+    },
+    {
+      "label": "expo",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "expo",
+      "community": 5,
+      "norm_label": "expo"
+    },
+    {
+      "label": "expo-constants",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_expo_constants",
+      "community": 5,
+      "norm_label": "expo-constants"
+    },
+    {
+      "label": "expo-constants",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "expo_constants",
+      "community": 5,
+      "norm_label": "expo-constants"
+    },
+    {
+      "label": "expo-linking",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_expo_linking",
+      "community": 5,
+      "norm_label": "expo-linking"
+    },
+    {
+      "label": "expo-linking",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "expo_linking",
+      "community": 5,
+      "norm_label": "expo-linking"
+    },
+    {
+      "label": "expo-router",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_expo_router",
+      "community": 5,
+      "norm_label": "expo-router"
+    },
+    {
+      "label": "expo-router",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "expo_router",
+      "community": 5,
+      "norm_label": "expo-router"
+    },
+    {
+      "label": "expo-secure-store",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_expo_secure_store",
+      "community": 5,
+      "norm_label": "expo-secure-store"
+    },
+    {
+      "label": "expo-secure-store",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "expo_secure_store",
+      "community": 5,
+      "norm_label": "expo-secure-store"
+    },
+    {
+      "label": "expo-status-bar",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_expo_status_bar",
+      "community": 5,
+      "norm_label": "expo-status-bar"
+    },
+    {
+      "label": "expo-status-bar",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "expo_status_bar",
+      "community": 5,
+      "norm_label": "expo-status-bar"
+    },
+    {
+      "label": "react",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react",
+      "community": 5,
+      "norm_label": "react"
+    },
+    {
+      "label": "react",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "react",
+      "community": 5,
+      "norm_label": "react"
+    },
+    {
+      "label": "react-dom",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react_dom",
+      "community": 5,
+      "norm_label": "react-dom"
+    },
+    {
+      "label": "react-dom",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "react_dom",
+      "community": 5,
+      "norm_label": "react-dom"
+    },
+    {
+      "label": "react-hook-form",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react_hook_form",
+      "community": 5,
+      "norm_label": "react-hook-form"
+    },
+    {
+      "label": "react-hook-form",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "react_hook_form",
+      "community": 5,
+      "norm_label": "react-hook-form"
+    },
+    {
+      "label": "react-native",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react_native",
+      "community": 5,
+      "norm_label": "react-native"
+    },
+    {
+      "label": "react-native",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "react_native",
+      "community": 5,
+      "norm_label": "react-native"
+    },
+    {
+      "label": "react-native-gifted-charts",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react_native_gifted_charts",
+      "community": 5,
+      "norm_label": "react-native-gifted-charts"
+    },
+    {
+      "label": "react-native-gifted-charts",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "react_native_gifted_charts",
+      "community": 5,
+      "norm_label": "react-native-gifted-charts"
+    },
+    {
+      "label": "react-native-linear-gradient",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react_native_linear_gradient",
+      "community": 5,
+      "norm_label": "react-native-linear-gradient"
+    },
+    {
+      "label": "react-native-linear-gradient",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "react_native_linear_gradient",
+      "community": 5,
+      "norm_label": "react-native-linear-gradient"
+    },
+    {
+      "label": "react-native-safe-area-context",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react_native_safe_area_context",
+      "community": 5,
+      "norm_label": "react-native-safe-area-context"
+    },
+    {
+      "label": "react-native-safe-area-context",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "react_native_safe_area_context",
+      "community": 5,
+      "norm_label": "react-native-safe-area-context"
+    },
+    {
+      "label": "react-native-screens",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react_native_screens",
+      "community": 5,
+      "norm_label": "react-native-screens"
+    },
+    {
+      "label": "react-native-screens",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "react_native_screens",
+      "community": 5,
+      "norm_label": "react-native-screens"
+    },
+    {
+      "label": "react-native-svg",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_react_native_svg",
+      "community": 5,
+      "norm_label": "react-native-svg"
+    },
+    {
+      "label": "react-native-svg",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "react_native_svg",
+      "community": 5,
+      "norm_label": "react-native-svg"
+    },
+    {
+      "label": "zod",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_zod",
+      "community": 5,
+      "norm_label": "zod"
+    },
+    {
+      "label": "zod",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "zod",
+      "community": 5,
+      "norm_label": "zod"
+    },
+    {
+      "label": "zustand",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "apps_mobile_package_dependencies_zustand",
+      "community": 5,
+      "norm_label": "zustand"
+    },
+    {
+      "label": "zustand",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "zustand",
+      "community": 5,
+      "norm_label": "zustand"
+    },
+    {
+      "label": "devDependencies",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "apps_mobile_package_devdependencies",
+      "community": 98,
+      "norm_label": "devdependencies"
+    },
+    {
+      "label": "@carinet/config",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "apps_mobile_package_devdependencies_carinet_config",
+      "community": 98,
+      "norm_label": "@carinet/config"
+    },
+    {
+      "label": "@carinet/config",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "carinet_config",
+      "community": 98,
+      "norm_label": "@carinet/config"
+    },
+    {
+      "label": "@types/node",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "apps_mobile_package_devdependencies_types_node",
+      "community": 98,
+      "norm_label": "@types/node"
+    },
+    {
+      "label": "@types/node",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "types_node",
+      "community": 98,
+      "norm_label": "@types/node"
+    },
+    {
+      "label": "@types/react",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "apps_mobile_package_devdependencies_types_react",
+      "community": 98,
+      "norm_label": "@types/react"
+    },
+    {
+      "label": "@types/react",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "types_react",
+      "community": 98,
+      "norm_label": "@types/react"
+    },
+    {
+      "label": "eslint",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "apps_mobile_package_devdependencies_eslint",
+      "community": 106,
+      "norm_label": "eslint"
+    },
+    {
+      "label": "eslint",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "eslint",
+      "community": 106,
+      "norm_label": "eslint"
+    },
+    {
+      "label": "typescript",
+      "file_type": "code",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "apps_mobile_package_devdependencies_typescript",
+      "community": 98,
+      "norm_label": "typescript"
+    },
+    {
+      "label": "typescript",
+      "file_type": "concept",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "typescript",
+      "community": 98,
+      "norm_label": "typescript"
+    },
+    {
       "label": "CLAUDE.md",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "claude",
       "community": 20,
-      "norm_label": "claude.md"
+      "norm_label": "claude.md",
+      "id": "claude"
     },
     {
       "label": "CLAUDE.md \u2014 CariNet \u00b7 B2B Cari Hesap Platformu (Ana Beyin)",
@@ -19,9 +709,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
       "community": 20,
-      "norm_label": "claude.md \u2014 carinet \u00b7 b2b cari hesap platformu (ana beyin)"
+      "norm_label": "claude.md \u2014 carinet \u00b7 b2b cari hesap platformu (ana beyin)",
+      "id": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin"
     },
     {
       "label": "0. Kimlik ve Kapsam",
@@ -29,9 +719,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "claude_0_kimlik_ve_kapsam",
       "community": 20,
-      "norm_label": "0. kimlik ve kapsam"
+      "norm_label": "0. kimlik ve kapsam",
+      "id": "claude_0_kimlik_ve_kapsam"
     },
     {
       "label": "1. De\u011fi\u015fmez Kurallar (NON-NEGOTIABLE \u2014 12 madde)",
@@ -39,9 +729,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L20",
       "_origin": "ast",
-      "id": "claude_1_de\u011fi\u015fmez_kurallar_non_negotiable_12_madde",
       "community": 20,
-      "norm_label": "1. degismez kurallar (non-negotiable \u2014 12 madde)"
+      "norm_label": "1. degismez kurallar (non-negotiable \u2014 12 madde)",
+      "id": "claude_1_de\u011fi\u015fmez_kurallar_non_negotiable_12_madde"
     },
     {
       "label": "2. Teknoloji Y\u0131\u011f\u0131n\u0131 (tamam\u0131 \u00fccretsiz; s\u00fcr\u00fcmler bilinen-iyi alt s\u0131n\u0131r, kurulumda en g\u00fcncel kararl\u0131y\u0131 kullan)",
@@ -49,9 +739,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L37",
       "_origin": "ast",
-      "id": "claude_2_teknoloji_y\u0131\u011f\u0131n\u0131_tamam\u0131_\u00fccretsiz_s\u00fcr\u00fcmler_bilinen_iyi_alt_s\u0131n\u0131r_kurulumda_en_g\u00fcncel_kararl\u0131y\u0131_kullan",
       "community": 20,
-      "norm_label": "2. teknoloji y\u0131g\u0131n\u0131 (tamam\u0131 ucretsiz; surumler bilinen-iyi alt s\u0131n\u0131r, kurulumda en guncel kararl\u0131y\u0131 kullan)"
+      "norm_label": "2. teknoloji y\u0131g\u0131n\u0131 (tamam\u0131 ucretsiz; surumler bilinen-iyi alt s\u0131n\u0131r, kurulumda en guncel kararl\u0131y\u0131 kullan)",
+      "id": "claude_2_teknoloji_y\u0131\u011f\u0131n\u0131_tamam\u0131_\u00fccretsiz_s\u00fcr\u00fcmler_bilinen_iyi_alt_s\u0131n\u0131r_kurulumda_en_g\u00fcncel_kararl\u0131y\u0131_kullan"
     },
     {
       "label": "3. Depo Yap\u0131s\u0131",
@@ -59,9 +749,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L51",
       "_origin": "ast",
-      "id": "claude_3_depo_yap\u0131s\u0131",
       "community": 20,
-      "norm_label": "3. depo yap\u0131s\u0131"
+      "norm_label": "3. depo yap\u0131s\u0131",
+      "id": "claude_3_depo_yap\u0131s\u0131"
     },
     {
       "label": "4. Ortam ve Komutlar",
@@ -69,9 +759,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L77",
       "_origin": "ast",
-      "id": "claude_4_ortam_ve_komutlar",
       "community": 20,
-      "norm_label": "4. ortam ve komutlar"
+      "norm_label": "4. ortam ve komutlar",
+      "id": "claude_4_ortam_ve_komutlar"
     },
     {
       "label": "5. Graphify + Obsidian Entegrasyonu (token tasarrufu katman\u0131 \u2014 S\u0130STEM\u0130N PAR\u00c7ASI)",
@@ -79,9 +769,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L105",
       "_origin": "ast",
-      "id": "claude_5_graphify_obsidian_entegrasyonu_token_tasarrufu_katman\u0131_si\u0307stemi\u0307n_par\u00e7asi",
       "community": 20,
-      "norm_label": "5. graphify + obsidian entegrasyonu (token tasarrufu katman\u0131 \u2014 sistemin parcasi)"
+      "norm_label": "5. graphify + obsidian entegrasyonu (token tasarrufu katman\u0131 \u2014 sistemin parcasi)",
+      "id": "claude_5_graphify_obsidian_entegrasyonu_token_tasarrufu_katman\u0131_si\u0307stemi\u0307n_par\u00e7asi"
     },
     {
       "label": "6. Mimari Kararlar",
@@ -89,9 +779,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L130",
       "_origin": "ast",
-      "id": "claude_6_mimari_kararlar",
       "community": 20,
-      "norm_label": "6. mimari kararlar"
+      "norm_label": "6. mimari kararlar",
+      "id": "claude_6_mimari_kararlar"
     },
     {
       "label": "6.1 Multi-tenancy",
@@ -99,9 +789,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L132",
       "_origin": "ast",
-      "id": "claude_6_1_multi_tenancy",
       "community": 20,
-      "norm_label": "6.1 multi-tenancy"
+      "norm_label": "6.1 multi-tenancy",
+      "id": "claude_6_1_multi_tenancy"
     },
     {
       "label": "6.2 Kimlik: k\u00fcresel kullan\u0131c\u0131 + \u00fcyelikler (KR\u0130T\u0130K \u2014 1-1 kurma!)",
@@ -109,9 +799,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L136",
       "_origin": "ast",
-      "id": "claude_6_2_kimlik_k\u00fcresel_kullan\u0131c\u0131_\u00fcyelikler_kri\u0307ti\u0307k_1_1_kurma",
       "community": 20,
-      "norm_label": "6.2 kimlik: kuresel kullan\u0131c\u0131 + uyelikler (kritik \u2014 1-1 kurma!)"
+      "norm_label": "6.2 kimlik: kuresel kullan\u0131c\u0131 + uyelikler (kritik \u2014 1-1 kurma!)",
+      "id": "claude_6_2_kimlik_k\u00fcresel_kullan\u0131c\u0131_\u00fcyelikler_kri\u0307ti\u0307k_1_1_kurma"
     },
     {
       "label": "6.3 JWT",
@@ -119,9 +809,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L145",
       "_origin": "ast",
-      "id": "claude_6_3_jwt",
       "community": 20,
-      "norm_label": "6.3 jwt"
+      "norm_label": "6.3 jwt",
+      "id": "claude_6_3_jwt"
     },
     {
       "label": "6.4 Bakiye / y\u00fcr\u00fcyen bakiye (kural #2'nin SQL'i)",
@@ -129,9 +819,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L159",
       "_origin": "ast",
-      "id": "claude_6_4_bakiye_y\u00fcr\u00fcyen_bakiye_kural_2_nin_sql_i",
       "community": 20,
-      "norm_label": "6.4 bakiye / yuruyen bakiye (kural #2'nin sql'i)"
+      "norm_label": "6.4 bakiye / yuruyen bakiye (kural #2'nin sql'i)",
+      "id": "claude_6_4_bakiye_y\u00fcr\u00fcyen_bakiye_kural_2_nin_sql_i"
     },
     {
       "label": "6.5 Tahsilat soyutlamas\u0131",
@@ -139,9 +829,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L176",
       "_origin": "ast",
-      "id": "claude_6_5_tahsilat_soyutlamas\u0131",
       "community": 20,
-      "norm_label": "6.5 tahsilat soyutlamas\u0131"
+      "norm_label": "6.5 tahsilat soyutlamas\u0131",
+      "id": "claude_6_5_tahsilat_soyutlamas\u0131"
     },
     {
       "label": "6.6 Import hatt\u0131",
@@ -149,9 +839,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L187",
       "_origin": "ast",
-      "id": "claude_6_6_import_hatt\u0131",
       "community": 20,
-      "norm_label": "6.6 import hatt\u0131"
+      "norm_label": "6.6 import hatt\u0131",
+      "id": "claude_6_6_import_hatt\u0131"
     },
     {
       "label": "7. Veri Modeli",
@@ -159,9 +849,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L193",
       "_origin": "ast",
-      "id": "claude_7_veri_modeli",
       "community": 20,
-      "norm_label": "7. veri modeli"
+      "norm_label": "7. veri modeli",
+      "id": "claude_7_veri_modeli"
     },
     {
       "label": "Enumlar (`packages/shared`)",
@@ -169,9 +859,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L195",
       "_origin": "ast",
-      "id": "claude_enumlar_packages_shared",
       "community": 20,
-      "norm_label": "enumlar (`packages/shared`)"
+      "norm_label": "enumlar (`packages/shared`)",
+      "id": "claude_enumlar_packages_shared"
     },
     {
       "label": "Tablolar (Prisma \u015femas\u0131n\u0131n kayna\u011f\u0131)",
@@ -179,9 +869,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L206",
       "_origin": "ast",
-      "id": "claude_tablolar_prisma_\u015femas\u0131n\u0131n_kayna\u011f\u0131",
       "community": 20,
-      "norm_label": "tablolar (prisma semas\u0131n\u0131n kaynag\u0131)"
+      "norm_label": "tablolar (prisma semas\u0131n\u0131n kaynag\u0131)",
+      "id": "claude_tablolar_prisma_\u015femas\u0131n\u0131n_kayna\u011f\u0131"
     },
     {
       "label": "8. Tahsilat Sistemi \u2014 \u0130ki Kanal (platform para ak\u0131\u015f\u0131na G\u0130RMEZ)",
@@ -189,9 +879,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L238",
       "_origin": "ast",
-      "id": "claude_8_tahsilat_sistemi_i\u0307ki_kanal_platform_para_ak\u0131\u015f\u0131na_gi\u0307rmez",
       "community": 20,
-      "norm_label": "8. tahsilat sistemi \u2014 iki kanal (platform para ak\u0131s\u0131na girmez)"
+      "norm_label": "8. tahsilat sistemi \u2014 iki kanal (platform para ak\u0131s\u0131na girmez)",
+      "id": "claude_8_tahsilat_sistemi_i\u0307ki_kanal_platform_para_ak\u0131\u015f\u0131na_gi\u0307rmez"
     },
     {
       "label": "9. Veri Ge\u00e7i\u015fi (Onboarding) \u2014 Birikmi\u015f cari & fatura tarih\u00e7esi",
@@ -199,9 +889,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L254",
       "_origin": "ast",
-      "id": "claude_9_veri_ge\u00e7i\u015fi_onboarding_birikmi\u015f_cari_fatura_tarih\u00e7esi",
       "community": 20,
-      "norm_label": "9. veri gecisi (onboarding) \u2014 birikmis cari & fatura tarihcesi"
+      "norm_label": "9. veri gecisi (onboarding) \u2014 birikmis cari & fatura tarihcesi",
+      "id": "claude_9_veri_ge\u00e7i\u015fi_onboarding_birikmi\u015f_cari_fatura_tarih\u00e7esi"
     },
     {
       "label": "10. API S\u00f6zle\u015fmesi",
@@ -209,9 +899,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L273",
       "_origin": "ast",
-      "id": "claude_10_api_s\u00f6zle\u015fmesi",
       "community": 20,
-      "norm_label": "10. api sozlesmesi"
+      "norm_label": "10. api sozlesmesi",
+      "id": "claude_10_api_s\u00f6zle\u015fmesi"
     },
     {
       "label": "11. G\u00fcvenlik (8 katman \u2014 Faz 5'in release kap\u0131s\u0131; \"\u00f6neri\" de\u011fil GEREKS\u0130N\u0130M)",
@@ -219,9 +909,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L288",
       "_origin": "ast",
-      "id": "claude_11_g\u00fcvenlik_8_katman_faz_5_in_release_kap\u0131s\u0131_\u00f6neri_de\u011fil_gereksi\u0307ni\u0307m",
       "community": 20,
-      "norm_label": "11. guvenlik (8 katman \u2014 faz 5'in release kap\u0131s\u0131; \"oneri\" degil gereksinim)"
+      "norm_label": "11. guvenlik (8 katman \u2014 faz 5'in release kap\u0131s\u0131; \"oneri\" degil gereksinim)",
+      "id": "claude_11_g\u00fcvenlik_8_katman_faz_5_in_release_kap\u0131s\u0131_\u00f6neri_de\u011fil_gereksi\u0307ni\u0307m"
     },
     {
       "label": "12. Kodlama Standartlar\u0131",
@@ -229,9 +919,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L301",
       "_origin": "ast",
-      "id": "claude_12_kodlama_standartlar\u0131",
       "community": 20,
-      "norm_label": "12. kodlama standartlar\u0131"
+      "norm_label": "12. kodlama standartlar\u0131",
+      "id": "claude_12_kodlama_standartlar\u0131"
     },
     {
       "label": "13. Geli\u015ftirme Fazlar\u0131 (s\u0131ral\u0131; \"bitti kriteri\" sa\u011flanmadan faz kapanmaz)",
@@ -239,9 +929,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L309",
       "_origin": "ast",
-      "id": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
       "community": 20,
-      "norm_label": "13. gelistirme fazlar\u0131 (s\u0131ral\u0131; \"bitti kriteri\" saglanmadan faz kapanmaz)"
+      "norm_label": "13. gelistirme fazlar\u0131 (s\u0131ral\u0131; \"bitti kriteri\" saglanmadan faz kapanmaz)",
+      "id": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz"
     },
     {
       "label": "Faz 0 \u2014 \u0130skelet ve Temel (1\u20132 hafta)",
@@ -249,9 +939,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L311",
       "_origin": "ast",
-      "id": "claude_faz_0_i\u0307skelet_ve_temel_1_2_hafta",
       "community": 20,
-      "norm_label": "faz 0 \u2014 iskelet ve temel (1\u20132 hafta)"
+      "norm_label": "faz 0 \u2014 iskelet ve temel (1\u20132 hafta)",
+      "id": "claude_faz_0_i\u0307skelet_ve_temel_1_2_hafta"
     },
     {
       "label": "Faz 1 \u2014 \u00c7ekirdek MVP (5\u20137 hafta)",
@@ -259,9 +949,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L323",
       "_origin": "ast",
-      "id": "claude_faz_1_\u00e7ekirdek_mvp_5_7_hafta",
       "community": 20,
-      "norm_label": "faz 1 \u2014 cekirdek mvp (5\u20137 hafta)"
+      "norm_label": "faz 1 \u2014 cekirdek mvp (5\u20137 hafta)",
+      "id": "claude_faz_1_\u00e7ekirdek_mvp_5_7_hafta"
     },
     {
       "label": "Faz 2 \u2014 Finansal Raporlar (2\u20133 hafta)",
@@ -269,9 +959,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L331",
       "_origin": "ast",
-      "id": "claude_faz_2_finansal_raporlar_2_3_hafta",
       "community": 20,
-      "norm_label": "faz 2 \u2014 finansal raporlar (2\u20133 hafta)"
+      "norm_label": "faz 2 \u2014 finansal raporlar (2\u20133 hafta)",
+      "id": "claude_faz_2_finansal_raporlar_2_3_hafta"
     },
     {
       "label": "Faz 3 \u2014 Tahsilat: \u0130ki Kanal (3\u20134 hafta) \u2192 \u00a78",
@@ -279,9 +969,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L337",
       "_origin": "ast",
-      "id": "claude_faz_3_tahsilat_i\u0307ki_kanal_3_4_hafta_8",
       "community": 20,
-      "norm_label": "faz 3 \u2014 tahsilat: iki kanal (3\u20134 hafta) \u2192 \u00a78"
+      "norm_label": "faz 3 \u2014 tahsilat: iki kanal (3\u20134 hafta) \u2192 \u00a78",
+      "id": "claude_faz_3_tahsilat_i\u0307ki_kanal_3_4_hafta_8"
     },
     {
       "label": "Faz 4 \u2014 Katalog ve \u0130leti\u015fim (3\u20134 hafta)",
@@ -289,9 +979,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L346",
       "_origin": "ast",
-      "id": "claude_faz_4_katalog_ve_i\u0307leti\u015fim_3_4_hafta",
       "community": 20,
-      "norm_label": "faz 4 \u2014 katalog ve iletisim (3\u20134 hafta)"
+      "norm_label": "faz 4 \u2014 katalog ve iletisim (3\u20134 hafta)",
+      "id": "claude_faz_4_katalog_ve_i\u0307leti\u015fim_3_4_hafta"
     },
     {
       "label": "Faz 5 \u2014 Sertle\u015ftirme ve Yay\u0131n (2 hafta)",
@@ -299,9 +989,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L353",
       "_origin": "ast",
-      "id": "claude_faz_5_sertle\u015ftirme_ve_yay\u0131n_2_hafta",
       "community": 20,
-      "norm_label": "faz 5 \u2014 sertlestirme ve yay\u0131n (2 hafta)"
+      "norm_label": "faz 5 \u2014 sertlestirme ve yay\u0131n (2 hafta)",
+      "id": "claude_faz_5_sertle\u015ftirme_ve_yay\u0131n_2_hafta"
     },
     {
       "label": "14. Yap\u0131lmayacaklar (a\u00e7\u0131k yasaklar)",
@@ -309,9 +999,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L363",
       "_origin": "ast",
-      "id": "claude_14_yap\u0131lmayacaklar_a\u00e7\u0131k_yasaklar",
       "community": 20,
-      "norm_label": "14. yap\u0131lmayacaklar (ac\u0131k yasaklar)"
+      "norm_label": "14. yap\u0131lmayacaklar (ac\u0131k yasaklar)",
+      "id": "claude_14_yap\u0131lmayacaklar_a\u00e7\u0131k_yasaklar"
     },
     {
       "label": "15. Definition of Done (her g\u00f6rev)",
@@ -319,9 +1009,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L369",
       "_origin": "ast",
-      "id": "claude_15_definition_of_done_her_g\u00f6rev",
       "community": 20,
-      "norm_label": "15. definition of done (her gorev)"
+      "norm_label": "15. definition of done (her gorev)",
+      "id": "claude_15_definition_of_done_her_g\u00f6rev"
     },
     {
       "label": "16. AI \u00c7al\u0131\u015fma Protokol\u00fc (Claude Code)",
@@ -329,9 +1019,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L375",
       "_origin": "ast",
-      "id": "claude_16_ai_\u00e7al\u0131\u015fma_protokol\u00fc_claude_code",
       "community": 20,
-      "norm_label": "16. ai cal\u0131sma protokolu (claude code)"
+      "norm_label": "16. ai cal\u0131sma protokolu (claude code)",
+      "id": "claude_16_ai_\u00e7al\u0131\u015fma_protokol\u00fc_claude_code"
     },
     {
       "label": "PROGRESS.md",
@@ -339,9 +1029,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "progress",
       "community": 119,
-      "norm_label": "progress.md"
+      "norm_label": "progress.md",
+      "id": "progress"
     },
     {
       "label": "PROGRESS.md \u2014 CariNet AI Calisma Gunlugu",
@@ -349,9 +1039,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "progress_progress_md_carinet_ai_calisma_gunlugu",
       "community": 119,
-      "norm_label": "progress.md \u2014 carinet ai calisma gunlugu"
+      "norm_label": "progress.md \u2014 carinet ai calisma gunlugu",
+      "id": "progress_progress_md_carinet_ai_calisma_gunlugu"
     },
     {
       "label": "2026-07-14 \u00b7 Faz 1 \u2014 Cekirdek MVP",
@@ -359,9 +1049,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "progress_2026_07_14_faz_1_cekirdek_mvp",
       "community": 119,
-      "norm_label": "2026-07-14 \u00b7 faz 1 \u2014 cekirdek mvp"
+      "norm_label": "2026-07-14 \u00b7 faz 1 \u2014 cekirdek mvp",
+      "id": "progress_2026_07_14_faz_1_cekirdek_mvp"
     },
     {
       "label": "Yapilan",
@@ -369,9 +1059,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "progress_yapilan",
       "community": 119,
-      "norm_label": "yapilan"
+      "norm_label": "yapilan",
+      "id": "progress_yapilan"
     },
     {
       "label": "Kararlar",
@@ -379,9 +1069,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L57",
       "_origin": "ast",
-      "id": "progress_kararlar",
       "community": 119,
-      "norm_label": "kararlar"
+      "norm_label": "kararlar",
+      "id": "progress_kararlar"
     },
     {
       "label": "CLAUDE.md ile UYUSMAZLIK \u2192 **COZULDU (kullanici onayi, 14.07.2026)**",
@@ -389,9 +1079,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L71",
       "_origin": "ast",
-      "id": "progress_claude_md_ile_uyusmazlik_cozuldu_kullanici_onayi_14_07_2026",
       "community": 119,
-      "norm_label": "claude.md ile uyusmazlik \u2192 **cozuldu (kullanici onayi, 14.07.2026)**"
+      "norm_label": "claude.md ile uyusmazlik \u2192 **cozuldu (kullanici onayi, 14.07.2026)**",
+      "id": "progress_claude_md_ile_uyusmazlik_cozuldu_kullanici_onayi_14_07_2026"
     },
     {
       "label": "VARSAYIM (CLAUDE.md \u00a77'ye eklenmesi onerilir)",
@@ -399,9 +1089,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L79",
       "_origin": "ast",
-      "id": "progress_varsayim_claude_md_7_ye_eklenmesi_onerilir",
       "community": 119,
-      "norm_label": "varsayim (claude.md \u00a77'ye eklenmesi onerilir)"
+      "norm_label": "varsayim (claude.md \u00a77'ye eklenmesi onerilir)",
+      "id": "progress_varsayim_claude_md_7_ye_eklenmesi_onerilir"
     },
     {
       "label": "Bitti kriteri kontrolu (Faz 1)",
@@ -409,9 +1099,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L89",
       "_origin": "ast",
-      "id": "progress_bitti_kriteri_kontrolu_faz_1",
       "community": 119,
-      "norm_label": "bitti kriteri kontrolu (faz 1)"
+      "norm_label": "bitti kriteri kontrolu (faz 1)",
+      "id": "progress_bitti_kriteri_kontrolu_faz_1"
     },
     {
       "label": "Sonraki adim",
@@ -419,9 +1109,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L99",
       "_origin": "ast",
-      "id": "progress_sonraki_adim",
       "community": 119,
-      "norm_label": "sonraki adim"
+      "norm_label": "sonraki adim",
+      "id": "progress_sonraki_adim"
     },
     {
       "label": "2026-07-13 \u00b7 Faz 0 \u2014 Iskelet ve Temel",
@@ -429,9 +1119,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L106",
       "_origin": "ast",
-      "id": "progress_2026_07_13_faz_0_iskelet_ve_temel",
       "community": 119,
-      "norm_label": "2026-07-13 \u00b7 faz 0 \u2014 iskelet ve temel"
+      "norm_label": "2026-07-13 \u00b7 faz 0 \u2014 iskelet ve temel",
+      "id": "progress_2026_07_13_faz_0_iskelet_ve_temel"
     },
     {
       "label": "Yapilan",
@@ -439,9 +1129,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L108",
       "_origin": "ast",
-      "id": "progress_yapilan_108",
       "community": 119,
-      "norm_label": "yapilan"
+      "norm_label": "yapilan",
+      "id": "progress_yapilan_108"
     },
     {
       "label": "Kararlar",
@@ -449,9 +1139,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L145",
       "_origin": "ast",
-      "id": "progress_kararlar_145",
       "community": 119,
-      "norm_label": "kararlar"
+      "norm_label": "kararlar",
+      "id": "progress_kararlar_145"
     },
     {
       "label": "CLAUDE.md ile UYUSMAZLIK (\u00a716.4 \u2014 bildiriliyor, onaysiz kural degistirilmedi)",
@@ -459,9 +1149,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L160",
       "_origin": "ast",
-      "id": "progress_claude_md_ile_uyusmazlik_16_4_bildiriliyor_onaysiz_kural_degistirilmedi",
       "community": 119,
-      "norm_label": "claude.md ile uyusmazlik (\u00a716.4 \u2014 bildiriliyor, onaysiz kural degistirilmedi)"
+      "norm_label": "claude.md ile uyusmazlik (\u00a716.4 \u2014 bildiriliyor, onaysiz kural degistirilmedi)",
+      "id": "progress_claude_md_ile_uyusmazlik_16_4_bildiriliyor_onaysiz_kural_degistirilmedi"
     },
     {
       "label": "VARSAYIM (CLAUDE.md \u00a77'ye eklenmesi onerilir)",
@@ -469,9 +1159,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L171",
       "_origin": "ast",
-      "id": "progress_varsayim_claude_md_7_ye_eklenmesi_onerilir_171",
       "community": 119,
-      "norm_label": "varsayim (claude.md \u00a77'ye eklenmesi onerilir)"
+      "norm_label": "varsayim (claude.md \u00a77'ye eklenmesi onerilir)",
+      "id": "progress_varsayim_claude_md_7_ye_eklenmesi_onerilir_171"
     },
     {
       "label": "Bitti kriteri kontrolu (Faz 0)",
@@ -479,9 +1169,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L181",
       "_origin": "ast",
-      "id": "progress_bitti_kriteri_kontrolu_faz_0",
       "community": 119,
-      "norm_label": "bitti kriteri kontrolu (faz 0)"
+      "norm_label": "bitti kriteri kontrolu (faz 0)",
+      "id": "progress_bitti_kriteri_kontrolu_faz_0"
     },
     {
       "label": "Sonraki adim",
@@ -489,9 +1179,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L192",
       "_origin": "ast",
-      "id": "progress_sonraki_adim_192",
       "community": 119,
-      "norm_label": "sonraki adim"
+      "norm_label": "sonraki adim",
+      "id": "progress_sonraki_adim_192"
     },
     {
       "label": "Sablon (her blok icin)",
@@ -499,9 +1189,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L199",
       "_origin": "ast",
-      "id": "progress_sablon_her_blok_icin",
       "community": 119,
-      "norm_label": "sablon (her blok icin)"
+      "norm_label": "sablon (her blok icin)",
+      "id": "progress_sablon_her_blok_icin"
     },
     {
       "label": "buyers.controller.ts",
@@ -509,7 +1199,7 @@
       "source_file": "apps/api/src/modules/buyers/buyers.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 33,
+      "community": 134,
       "norm_label": "buyers.controller.ts",
       "id": "apps_api_src_modules_buyers_buyers_controller"
     },
@@ -519,7 +1209,7 @@
       "source_file": "apps/api/src/modules/buyers/buyers.controller.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 33,
+      "community": 134,
       "norm_label": "listbuyersquerydto",
       "id": "apps_api_src_modules_buyers_buyers_controller_listbuyersquerydto"
     },
@@ -529,7 +1219,7 @@
       "source_file": "apps/api/src/modules/buyers/buyers.controller.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 33,
+      "community": 134,
       "norm_label": "createbuyerdto",
       "id": "apps_api_src_modules_buyers_buyers_controller_createbuyerdto"
     },
@@ -539,7 +1229,7 @@
       "source_file": "apps/api/src/modules/buyers/buyers.controller.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 33,
+      "community": 134,
       "norm_label": "updatebuyerdto",
       "id": "apps_api_src_modules_buyers_buyers_controller_updatebuyerdto"
     },
@@ -549,7 +1239,7 @@
       "source_file": "apps/api/src/modules/buyers/buyers.controller.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 33,
+      "community": 134,
       "norm_label": "statementquerydto",
       "id": "apps_api_src_modules_buyers_buyers_controller_statementquerydto"
     },
@@ -559,7 +1249,7 @@
       "source_file": "apps/api/src/modules/buyers/buyers.controller.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 33,
+      "community": 134,
       "norm_label": "setactivedto",
       "id": "apps_api_src_modules_buyers_buyers_controller_setactivedto"
     },
@@ -569,7 +1259,7 @@
       "source_file": "apps/api/src/modules/buyers/buyers.controller.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 33,
+      "community": 134,
       "norm_label": "seller_side",
       "id": "apps_api_src_modules_buyers_buyers_controller_seller_side"
     },
@@ -1022,676 +1712,6 @@
       "community": 9,
       "norm_label": "styles",
       "id": "apps_mobile_app_giris_styles"
-    },
-    {
-      "label": "package.json",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "package.json",
-      "id": "apps_mobile_package"
-    },
-    {
-      "label": "name",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L2",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "name",
-      "id": "apps_mobile_package_name"
-    },
-    {
-      "label": "version",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L3",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "version",
-      "id": "apps_mobile_package_version"
-    },
-    {
-      "label": "private",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L4",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "private",
-      "id": "apps_mobile_package_private"
-    },
-    {
-      "label": "main",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L5",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "main",
-      "id": "apps_mobile_package_main"
-    },
-    {
-      "label": "scripts",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L6",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "scripts",
-      "id": "apps_mobile_package_scripts"
-    },
-    {
-      "label": "dev",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L7",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "dev",
-      "id": "apps_mobile_package_scripts_dev"
-    },
-    {
-      "label": "android",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L8",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "android",
-      "id": "apps_mobile_package_scripts_android"
-    },
-    {
-      "label": "ios",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "ios",
-      "id": "apps_mobile_package_scripts_ios"
-    },
-    {
-      "label": "build",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L10",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "build",
-      "id": "apps_mobile_package_scripts_build"
-    },
-    {
-      "label": "lint",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L11",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "lint",
-      "id": "apps_mobile_package_scripts_lint"
-    },
-    {
-      "label": "typecheck",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L12",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "typecheck",
-      "id": "apps_mobile_package_scripts_typecheck"
-    },
-    {
-      "label": "test",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L13",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "test",
-      "id": "apps_mobile_package_scripts_test"
-    },
-    {
-      "label": "dependencies",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L15",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "dependencies",
-      "id": "apps_mobile_package_dependencies"
-    },
-    {
-      "label": "@babel/runtime",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L16",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "@babel/runtime",
-      "id": "apps_mobile_package_dependencies_babel_runtime"
-    },
-    {
-      "label": "@babel/runtime",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L16",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "@babel/runtime",
-      "id": "babel_runtime"
-    },
-    {
-      "label": "@carinet/shared",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L17",
-      "_origin": "ast",
-      "community": 155,
-      "norm_label": "@carinet/shared",
-      "id": "apps_mobile_package_dependencies_carinet_shared"
-    },
-    {
-      "label": "@carinet/shared",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L17",
-      "_origin": "ast",
-      "community": 155,
-      "norm_label": "@carinet/shared",
-      "id": "apps_mobile_package_json_carinet_shared"
-    },
-    {
-      "label": "@hookform/resolvers",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L18",
-      "_origin": "ast",
-      "community": 124,
-      "norm_label": "@hookform/resolvers",
-      "id": "apps_mobile_package_dependencies_hookform_resolvers"
-    },
-    {
-      "label": "@hookform/resolvers",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L18",
-      "_origin": "ast",
-      "community": 124,
-      "norm_label": "@hookform/resolvers",
-      "id": "apps_mobile_package_json_hookform_resolvers"
-    },
-    {
-      "label": "@tanstack/react-query",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L19",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "@tanstack/react-query",
-      "id": "apps_mobile_package_dependencies_tanstack_react_query"
-    },
-    {
-      "label": "@tanstack/react-query",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L19",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "@tanstack/react-query",
-      "id": "apps_mobile_package_json_tanstack_react_query"
-    },
-    {
-      "label": "expo",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L20",
-      "_origin": "ast",
-      "community": 120,
-      "norm_label": "expo",
-      "id": "apps_mobile_package_dependencies_expo"
-    },
-    {
-      "label": "expo",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L20",
-      "_origin": "ast",
-      "community": 120,
-      "norm_label": "expo",
-      "id": "expo"
-    },
-    {
-      "label": "expo-constants",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L21",
-      "_origin": "ast",
-      "community": 156,
-      "norm_label": "expo-constants",
-      "id": "apps_mobile_package_dependencies_expo_constants"
-    },
-    {
-      "label": "expo-constants",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L21",
-      "_origin": "ast",
-      "community": 156,
-      "norm_label": "expo-constants",
-      "id": "expo_constants"
-    },
-    {
-      "label": "expo-linking",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L22",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "expo-linking",
-      "id": "apps_mobile_package_dependencies_expo_linking"
-    },
-    {
-      "label": "expo-linking",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L22",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "expo-linking",
-      "id": "expo_linking"
-    },
-    {
-      "label": "expo-router",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L23",
-      "_origin": "ast",
-      "community": 122,
-      "norm_label": "expo-router",
-      "id": "apps_mobile_package_dependencies_expo_router"
-    },
-    {
-      "label": "expo-router",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L23",
-      "_origin": "ast",
-      "community": 122,
-      "norm_label": "expo-router",
-      "id": "expo_router"
-    },
-    {
-      "label": "expo-secure-store",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L24",
-      "_origin": "ast",
-      "community": 157,
-      "norm_label": "expo-secure-store",
-      "id": "apps_mobile_package_dependencies_expo_secure_store"
-    },
-    {
-      "label": "expo-secure-store",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L24",
-      "_origin": "ast",
-      "community": 157,
-      "norm_label": "expo-secure-store",
-      "id": "expo_secure_store"
-    },
-    {
-      "label": "expo-status-bar",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L25",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "expo-status-bar",
-      "id": "apps_mobile_package_dependencies_expo_status_bar"
-    },
-    {
-      "label": "expo-status-bar",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L25",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "expo-status-bar",
-      "id": "expo_status_bar"
-    },
-    {
-      "label": "react",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L26",
-      "_origin": "ast",
-      "community": 158,
-      "norm_label": "react",
-      "id": "apps_mobile_package_dependencies_react"
-    },
-    {
-      "label": "react",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L26",
-      "_origin": "ast",
-      "community": 158,
-      "norm_label": "react",
-      "id": "apps_mobile_package_json_react"
-    },
-    {
-      "label": "react-dom",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L27",
-      "_origin": "ast",
-      "community": 159,
-      "norm_label": "react-dom",
-      "id": "apps_mobile_package_dependencies_react_dom"
-    },
-    {
-      "label": "react-dom",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L27",
-      "_origin": "ast",
-      "community": 159,
-      "norm_label": "react-dom",
-      "id": "apps_mobile_package_json_react_dom"
-    },
-    {
-      "label": "react-hook-form",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L28",
-      "_origin": "ast",
-      "community": 125,
-      "norm_label": "react-hook-form",
-      "id": "apps_mobile_package_dependencies_react_hook_form"
-    },
-    {
-      "label": "react-hook-form",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L28",
-      "_origin": "ast",
-      "community": 125,
-      "norm_label": "react-hook-form",
-      "id": "apps_mobile_package_json_react_hook_form"
-    },
-    {
-      "label": "react-native",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L29",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "react-native",
-      "id": "apps_mobile_package_dependencies_react_native"
-    },
-    {
-      "label": "react-native",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L29",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "react-native",
-      "id": "react_native"
-    },
-    {
-      "label": "react-native-gifted-charts",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L30",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "react-native-gifted-charts",
-      "id": "apps_mobile_package_dependencies_react_native_gifted_charts"
-    },
-    {
-      "label": "react-native-gifted-charts",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L30",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "react-native-gifted-charts",
-      "id": "react_native_gifted_charts"
-    },
-    {
-      "label": "react-native-linear-gradient",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L31",
-      "_origin": "ast",
-      "community": 160,
-      "norm_label": "react-native-linear-gradient",
-      "id": "apps_mobile_package_dependencies_react_native_linear_gradient"
-    },
-    {
-      "label": "react-native-linear-gradient",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L31",
-      "_origin": "ast",
-      "community": 160,
-      "norm_label": "react-native-linear-gradient",
-      "id": "react_native_linear_gradient"
-    },
-    {
-      "label": "react-native-safe-area-context",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L32",
-      "_origin": "ast",
-      "community": 126,
-      "norm_label": "react-native-safe-area-context",
-      "id": "apps_mobile_package_dependencies_react_native_safe_area_context"
-    },
-    {
-      "label": "react-native-safe-area-context",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L32",
-      "_origin": "ast",
-      "community": 126,
-      "norm_label": "react-native-safe-area-context",
-      "id": "react_native_safe_area_context"
-    },
-    {
-      "label": "react-native-screens",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L33",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "react-native-screens",
-      "id": "apps_mobile_package_dependencies_react_native_screens"
-    },
-    {
-      "label": "react-native-screens",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L33",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "react-native-screens",
-      "id": "react_native_screens"
-    },
-    {
-      "label": "react-native-svg",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L34",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "react-native-svg",
-      "id": "apps_mobile_package_dependencies_react_native_svg"
-    },
-    {
-      "label": "react-native-svg",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L34",
-      "_origin": "ast",
-      "community": 5,
-      "norm_label": "react-native-svg",
-      "id": "react_native_svg"
-    },
-    {
-      "label": "zod",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L35",
-      "_origin": "ast",
-      "community": 128,
-      "norm_label": "zod",
-      "id": "apps_mobile_package_dependencies_zod"
-    },
-    {
-      "label": "zod",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L35",
-      "_origin": "ast",
-      "community": 128,
-      "norm_label": "zod",
-      "id": "apps_mobile_package_json_zod"
-    },
-    {
-      "label": "zustand",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L36",
-      "_origin": "ast",
-      "community": 129,
-      "norm_label": "zustand",
-      "id": "apps_mobile_package_dependencies_zustand"
-    },
-    {
-      "label": "zustand",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L36",
-      "_origin": "ast",
-      "community": 129,
-      "norm_label": "zustand",
-      "id": "zustand"
-    },
-    {
-      "label": "devDependencies",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L38",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "devdependencies",
-      "id": "apps_mobile_package_devdependencies"
-    },
-    {
-      "label": "@carinet/config",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L39",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "@carinet/config",
-      "id": "apps_mobile_package_devdependencies_carinet_config"
-    },
-    {
-      "label": "@carinet/config",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L39",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "@carinet/config",
-      "id": "apps_mobile_package_json_carinet_config"
-    },
-    {
-      "label": "@types/node",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L40",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "@types/node",
-      "id": "apps_mobile_package_devdependencies_types_node"
-    },
-    {
-      "label": "@types/node",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L40",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "@types/node",
-      "id": "apps_mobile_package_json_types_node"
-    },
-    {
-      "label": "@types/react",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L41",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "@types/react",
-      "id": "apps_mobile_package_devdependencies_types_react"
-    },
-    {
-      "label": "@types/react",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L41",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "@types/react",
-      "id": "apps_mobile_package_json_types_react"
-    },
-    {
-      "label": "eslint",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L42",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "eslint",
-      "id": "apps_mobile_package_devdependencies_eslint"
-    },
-    {
-      "label": "eslint",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L42",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "eslint",
-      "id": "apps_mobile_package_json_eslint"
-    },
-    {
-      "label": "typescript",
-      "file_type": "code",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L43",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "typescript",
-      "id": "apps_mobile_package_devdependencies_typescript"
-    },
-    {
-      "label": "typescript",
-      "file_type": "concept",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L43",
-      "_origin": "ast",
-      "community": 98,
-      "norm_label": "typescript",
-      "id": "apps_mobile_package_json_typescript"
     },
     {
       "label": "api.ts",
@@ -3499,7 +3519,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 63,
+      "community": 48,
       "norm_label": "@aws-sdk/client-s3",
       "id": "apps_api_package_dependencies_aws_sdk_client_s3"
     },
@@ -3509,7 +3529,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 63,
+      "community": 48,
       "norm_label": "@aws-sdk/client-s3",
       "id": "aws_sdk_client_s3"
     },
@@ -3519,19 +3539,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 46,
+      "community": 5,
       "norm_label": "@carinet/shared",
       "id": "apps_api_package_dependencies_carinet_shared"
-    },
-    {
-      "label": "@carinet/shared",
-      "file_type": "concept",
-      "source_file": "apps/api/package.json",
-      "source_location": "L25",
-      "_origin": "ast",
-      "community": 46,
-      "norm_label": "@carinet/shared",
-      "id": "carinet_shared"
     },
     {
       "label": "@nestjs/common",
@@ -3599,7 +3609,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 52,
+      "community": 63,
       "norm_label": "@nestjs/jwt",
       "id": "apps_api_package_dependencies_nestjs_jwt"
     },
@@ -3609,7 +3619,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 52,
+      "community": 63,
       "norm_label": "@nestjs/jwt",
       "id": "nestjs_jwt"
     },
@@ -3679,7 +3689,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 57,
+      "community": 63,
       "norm_label": "@nestjs/swagger",
       "id": "apps_api_package_dependencies_nestjs_swagger"
     },
@@ -3689,7 +3699,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 57,
+      "community": 63,
       "norm_label": "@nestjs/swagger",
       "id": "nestjs_swagger"
     },
@@ -3799,7 +3809,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 48,
+      "community": 63,
       "norm_label": "decimal.js",
       "id": "apps_api_package_dependencies_decimal_js"
     },
@@ -3809,7 +3819,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 48,
+      "community": 63,
       "norm_label": "decimal.js",
       "id": "decimal_js"
     },
@@ -3899,7 +3909,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 59,
+      "community": 63,
       "norm_label": "nestjs-zod",
       "id": "apps_api_package_dependencies_nestjs_zod"
     },
@@ -3909,7 +3919,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 59,
+      "community": 63,
       "norm_label": "nestjs-zod",
       "id": "nestjs_zod"
     },
@@ -3959,7 +3969,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 61,
+      "community": 63,
       "norm_label": "passport",
       "id": "apps_api_package_dependencies_passport"
     },
@@ -3969,7 +3979,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 61,
+      "community": 63,
       "norm_label": "passport",
       "id": "passport"
     },
@@ -3999,7 +4009,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 63,
+      "community": 52,
       "norm_label": "pino",
       "id": "apps_api_package_dependencies_pino"
     },
@@ -4009,7 +4019,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 63,
+      "community": 52,
       "norm_label": "pino",
       "id": "pino"
     },
@@ -4039,7 +4049,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 65,
+      "community": 63,
       "norm_label": "reflect-metadata",
       "id": "apps_api_package_dependencies_reflect_metadata"
     },
@@ -4049,7 +4059,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 65,
+      "community": 63,
       "norm_label": "reflect-metadata",
       "id": "reflect_metadata"
     },
@@ -4079,19 +4089,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L53",
       "_origin": "ast",
-      "community": 67,
+      "community": 5,
       "norm_label": "zod",
       "id": "apps_api_package_dependencies_zod"
-    },
-    {
-      "label": "zod",
-      "file_type": "concept",
-      "source_file": "apps/api/package.json",
-      "source_location": "L53",
-      "_origin": "ast",
-      "community": 67,
-      "norm_label": "zod",
-      "id": "zod"
     },
     {
       "label": "devDependencies",
@@ -4109,19 +4109,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L56",
       "_origin": "ast",
-      "community": 1,
+      "community": 98,
       "norm_label": "@carinet/config",
       "id": "apps_api_package_devdependencies_carinet_config"
-    },
-    {
-      "label": "@carinet/config",
-      "file_type": "concept",
-      "source_file": "apps/api/package.json",
-      "source_location": "L56",
-      "_origin": "ast",
-      "community": 1,
-      "norm_label": "@carinet/config",
-      "id": "carinet_config"
     },
     {
       "label": "@nestjs/cli",
@@ -4129,7 +4119,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L57",
       "_origin": "ast",
-      "community": 1,
+      "community": 57,
       "norm_label": "@nestjs/cli",
       "id": "apps_api_package_devdependencies_nestjs_cli"
     },
@@ -4139,7 +4129,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L57",
       "_origin": "ast",
-      "community": 1,
+      "community": 57,
       "norm_label": "@nestjs/cli",
       "id": "nestjs_cli"
     },
@@ -4149,7 +4139,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L58",
       "_origin": "ast",
-      "community": 108,
+      "community": 1,
       "norm_label": "@nestjs/schematics",
       "id": "apps_api_package_devdependencies_nestjs_schematics"
     },
@@ -4159,7 +4149,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L58",
       "_origin": "ast",
-      "community": 108,
+      "community": 1,
       "norm_label": "@nestjs/schematics",
       "id": "nestjs_schematics"
     },
@@ -4229,7 +4219,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L62",
       "_origin": "ast",
-      "community": 1,
+      "community": 59,
       "norm_label": "@types/cookie-parser",
       "id": "apps_api_package_devdependencies_types_cookie_parser"
     },
@@ -4239,7 +4229,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L62",
       "_origin": "ast",
-      "community": 1,
+      "community": 59,
       "norm_label": "@types/cookie-parser",
       "id": "types_cookie_parser"
     },
@@ -4249,7 +4239,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 114,
+      "community": 1,
       "norm_label": "@types/express",
       "id": "apps_api_package_devdependencies_types_express"
     },
@@ -4259,7 +4249,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 114,
+      "community": 1,
       "norm_label": "@types/express",
       "id": "types_express"
     },
@@ -4289,19 +4279,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 115,
+      "community": 98,
       "norm_label": "@types/node",
       "id": "apps_api_package_devdependencies_types_node"
-    },
-    {
-      "label": "@types/node",
-      "file_type": "concept",
-      "source_file": "apps/api/package.json",
-      "source_location": "L65",
-      "_origin": "ast",
-      "community": 115,
-      "norm_label": "@types/node",
-      "id": "types_node"
     },
     {
       "label": "@types/nodemailer",
@@ -4329,7 +4309,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L67",
       "_origin": "ast",
-      "community": 1,
+      "community": 61,
       "norm_label": "@types/passport-jwt",
       "id": "apps_api_package_devdependencies_types_passport_jwt"
     },
@@ -4339,7 +4319,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L67",
       "_origin": "ast",
-      "community": 1,
+      "community": 61,
       "norm_label": "@types/passport-jwt",
       "id": "types_passport_jwt"
     },
@@ -4369,7 +4349,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L69",
       "_origin": "ast",
-      "community": 104,
+      "community": 1,
       "norm_label": "dotenv",
       "id": "apps_api_package_devdependencies_dotenv"
     },
@@ -4379,7 +4359,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L69",
       "_origin": "ast",
-      "community": 104,
+      "community": 1,
       "norm_label": "dotenv",
       "id": "dotenv"
     },
@@ -4412,16 +4392,6 @@
       "community": 106,
       "norm_label": "eslint",
       "id": "apps_api_package_devdependencies_eslint"
-    },
-    {
-      "label": "eslint",
-      "file_type": "concept",
-      "source_file": "apps/api/package.json",
-      "source_location": "L71",
-      "_origin": "ast",
-      "community": 106,
-      "norm_label": "eslint",
-      "id": "eslint"
     },
     {
       "label": "pino-pretty",
@@ -4469,7 +4439,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L74",
       "_origin": "ast",
-      "community": 112,
+      "community": 1,
       "norm_label": "supertest",
       "id": "apps_api_package_devdependencies_supertest"
     },
@@ -4479,7 +4449,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L74",
       "_origin": "ast",
-      "community": 112,
+      "community": 1,
       "norm_label": "supertest",
       "id": "supertest"
     },
@@ -4509,19 +4479,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L76",
       "_origin": "ast",
-      "community": 149,
+      "community": 98,
       "norm_label": "typescript",
       "id": "apps_api_package_devdependencies_typescript"
-    },
-    {
-      "label": "typescript",
-      "file_type": "concept",
-      "source_file": "apps/api/package.json",
-      "source_location": "L76",
-      "_origin": "ast",
-      "community": 149,
-      "norm_label": "typescript",
-      "id": "typescript"
     },
     {
       "label": "unplugin-swc",
@@ -4549,7 +4509,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L78",
       "_origin": "ast",
-      "community": 151,
+      "community": 1,
       "norm_label": "vite-tsconfig-paths",
       "id": "apps_api_package_devdependencies_vite_tsconfig_paths"
     },
@@ -4559,7 +4519,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L78",
       "_origin": "ast",
-      "community": 151,
+      "community": 1,
       "norm_label": "vite-tsconfig-paths",
       "id": "vite_tsconfig_paths"
     },
@@ -4669,7 +4629,7 @@
       "source_file": "apps/api/src/common/storage/storage.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 133,
+      "community": 33,
       "norm_label": "storage.service.ts",
       "id": "apps_api_src_common_storage_storage_service"
     },
@@ -4679,7 +4639,7 @@
       "source_file": "apps/api/src/common/storage/storage.service.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 133,
+      "community": 33,
       "norm_label": "storageservice",
       "id": "apps_api_src_common_storage_storage_service_storageservice"
     },
@@ -4689,7 +4649,7 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 133,
+      "community": 33,
       "norm_label": "injectable",
       "id": "apps_api_src_common_storage_storage_service_ts_injectable"
     },
@@ -4699,7 +4659,7 @@
       "source_file": "apps/api/src/common/storage/storage.service.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 133,
+      "community": 33,
       "norm_label": ".constructor()",
       "id": "apps_api_src_common_storage_storage_service_storageservice_constructor"
     },
@@ -4709,7 +4669,7 @@
       "source_file": "apps/api/src/common/storage/storage.service.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 133,
+      "community": 33,
       "norm_label": ".hash()",
       "id": "apps_api_src_common_storage_storage_service_storageservice_hash"
     },
@@ -4719,7 +4679,7 @@
       "source_file": "apps/api/src/common/storage/storage.service.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 133,
+      "community": 33,
       "norm_label": ".archive()",
       "id": "apps_api_src_common_storage_storage_service_storageservice_archive"
     },
@@ -4829,7 +4789,7 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 138,
+      "community": 134,
       "norm_label": "useinterceptors",
       "id": "useinterceptors"
     },
@@ -4839,7 +4799,7 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 138,
+      "community": 134,
       "norm_label": "apiconsumes",
       "id": "apiconsumes"
     },
@@ -4849,7 +4809,7 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 138,
+      "community": 134,
       "norm_label": "apibody",
       "id": "apibody"
     },
@@ -4869,7 +4829,7 @@
       "source_file": "apps/api/src/modules/imports/imports.controller.ts",
       "source_location": "L57",
       "_origin": "ast",
-      "community": 138,
+      "community": 134,
       "norm_label": ".upload()",
       "id": "apps_api_src_modules_imports_imports_controller_importscontroller_upload"
     },
@@ -4979,7 +4939,7 @@
       "source_file": "apps/api/src/modules/imports/imports.repository.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 133,
+      "community": 113,
       "norm_label": "imports.repository.ts",
       "id": "apps_api_src_modules_imports_imports_repository"
     },
@@ -5219,7 +5179,7 @@
       "source_file": "apps/api/src/modules/imports/imports.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 133,
+      "community": 113,
       "norm_label": "imports.service.ts",
       "id": "apps_api_src_modules_imports_imports_service"
     },
@@ -5229,7 +5189,7 @@
       "source_file": "apps/api/src/modules/imports/imports.service.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 138,
+      "community": 134,
       "norm_label": "uploadedfile",
       "id": "apps_api_src_modules_imports_imports_service_uploadedfile"
     },
@@ -5239,7 +5199,7 @@
       "source_file": "apps/api/src/modules/imports/imports.service.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 133,
+      "community": 113,
       "norm_label": "stagedrow",
       "id": "apps_api_src_modules_imports_imports_service_stagedrow"
     },
@@ -5269,7 +5229,7 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 133,
+      "community": 33,
       "norm_label": "inject",
       "id": "apps_api_src_modules_imports_imports_service_ts_inject"
     },
@@ -5279,7 +5239,7 @@
       "source_file": "apps/api/src/modules/imports/imports.service.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 133,
+      "community": 33,
       "norm_label": ".constructor()",
       "id": "apps_api_src_modules_imports_imports_service_importsservice_constructor"
     },
@@ -5409,7 +5369,7 @@
       "source_file": "apps/api/src/modules/imports/imports.service.ts",
       "source_location": "L583",
       "_origin": "ast",
-      "community": 133,
+      "community": 113,
       "norm_label": "row_schema",
       "id": "apps_api_src_modules_imports_imports_service_row_schema"
     },
@@ -5459,7 +5419,7 @@
       "source_file": "apps/api/src/modules/imports/imports.service.ts",
       "source_location": "L628",
       "_origin": "ast",
-      "community": 25,
+      "community": 113,
       "norm_label": "readcutoff()",
       "id": "apps_api_src_modules_imports_imports_service_readcutoff"
     },
@@ -5549,7 +5509,7 @@
       "source_file": "apps/api/src/modules/imports/parsers/ubl.parser.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 133,
+      "community": 135,
       "norm_label": "ublparser",
       "id": "apps_api_src_modules_imports_parsers_ubl_parser_ublparser"
     },
@@ -5559,7 +5519,7 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 133,
+      "community": 135,
       "norm_label": "injectable",
       "id": "apps_api_src_modules_imports_parsers_ubl_parser_ts_injectable"
     },
@@ -5569,7 +5529,7 @@
       "source_file": "apps/api/src/modules/imports/parsers/ubl.parser.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 133,
+      "community": 135,
       "norm_label": ".extractxmlfiles()",
       "id": "apps_api_src_modules_imports_parsers_ubl_parser_ublparser_extractxmlfiles"
     },
@@ -5949,7 +5909,7 @@
       "source_file": "packages/shared/src/enums.ts",
       "source_location": "L71",
       "_origin": "ast",
-      "community": 117,
+      "community": 137,
       "norm_label": "importtarget",
       "id": "packages_shared_src_enums_importtarget"
     },
@@ -10706,28 +10666,6 @@
       "norm_label": "validateenv()",
       "community_name": "app.module.ts",
       "id": "apps_api_src_config_env_validateenv"
-    },
-    {
-      "label": "main.ts",
-      "file_type": "code",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 31,
-      "norm_label": "main.ts",
-      "community_name": "test-app.ts",
-      "id": "apps_api_src_main"
-    },
-    {
-      "label": "bootstrap()",
-      "file_type": "code",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L15",
-      "_origin": "ast",
-      "community": 31,
-      "norm_label": "bootstrap()",
-      "community_name": "test-app.ts",
-      "id": "apps_api_src_main_bootstrap"
     },
     {
       "label": "auth.controller.ts",
@@ -16872,12 +16810,774 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/main.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_api_src_main",
+      "target": "apps_api_src_main_bootstrap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "apps_mobile_package",
+      "target": "apps_mobile_package_dependencies",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "apps_mobile_package",
+      "target": "apps_mobile_package_devdependencies",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "apps_mobile_package",
+      "target": "apps_mobile_package_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "apps_mobile_package",
+      "target": "apps_mobile_package_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_mobile_package",
+      "target": "apps_mobile_package_private",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "apps_mobile_package",
+      "target": "apps_mobile_package_scripts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_mobile_package",
+      "target": "apps_mobile_package_version",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "apps_mobile_package_scripts",
+      "target": "apps_mobile_package_scripts_android",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "apps_mobile_package_scripts",
+      "target": "apps_mobile_package_scripts_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "apps_mobile_package_scripts",
+      "target": "apps_mobile_package_scripts_dev",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "apps_mobile_package_scripts",
+      "target": "apps_mobile_package_scripts_ios",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_mobile_package_scripts",
+      "target": "apps_mobile_package_scripts_lint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "apps_mobile_package_scripts",
+      "target": "apps_mobile_package_scripts_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "apps_mobile_package_scripts",
+      "target": "apps_mobile_package_scripts_typecheck",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_babel_runtime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_carinet_shared",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_expo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_expo_constants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_expo_linking",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_expo_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_expo_secure_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_expo_status_bar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_hookform_resolvers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react_dom",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react_hook_form",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react_native",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react_native_gifted_charts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react_native_linear_gradient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react_native_safe_area_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react_native_screens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_react_native_svg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_tanstack_react_query",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_zod",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "apps_mobile_package_dependencies",
+      "target": "apps_mobile_package_dependencies_zustand",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_babel_runtime",
+      "target": "babel_runtime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_carinet_shared",
+      "target": "carinet_shared",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "import",
+      "confidence_score": 1.0,
+      "source": "apps_api_package_dependencies_carinet_shared",
+      "target": "carinet_shared"
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_hookform_resolvers",
+      "target": "hookform_resolvers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_tanstack_react_query",
+      "target": "tanstack_react_query",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_expo",
+      "target": "expo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_expo_constants",
+      "target": "expo_constants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_expo_linking",
+      "target": "expo_linking",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_expo_router",
+      "target": "expo_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_expo_secure_store",
+      "target": "expo_secure_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_expo_status_bar",
+      "target": "expo_status_bar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react",
+      "target": "react",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react_dom",
+      "target": "react_dom",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react_hook_form",
+      "target": "react_hook_form",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react_native",
+      "target": "react_native",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L30",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react_native_gifted_charts",
+      "target": "react_native_gifted_charts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react_native_linear_gradient",
+      "target": "react_native_linear_gradient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react_native_safe_area_context",
+      "target": "react_native_safe_area_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react_native_screens",
+      "target": "react_native_screens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_react_native_svg",
+      "target": "react_native_svg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_zod",
+      "target": "zod",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L53",
+      "weight": 1.0,
+      "context": "import",
+      "confidence_score": 1.0,
+      "source": "apps_api_package_dependencies_zod",
+      "target": "zod"
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_dependencies_zustand",
+      "target": "zustand",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "apps_mobile_package_devdependencies",
+      "target": "apps_mobile_package_devdependencies_carinet_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "apps_mobile_package_devdependencies",
+      "target": "apps_mobile_package_devdependencies_eslint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "apps_mobile_package_devdependencies",
+      "target": "apps_mobile_package_devdependencies_types_node",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "apps_mobile_package_devdependencies",
+      "target": "apps_mobile_package_devdependencies_types_react",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "apps_mobile_package_devdependencies",
+      "target": "apps_mobile_package_devdependencies_typescript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_devdependencies_carinet_config",
+      "target": "carinet_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L56",
+      "weight": 1.0,
+      "context": "import",
+      "confidence_score": 1.0,
+      "source": "apps_api_package_devdependencies_carinet_config",
+      "target": "carinet_config"
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_devdependencies_types_node",
+      "target": "types_node",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L65",
+      "weight": 1.0,
+      "context": "import",
+      "confidence_score": 1.0,
+      "source": "apps_api_package_devdependencies_types_node",
+      "target": "types_node"
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L41",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_devdependencies_types_react",
+      "target": "types_react",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L42",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_devdependencies_eslint",
+      "target": "eslint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L71",
+      "weight": 1.0,
+      "context": "import",
+      "confidence_score": 1.0,
+      "source": "apps_api_package_devdependencies_eslint",
+      "target": "eslint"
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mobile/package.json",
+      "source_location": "L43",
+      "weight": 1.0,
+      "context": "import",
+      "source": "apps_mobile_package_devdependencies_typescript",
+      "target": "typescript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L76",
+      "weight": 1.0,
+      "context": "import",
+      "confidence_score": 1.0,
+      "source": "apps_api_package_devdependencies_typescript",
+      "target": "typescript"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude",
-      "target": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "confidence_score": 1.0
+      "target": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin"
     },
     {
       "relation": "contains",
@@ -16885,9 +17585,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_0_kimlik_ve_kapsam",
-      "confidence_score": 1.0
+      "target": "claude_0_kimlik_ve_kapsam"
     },
     {
       "relation": "contains",
@@ -16895,9 +17595,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L273",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_10_api_s\u00f6zle\u015fmesi",
-      "confidence_score": 1.0
+      "target": "claude_10_api_s\u00f6zle\u015fmesi"
     },
     {
       "relation": "contains",
@@ -16905,9 +17605,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L288",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_11_g\u00fcvenlik_8_katman_faz_5_in_release_kap\u0131s\u0131_\u00f6neri_de\u011fil_gereksi\u0307ni\u0307m",
-      "confidence_score": 1.0
+      "target": "claude_11_g\u00fcvenlik_8_katman_faz_5_in_release_kap\u0131s\u0131_\u00f6neri_de\u011fil_gereksi\u0307ni\u0307m"
     },
     {
       "relation": "contains",
@@ -16915,9 +17615,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L301",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_12_kodlama_standartlar\u0131",
-      "confidence_score": 1.0
+      "target": "claude_12_kodlama_standartlar\u0131"
     },
     {
       "relation": "contains",
@@ -16925,9 +17625,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L309",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
-      "confidence_score": 1.0
+      "target": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz"
     },
     {
       "relation": "contains",
@@ -16935,9 +17635,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L363",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_14_yap\u0131lmayacaklar_a\u00e7\u0131k_yasaklar",
-      "confidence_score": 1.0
+      "target": "claude_14_yap\u0131lmayacaklar_a\u00e7\u0131k_yasaklar"
     },
     {
       "relation": "contains",
@@ -16945,9 +17645,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L369",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_15_definition_of_done_her_g\u00f6rev",
-      "confidence_score": 1.0
+      "target": "claude_15_definition_of_done_her_g\u00f6rev"
     },
     {
       "relation": "contains",
@@ -16955,9 +17655,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L375",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_16_ai_\u00e7al\u0131\u015fma_protokol\u00fc_claude_code",
-      "confidence_score": 1.0
+      "target": "claude_16_ai_\u00e7al\u0131\u015fma_protokol\u00fc_claude_code"
     },
     {
       "relation": "contains",
@@ -16965,9 +17665,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_1_de\u011fi\u015fmez_kurallar_non_negotiable_12_madde",
-      "confidence_score": 1.0
+      "target": "claude_1_de\u011fi\u015fmez_kurallar_non_negotiable_12_madde"
     },
     {
       "relation": "contains",
@@ -16975,9 +17675,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_2_teknoloji_y\u0131\u011f\u0131n\u0131_tamam\u0131_\u00fccretsiz_s\u00fcr\u00fcmler_bilinen_iyi_alt_s\u0131n\u0131r_kurulumda_en_g\u00fcncel_kararl\u0131y\u0131_kullan",
-      "confidence_score": 1.0
+      "target": "claude_2_teknoloji_y\u0131\u011f\u0131n\u0131_tamam\u0131_\u00fccretsiz_s\u00fcr\u00fcmler_bilinen_iyi_alt_s\u0131n\u0131r_kurulumda_en_g\u00fcncel_kararl\u0131y\u0131_kullan"
     },
     {
       "relation": "contains",
@@ -16985,9 +17685,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_3_depo_yap\u0131s\u0131",
-      "confidence_score": 1.0
+      "target": "claude_3_depo_yap\u0131s\u0131"
     },
     {
       "relation": "contains",
@@ -16995,9 +17695,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_4_ortam_ve_komutlar",
-      "confidence_score": 1.0
+      "target": "claude_4_ortam_ve_komutlar"
     },
     {
       "relation": "contains",
@@ -17005,9 +17705,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_5_graphify_obsidian_entegrasyonu_token_tasarrufu_katman\u0131_si\u0307stemi\u0307n_par\u00e7asi",
-      "confidence_score": 1.0
+      "target": "claude_5_graphify_obsidian_entegrasyonu_token_tasarrufu_katman\u0131_si\u0307stemi\u0307n_par\u00e7asi"
     },
     {
       "relation": "contains",
@@ -17015,9 +17715,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_6_mimari_kararlar",
-      "confidence_score": 1.0
+      "target": "claude_6_mimari_kararlar"
     },
     {
       "relation": "contains",
@@ -17025,9 +17725,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L193",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_7_veri_modeli",
-      "confidence_score": 1.0
+      "target": "claude_7_veri_modeli"
     },
     {
       "relation": "contains",
@@ -17035,9 +17735,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L238",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_8_tahsilat_sistemi_i\u0307ki_kanal_platform_para_ak\u0131\u015f\u0131na_gi\u0307rmez",
-      "confidence_score": 1.0
+      "target": "claude_8_tahsilat_sistemi_i\u0307ki_kanal_platform_para_ak\u0131\u015f\u0131na_gi\u0307rmez"
     },
     {
       "relation": "contains",
@@ -17045,9 +17745,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L254",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
-      "target": "claude_9_veri_ge\u00e7i\u015fi_onboarding_birikmi\u015f_cari_fatura_tarih\u00e7esi",
-      "confidence_score": 1.0
+      "target": "claude_9_veri_ge\u00e7i\u015fi_onboarding_birikmi\u015f_cari_fatura_tarih\u00e7esi"
     },
     {
       "relation": "contains",
@@ -17055,9 +17755,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L132",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_6_mimari_kararlar",
-      "target": "claude_6_1_multi_tenancy",
-      "confidence_score": 1.0
+      "target": "claude_6_1_multi_tenancy"
     },
     {
       "relation": "contains",
@@ -17065,9 +17765,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L136",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_6_mimari_kararlar",
-      "target": "claude_6_2_kimlik_k\u00fcresel_kullan\u0131c\u0131_\u00fcyelikler_kri\u0307ti\u0307k_1_1_kurma",
-      "confidence_score": 1.0
+      "target": "claude_6_2_kimlik_k\u00fcresel_kullan\u0131c\u0131_\u00fcyelikler_kri\u0307ti\u0307k_1_1_kurma"
     },
     {
       "relation": "contains",
@@ -17075,9 +17775,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L145",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_6_mimari_kararlar",
-      "target": "claude_6_3_jwt",
-      "confidence_score": 1.0
+      "target": "claude_6_3_jwt"
     },
     {
       "relation": "contains",
@@ -17085,9 +17785,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L159",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_6_mimari_kararlar",
-      "target": "claude_6_4_bakiye_y\u00fcr\u00fcyen_bakiye_kural_2_nin_sql_i",
-      "confidence_score": 1.0
+      "target": "claude_6_4_bakiye_y\u00fcr\u00fcyen_bakiye_kural_2_nin_sql_i"
     },
     {
       "relation": "contains",
@@ -17095,9 +17795,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L176",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_6_mimari_kararlar",
-      "target": "claude_6_5_tahsilat_soyutlamas\u0131",
-      "confidence_score": 1.0
+      "target": "claude_6_5_tahsilat_soyutlamas\u0131"
     },
     {
       "relation": "contains",
@@ -17105,9 +17805,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L187",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_6_mimari_kararlar",
-      "target": "claude_6_6_import_hatt\u0131",
-      "confidence_score": 1.0
+      "target": "claude_6_6_import_hatt\u0131"
     },
     {
       "relation": "contains",
@@ -17115,9 +17815,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L195",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_7_veri_modeli",
-      "target": "claude_enumlar_packages_shared",
-      "confidence_score": 1.0
+      "target": "claude_enumlar_packages_shared"
     },
     {
       "relation": "contains",
@@ -17125,9 +17825,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L206",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_7_veri_modeli",
-      "target": "claude_tablolar_prisma_\u015femas\u0131n\u0131n_kayna\u011f\u0131",
-      "confidence_score": 1.0
+      "target": "claude_tablolar_prisma_\u015femas\u0131n\u0131n_kayna\u011f\u0131"
     },
     {
       "relation": "contains",
@@ -17135,9 +17835,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L311",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
-      "target": "claude_faz_0_i\u0307skelet_ve_temel_1_2_hafta",
-      "confidence_score": 1.0
+      "target": "claude_faz_0_i\u0307skelet_ve_temel_1_2_hafta"
     },
     {
       "relation": "contains",
@@ -17145,9 +17845,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L323",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
-      "target": "claude_faz_1_\u00e7ekirdek_mvp_5_7_hafta",
-      "confidence_score": 1.0
+      "target": "claude_faz_1_\u00e7ekirdek_mvp_5_7_hafta"
     },
     {
       "relation": "contains",
@@ -17155,9 +17855,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L331",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
-      "target": "claude_faz_2_finansal_raporlar_2_3_hafta",
-      "confidence_score": 1.0
+      "target": "claude_faz_2_finansal_raporlar_2_3_hafta"
     },
     {
       "relation": "contains",
@@ -17165,9 +17865,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L337",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
-      "target": "claude_faz_3_tahsilat_i\u0307ki_kanal_3_4_hafta_8",
-      "confidence_score": 1.0
+      "target": "claude_faz_3_tahsilat_i\u0307ki_kanal_3_4_hafta_8"
     },
     {
       "relation": "contains",
@@ -17175,9 +17875,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L346",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
-      "target": "claude_faz_4_katalog_ve_i\u0307leti\u015fim_3_4_hafta",
-      "confidence_score": 1.0
+      "target": "claude_faz_4_katalog_ve_i\u0307leti\u015fim_3_4_hafta"
     },
     {
       "relation": "contains",
@@ -17185,9 +17885,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L353",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
-      "target": "claude_faz_5_sertle\u015ftirme_ve_yay\u0131n_2_hafta",
-      "confidence_score": 1.0
+      "target": "claude_faz_5_sertle\u015ftirme_ve_yay\u0131n_2_hafta"
     },
     {
       "relation": "contains",
@@ -17195,9 +17895,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress",
-      "target": "progress_progress_md_carinet_ai_calisma_gunlugu",
-      "confidence_score": 1.0
+      "target": "progress_progress_md_carinet_ai_calisma_gunlugu"
     },
     {
       "relation": "contains",
@@ -17205,9 +17905,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L106",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_progress_md_carinet_ai_calisma_gunlugu",
-      "target": "progress_2026_07_13_faz_0_iskelet_ve_temel",
-      "confidence_score": 1.0
+      "target": "progress_2026_07_13_faz_0_iskelet_ve_temel"
     },
     {
       "relation": "contains",
@@ -17215,9 +17915,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_progress_md_carinet_ai_calisma_gunlugu",
-      "target": "progress_2026_07_14_faz_1_cekirdek_mvp",
-      "confidence_score": 1.0
+      "target": "progress_2026_07_14_faz_1_cekirdek_mvp"
     },
     {
       "relation": "contains",
@@ -17225,9 +17925,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L199",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_progress_md_carinet_ai_calisma_gunlugu",
-      "target": "progress_sablon_her_blok_icin",
-      "confidence_score": 1.0
+      "target": "progress_sablon_her_blok_icin"
     },
     {
       "relation": "contains",
@@ -17235,9 +17935,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_14_faz_1_cekirdek_mvp",
-      "target": "progress_bitti_kriteri_kontrolu_faz_1",
-      "confidence_score": 1.0
+      "target": "progress_bitti_kriteri_kontrolu_faz_1"
     },
     {
       "relation": "contains",
@@ -17245,9 +17945,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_14_faz_1_cekirdek_mvp",
-      "target": "progress_claude_md_ile_uyusmazlik_cozuldu_kullanici_onayi_14_07_2026",
-      "confidence_score": 1.0
+      "target": "progress_claude_md_ile_uyusmazlik_cozuldu_kullanici_onayi_14_07_2026"
     },
     {
       "relation": "contains",
@@ -17255,9 +17955,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_14_faz_1_cekirdek_mvp",
-      "target": "progress_kararlar",
-      "confidence_score": 1.0
+      "target": "progress_kararlar"
     },
     {
       "relation": "contains",
@@ -17265,9 +17965,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L99",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_14_faz_1_cekirdek_mvp",
-      "target": "progress_sonraki_adim",
-      "confidence_score": 1.0
+      "target": "progress_sonraki_adim"
     },
     {
       "relation": "contains",
@@ -17275,9 +17975,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_14_faz_1_cekirdek_mvp",
-      "target": "progress_varsayim_claude_md_7_ye_eklenmesi_onerilir",
-      "confidence_score": 1.0
+      "target": "progress_varsayim_claude_md_7_ye_eklenmesi_onerilir"
     },
     {
       "relation": "contains",
@@ -17285,9 +17985,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_14_faz_1_cekirdek_mvp",
-      "target": "progress_yapilan",
-      "confidence_score": 1.0
+      "target": "progress_yapilan"
     },
     {
       "relation": "contains",
@@ -17295,9 +17995,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L181",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_13_faz_0_iskelet_ve_temel",
-      "target": "progress_bitti_kriteri_kontrolu_faz_0",
-      "confidence_score": 1.0
+      "target": "progress_bitti_kriteri_kontrolu_faz_0"
     },
     {
       "relation": "contains",
@@ -17305,9 +18005,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L160",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_13_faz_0_iskelet_ve_temel",
-      "target": "progress_claude_md_ile_uyusmazlik_16_4_bildiriliyor_onaysiz_kural_degistirilmedi",
-      "confidence_score": 1.0
+      "target": "progress_claude_md_ile_uyusmazlik_16_4_bildiriliyor_onaysiz_kural_degistirilmedi"
     },
     {
       "relation": "contains",
@@ -17315,9 +18015,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L145",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_13_faz_0_iskelet_ve_temel",
-      "target": "progress_kararlar_145",
-      "confidence_score": 1.0
+      "target": "progress_kararlar_145"
     },
     {
       "relation": "contains",
@@ -17325,9 +18025,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L192",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_13_faz_0_iskelet_ve_temel",
-      "target": "progress_sonraki_adim_192",
-      "confidence_score": 1.0
+      "target": "progress_sonraki_adim_192"
     },
     {
       "relation": "contains",
@@ -17335,9 +18035,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L171",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_13_faz_0_iskelet_ve_temel",
-      "target": "progress_varsayim_claude_md_7_ye_eklenmesi_onerilir_171",
-      "confidence_score": 1.0
+      "target": "progress_varsayim_claude_md_7_ye_eklenmesi_onerilir_171"
     },
     {
       "relation": "contains",
@@ -17345,9 +18045,9 @@
       "source_file": "PROGRESS.md",
       "source_location": "L108",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_07_13_faz_0_iskelet_ve_temel",
-      "target": "progress_yapilan_108",
-      "confidence_score": 1.0
+      "target": "progress_yapilan_108"
     },
     {
       "relation": "contains",
@@ -19304,692 +20004,6 @@
       "confidence_score": 1.0,
       "source": "apps_mobile_app_giris",
       "target": "ref_expo_router"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package",
-      "target": "apps_mobile_package_dependencies"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package",
-      "target": "apps_mobile_package_devdependencies"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package",
-      "target": "apps_mobile_package_main"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package",
-      "target": "apps_mobile_package_name"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package",
-      "target": "apps_mobile_package_private"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package",
-      "target": "apps_mobile_package_scripts"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package",
-      "target": "apps_mobile_package_version"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_scripts",
-      "target": "apps_mobile_package_scripts_android"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_scripts",
-      "target": "apps_mobile_package_scripts_build"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_scripts",
-      "target": "apps_mobile_package_scripts_dev"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_scripts",
-      "target": "apps_mobile_package_scripts_ios"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_scripts",
-      "target": "apps_mobile_package_scripts_lint"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_scripts",
-      "target": "apps_mobile_package_scripts_test"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_scripts",
-      "target": "apps_mobile_package_scripts_typecheck"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_babel_runtime"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_carinet_shared"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_expo"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L21",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_expo_constants"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_expo_linking"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_expo_router"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_expo_secure_store"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L25",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_expo_status_bar"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L18",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_hookform_resolvers"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L26",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react_dom"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react_hook_form"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react_native"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react_native_gifted_charts"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L31",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react_native_linear_gradient"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react_native_safe_area_context"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L33",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react_native_screens"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L34",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_react_native_svg"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L19",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_tanstack_react_query"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L35",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_zod"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L36",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies",
-      "target": "apps_mobile_package_dependencies_zustand"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L16",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_babel_runtime",
-      "target": "babel_runtime"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L17",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_carinet_shared",
-      "target": "apps_mobile_package_json_carinet_shared"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L18",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_hookform_resolvers",
-      "target": "apps_mobile_package_json_hookform_resolvers"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L19",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_tanstack_react_query",
-      "target": "apps_mobile_package_json_tanstack_react_query"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L20",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_expo",
-      "target": "expo"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L21",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_expo_constants",
-      "target": "expo_constants"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L22",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_expo_linking",
-      "target": "expo_linking"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L23",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_expo_router",
-      "target": "expo_router"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L24",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_expo_secure_store",
-      "target": "expo_secure_store"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L25",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_expo_status_bar",
-      "target": "expo_status_bar"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L26",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react",
-      "target": "apps_mobile_package_json_react"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L27",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react_dom",
-      "target": "apps_mobile_package_json_react_dom"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L28",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react_hook_form",
-      "target": "apps_mobile_package_json_react_hook_form"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L29",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react_native",
-      "target": "react_native"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L30",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react_native_gifted_charts",
-      "target": "react_native_gifted_charts"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L31",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react_native_linear_gradient",
-      "target": "react_native_linear_gradient"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L32",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react_native_safe_area_context",
-      "target": "react_native_safe_area_context"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L33",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react_native_screens",
-      "target": "react_native_screens"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L34",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_react_native_svg",
-      "target": "react_native_svg"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L35",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_zod",
-      "target": "apps_mobile_package_json_zod"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L36",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_dependencies_zustand",
-      "target": "zustand"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L39",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies",
-      "target": "apps_mobile_package_devdependencies_carinet_config"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L42",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies",
-      "target": "apps_mobile_package_devdependencies_eslint"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L40",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies",
-      "target": "apps_mobile_package_devdependencies_types_node"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L41",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies",
-      "target": "apps_mobile_package_devdependencies_types_react"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L43",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies",
-      "target": "apps_mobile_package_devdependencies_typescript"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L39",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies_carinet_config",
-      "target": "apps_mobile_package_json_carinet_config"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L40",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies_types_node",
-      "target": "apps_mobile_package_json_types_node"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L41",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies_types_react",
-      "target": "apps_mobile_package_json_types_react"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L42",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies_eslint",
-      "target": "apps_mobile_package_json_eslint"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mobile/package.json",
-      "source_location": "L43",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_mobile_package_devdependencies_typescript",
-      "target": "apps_mobile_package_json_typescript"
     },
     {
       "relation": "imports_from",
@@ -24857,17 +24871,6 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/package.json",
-      "source_location": "L25",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_api_package_dependencies_carinet_shared",
-      "target": "carinet_shared"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/package.json",
       "source_location": "L26",
       "weight": 1.0,
       "context": "import",
@@ -25173,17 +25176,6 @@
       "target": "rxjs"
     },
     {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/package.json",
-      "source_location": "L53",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_api_package_dependencies_zod",
-      "target": "zod"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/package.json",
@@ -25427,17 +25419,6 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/package.json",
-      "source_location": "L56",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_api_package_devdependencies_carinet_config",
-      "target": "carinet_config"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/package.json",
       "source_location": "L57",
       "weight": 1.0,
       "context": "import",
@@ -25526,17 +25507,6 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/package.json",
-      "source_location": "L65",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_api_package_devdependencies_types_node",
-      "target": "types_node"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/package.json",
       "source_location": "L66",
       "weight": 1.0,
       "context": "import",
@@ -25592,17 +25562,6 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/package.json",
-      "source_location": "L71",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_api_package_devdependencies_eslint",
-      "target": "eslint"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/package.json",
       "source_location": "L72",
       "weight": 1.0,
       "context": "import",
@@ -25642,17 +25601,6 @@
       "confidence_score": 1.0,
       "source": "apps_api_package_devdependencies_tsx",
       "target": "tsx"
-    },
-    {
-      "relation": "imports",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/package.json",
-      "source_location": "L76",
-      "weight": 1.0,
-      "context": "import",
-      "confidence_score": 1.0,
-      "source": "apps_api_package_devdependencies_typescript",
-      "target": "typescript"
     },
     {
       "relation": "imports",
@@ -25745,17 +25693,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_api_src_main",
-      "target": "apps_api_src_app_module"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "apps/api/test/setup/test-app.ts",
       "source_location": "L5",
       "weight": 1.0,
@@ -25783,28 +25720,6 @@
       "confidence_score": 1.0,
       "source": "apps_api_src_app_module_appmodule",
       "target": "apps_api_src_app_module_ts_module"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_api_src_main",
-      "target": "apps_api_src_app_module_appmodule"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L16",
-      "weight": 1.0,
-      "source": "apps_api_src_main_bootstrap",
-      "target": "apps_api_src_app_module_appmodule"
     },
     {
       "relation": "imports",
@@ -36364,17 +36279,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_api_src_main",
-      "target": "apps_api_src_config_env"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/modules/auth/auth.controller.ts",
       "source_location": "L9",
       "weight": 1.0,
@@ -36425,17 +36329,6 @@
       "confidence_score": 1.0,
       "source": "apps_api_src_modules_mail_mail_service",
       "target": "apps_api_src_config_env"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_api_src_main",
-      "target": "apps_api_src_config_env_env"
     },
     {
       "relation": "imports",
@@ -36546,16 +36439,6 @@
       "confidence_score": 1.0,
       "source": "apps_api_src_modules_mail_mail_service_mailservice_constructor",
       "target": "apps_api_src_config_env_env"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_api_src_main",
-      "target": "apps_api_src_main_bootstrap"
     },
     {
       "relation": "contains",
@@ -44672,5 +44555,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fad04379be5bd68b1b72c1c853f6204a6c1bdee9"
+  "built_at_commit": "50b930d05a18c7e9f3efc64f213b57bb9c95bca2"
 }

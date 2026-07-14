@@ -1,7 +1,69 @@
 # PROGRESS.md — CariNet AI Calisma Gunlugu
 
 > Bu dosya oturumlar arasi hafizadir (CLAUDE.md §16.3). Her calisma blogu sonunda guncellenir.
-> **Aktif faz: Faz 1 — Cekirdek MVP** → kod tamamlandi; pilot verisiyle sifir-fark testi BEKLIYOR (bkz. asagi).
+> **Aktif faz: Faz 2 — Finansal Raporlar** → tamamlandi. (Faz 1'in "pilot verisi sifir farkla tasindi"
+> maddesi hala gercek veri bekliyor; kod tarafi bitti.)
+
+---
+
+## 2026-07-14 · Faz 2 — Finansal Raporlar
+
+### Yapilan
+
+**packages/shared — hesap katmani (kural #1, 12 unit test)**
+
+- `computeAging`: alacaklar en ESKI borctan baslayarak kapatilir (**FIFO**), kalan acik kalemler
+  vadeye gore kovalara dagitilir (NOT_DUE / 0-30 / 31-60 / 61-90 / 90+).
+  FIFO tercihi bilinclidir: aksi halde "vadesi gecen" tutari sistematik olarak sisirilir.
+- `computeAverageDue`: **tutar agirlikli** ortalama vade — Σ(tutar × vade_gunu) / Σ(tutar);
+  sonuc tarihe geri cevrilir, `averageOverdueDays` ile kac gun gecikme oldugu verilir.
+- `limitUsagePercent`: limit 0 ise null (yuzde anlamsiz).
+
+**API**
+
+- `reports` modulu: `/reports/risk` (liste), `/reports/risk/:id` (acik kalemler dahil),
+  `/reports/periodic-balance` (aylik borc/alacak + kumulatif bakiye; tarih filtresinde **acilis
+  bakiyesi ayrica raporlanir** ki devir kaybolmasin), `/reports/average-due/:id`,
+  `/reports/statement-pdf/:id` (pdfmake; `me` kisayolu mobil icin).
+- `addresses` modulu: CRUD. Address tenant modeli DEGILDIR (seller_id yok) → tenant kontrolu
+  BuyerAccount uzerinden ELLE yapilir.
+- PDF: pdfmake 0.3, Roboto paketle gelir (dis font indirmesi yok). **SSRF kapali**: belge icinden
+  dis kaynak cekilemez (`setUrlAccessPolicy(() => false)`), yerel erisim yalniz font klasoru (§11.2).
+
+**Panel** — Raporlar sayfasi: risk foyu tablosu (yaslandirma kovalari + limit % rozeti + ortalama vade),
+Recharts ile donemsel bakiye grafigi (borc/alacak bar + kumulatif bakiye cizgisi). Cari detayinda
+yaslandirma karti, adres yonetimi ve **Ekstre PDF indir**.
+
+**Mobil** — Dashboard'da vadesi gecen tutar + kova dagilimi karti; Ekstre ekraninda **PDF paylas**
+(expo-file-system + expo-sharing → sistem paylasim sayfasi).
+
+**Testler:** 12 yeni shared unit + 13 yeni e2e → toplam **60 unit + 91 e2e yesil**.
+
+### Kararlar
+
+1. **Yaslandirma FIFO ile yapilir.** Tahsilat hangi faturaya ait belirtilmediginden (Faz 3'te
+   `collect_intent` ile eslesecek), alacaklar en eski borctan dusulur — muhasebe pratigi budur.
+2. **Ortalama vade yalniz ACIK kalemler uzerinden** hesaplanir; kapanmis faturalar ortalamayi kirletmez.
+3. PDF zarf DISINDA ham ikili doner (§10 zarf kuralinin bilincli istisnasi); `Content-Type: application/pdf`.
+4. Risk foyu SQL yalniz veriyi getirir; **tum parasal hesap TS'te decimal.js ile** yapilir (kural #1).
+   Boylece ayni fonksiyon hem API'de hem testte dogrulanabilir.
+
+### Bitti kriteri kontrolu (Faz 2)
+
+- [x] Risk Foyu (acik bakiye, vadesi gecen, yaslandirma 0-30/31-60/61-90/90+, limit %)
+- [x] Donemsel Bakiye (raw SQL + panel grafigi) · Ortalama Vade (agirlikli + test) · Adresler
+- [x] Ekstre PDF (pdfmake) + mobilde paylas · panel ozet raporu
+- [x] **Rapor rakamlari elle hesaplananlara esit** — `reports.e2e-spec.ts` kontrollu bir cari kurar
+      (F1/F2/F3 + tahsilat) ve beklenen degerleri ELLE yazar; uygulamanin kendi fonksiyonuyla
+      karsilastirmaz (dairesel dogrulama yok).
+
+### Sonraki adim
+
+Faz 3 — Tahsilat: iki kanal (§8). `CollectionProvider` + `BankTransferProvider`, intent yasam dongusu
+
+- expiry cron, mobil "Odeme Yap" (referans + IBAN), panelde bekleyen intent + manuel onay +
+  **ekstre importu → eslestirme → toplu onay**, `seller_pos_configs` CRUD (AES, 2FA'li degisiklik),
+  ilk POS adaptoru (hosted 3D + callback imza + idempotency), misafir `pay/{sellerSlug}`.
 
 ---
 

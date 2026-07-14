@@ -60,9 +60,20 @@ export const apiPost = <T>(path: string, payload: unknown): Promise<T> =>
 export const apiPatch = <T>(path: string, payload: unknown): Promise<T> =>
   api<T>(path, { method: 'PATCH', body: JSON.stringify(payload) });
 
+export const apiDelete = <T>(path: string): Promise<T> => api<T>(path, { method: 'DELETE' });
+
 /** Import: multipart (Content-Type'i tarayici sinir dizesiyle kendisi koyar). */
 export const apiUpload = <T>(path: string, form: FormData): Promise<T> =>
   api<T>(path, { method: 'POST', body: form });
+
+/** PDF gibi ham ikili yanitlar zarf DISINDA doner (§10 istisnasi). */
+export async function apiBlob(path: string): Promise<Blob> {
+  const res = await fetch(`${BASE_URL}${path}`, { credentials: 'include' });
+  if (!res.ok) {
+    throw new ApiError('INTERNAL_ERROR', 'Dosya olusturulamadi');
+  }
+  return res.blob();
+}
 
 export const qs = (params: Record<string, string | number | boolean | undefined>): string => {
   const search = new URLSearchParams();

@@ -43,6 +43,15 @@ interface Dashboard {
   }[];
 }
 
+interface RiskSummary {
+  overdue: MoneyString;
+  notDue: MoneyString;
+  buckets: Record<'NOT_DUE' | 'D0_30' | 'D31_60' | 'D61_90' | 'D90_PLUS', MoneyString>;
+  averageDueDate: string | null;
+  averageOverdueDays: number;
+  limitUsagePercent: number | null;
+}
+
 /** §13 Faz 1 — Dashboard: cari kodu, bakiye, limit, temsilci, borc/alacak pastasi, son 10 hareket. */
 export default function HomeScreen() {
   const queryClient = useQueryClient();
@@ -56,6 +65,14 @@ export default function HomeScreen() {
   const dashboard = useQuery({
     queryKey: ['dashboard'],
     queryFn: () => apiGet<Dashboard>('/buyers/me'),
+    retry: false,
+  });
+
+  /** Risk foyu (§13 Faz 2): vadesi gecen tutar + ortalama vade — alici da gorur. */
+  const risk = useQuery({
+    queryKey: ['risk', dashboard.data?.account.id],
+    queryFn: () => apiGet<RiskSummary>(`/reports/risk/${dashboard.data!.account.id}`),
+    enabled: Boolean(dashboard.data?.account.id),
     retry: false,
   });
 
@@ -161,6 +178,24 @@ export default function HomeScreen() {
               </View>
             ) : null}
 
+            {risk.data && Number(risk.data.overdue) > 0 ? (
+              <View style={styles.riskCard}>
+                <Text style={styles.cardLabel}>{tr.home.overdue}</Text>
+                <Text style={styles.riskAmount}>{money(risk.data.overdue)}</Text>
+                <View style={styles.riskRow}>
+                  <RiskBucket label="0-30" value={risk.data.buckets.D0_30} />
+                  <RiskBucket label="31-60" value={risk.data.buckets.D31_60} />
+                  <RiskBucket label="61-90" value={risk.data.buckets.D61_90} />
+                  <RiskBucket label="90+" value={risk.data.buckets.D90_PLUS} />
+                </View>
+                {risk.data.averageDueDate ? (
+                  <Text style={styles.cardHint}>
+                    {tr.home.averageDue}: {trDate(risk.data.averageDueDate)}
+                  </Text>
+                ) : null}
+              </View>
+            ) : null}
+
             {data.account.representative ? (
               <View style={styles.repCard}>
                 <Text style={styles.cardLabel}>{tr.home.representative}</Text>
@@ -250,6 +285,18 @@ function Stat({ label, value, color }: { label: string; value: string; color?: s
   );
 }
 
+function RiskBucket({ label, value }: { label: string; value: MoneyString }) {
+  const empty = Number(value) === 0;
+  return (
+    <View style={styles.bucket}>
+      <Text style={styles.bucketLabel}>{label}</Text>
+      <Text style={[styles.bucketValue, empty && styles.bucketEmpty]}>
+        {empty ? '—' : money(value)}
+      </Text>
+    </View>
+  );
+}
+
 function Legend({ color, label }: { color: string; label: string }) {
   return (
     <View style={styles.legendItem}>
@@ -299,6 +346,20 @@ const styles = StyleSheet.create({
   legend: { flexDirection: 'row', gap: 16, marginTop: 12 },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   legendDot: { width: 8, height: 8, borderRadius: 4 },
+  riskCard: {
+    marginTop: 12,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#fecaca',
+  },
+  riskAmount: { fontSize: 22, fontWeight: '700', color: '#dc2626', marginTop: 4 },
+  riskRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 },
+  bucket: { alignItems: 'center', flex: 1 },
+  bucketLabel: { fontSize: 11, color: '#64748b' },
+  bucketValue: { fontSize: 12, fontWeight: '600', color: '#0f172a', marginTop: 2 },
+  bucketEmpty: { color: '#cbd5e1', fontWeight: '400' },
   repCard: {
     marginTop: 12,
     backgroundColor: '#fff',
