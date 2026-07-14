@@ -6,6 +6,11 @@ build/
 .turbo/
 coverage/
 docs/graph/
+
+# husky'nin urettigi .husky/_/.gitignore tek satirdir: "*". Graphify iç iç gecmis
+# ignore dosyalarini tararken bu deseni yukleyip TUM repoya uyguluyor (0.9.15 hatasi)
+# → grafik sessizce bosaliyor. Klasoru bastan budayarak desenin hic okunmasini engelliyoruz.
+.husky/_/
 *.lock
 *.lockb
 pnpm-lock.yaml

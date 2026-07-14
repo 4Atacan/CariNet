@@ -90,13 +90,13 @@ RESEND_API_KEY=  TURNSTILE_SECRET=  SENTRY_DSN=
 EXPO_PUBLIC_API_URL=  NEXT_PUBLIC_API_URL=
 ```
 
-| Komut                                        | İş                         |
-| -------------------------------------------- | -------------------------- |
-| `docker compose up -d`                       | postgres + mailpit + minio |
-| `pnpm dev`                                   | üç uygulama (turbo)        |
-| `pnpm --filter api db:migrate` / `db:seed`   | migrate / tohum            |
-| `pnpm test` · `pnpm lint` · `pnpm typecheck` | kalite kapıları            |
-| `graphify . --update`                        | kod grafiğini tazele       |
+| Komut                                        | İş                                 |
+| -------------------------------------------- | ---------------------------------- |
+| `docker compose up -d`                       | postgres + mailpit + minio         |
+| `pnpm dev`                                   | üç uygulama (turbo)                |
+| `pnpm --filter api db:migrate` / `db:seed`   | migrate / tohum                    |
+| `pnpm test` · `pnpm lint` · `pnpm typecheck` | kalite kapıları                    |
+| `graphify . --update --no-label --code-only` | kod grafiğini tazele (0 token, §5) |
 
 **Seed (değişmez):** **2 satıcı** (izolasyon testinin ön koşulu) · satıcı-1: admin + 3 cari (biri çoklu-üyelikli; kullanıcısı satıcı-2'de de cari) · 60+ hareket (farklı vadeler, 1 dövizli fatura, **1 DEVİR kaydı**) · 1 bekleyen collect_intent + örnek banka ekstresi CSV'si · satıcı-2: sandbox POS configli · 2 ürün, 1 kampanya.
 
@@ -109,21 +109,27 @@ Amaç: Claude Code repoyu her oturumda yeniden okumak yerine hazır bilgi grafi�
 **Kurulum (Faz 0 görevi, bir kez):**
 
 ```bash
-uv tool install graphifyy              # paket çift y, komut tek y
+uv tool install "graphifyy==0.9.14"    # paket çift y, komut tek y · sürüm SABİT (§5 uyarısı)
 graphify install --platform claude     # ~/.claude/skills/graphify/SKILL.md
 graphify hook install                  # her commit'te AST-only artımlı güncelleme
 graphify . --obsidian --obsidian-dir ./docs/graph   # ilk grafik + Obsidian vault
 ```
 
-**.graphifyignore (repo kökü):** `node_modules/`, `dist/`, `build/`, `.next/`, `.expo/`, `coverage/`, `*.lock`, görseller.
+> Tek kurulum olmalı: `pip install graphifyy` ile ikinci bir kopya varsa PATH'te onu gölgeler ve eski sürüm yeni grafiği okuyamaz (`KeyError: 'hash'`). `which graphify` → `~/.local/bin/graphify` (uv) olmalı.
 
-**Kullanım kuralları:**
+**.graphifyignore (repo kökü):** `node_modules/`, `dist/`, `build/`, `.next/`, `.expo/`, `coverage/`, `*.lock`, görseller **ve `.husky/_/`**.
 
-- "X'i kim çağırıyor / neye bağlı / nerede tanımlı?" → ÖNCE `graphify query` / `docs/graph/graph.json`; grep son çare.
-- Büyük refactor sonrası `/graphify . --update` (silinen dosyalar için `--force`).
+> ⚠️ **`.husky/_/` satırı zorunludur.** Husky o klasöre içeriği tek satır `*` olan bir `.gitignore` yazar. Graphify iç içe ignore dosyalarını tararken bu deseni yükleyip **tüm repoya** uygular (0.9.15 hatası) → grafik sessizce boşalır (2071 → 0 dosya). Klasörü baştan budayınca desen hiç okunmaz. Sürüm sabiti: **graphify 0.9.14** (0.9.15 bu yüzden kullanılmaz).
+
+**Kullanım kuralları (komutlar birebir böyle — yanlışı LLM anahtarı ister, kural #8):**
+
+- "X'i kim çağırıyor / neye bağlı / nerede tanımlı?" → **`graphify explain "matchStatementRows"`** (çağıran/çağrılan + dosya + satır). Grep son çare.
+- İki modül arasındaki bağ: **`graphify path "collections.controller.ts" "ledger.repository.ts"`**.
+- `graphify query` doğal dil aramasıdır ve **semantik indeks (LLM) ister** → AST modunda "No matching nodes found" döner; bu normaldir.
+- Grafiği tazele: **`graphify . --update --no-label --code-only`** → yerel AST, **0 token**. (`--code-only` olmadan markdown dosyaları için LLM anahtarı ister; `--no-label` topluluk isimlendirmesini atlar.) Rapor/HTML için ardından `graphify cluster-only . --no-label`.
 - `--mode deep` (LLM'li semantik kenar) ücretli çağrıdır → kural #8: yalnız kullanıcı onayıyla.
-- Grafik çıktıları commit'lenir; merge çakışmasını hook'un kurduğu merge driver çözer.
-- `docs/graph` klasörü Obsidian'da vault olarak açılır → mimarinin görsel grafı.
+- Grafik çıktıları (`graphify-out/`) commit'lenir; merge çakışmasını hook'un kurduğu merge driver çözer.
+- Post-commit hook her commit'te artımlı AST güncellemesi yapar (LLM yok).
 
 ---
 
