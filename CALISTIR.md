@@ -145,21 +145,24 @@ veya kart (POS'u olan saticide taksit tablosu).
 
 POS yalniz **satici-2'de** (Ege Tekstil) tanimli — `admin@egetekstil.com` ile gir.
 
-1. Panel > Tahsilat > kart kanaliyla talep ac (veya o satiicinin alicisiyla mobilden).
-   → Referans kodunu kopyala.
+1. Panel > Tahsilat > kart kanaliyla talep ac (veya o saticinin alicisiyla mobilden).
+   → **Referans kodunu** ve ekranda yazan **"Karta cekilecek"** tutari not al.
+   Ornek: 4.000 TL borc, 3 taksit → referans `S2-CARI-001-0C98FB`, karta cekilecek **4.080,00**
+   (aradaki 80 TL vade farkidir, **bankanin geliridir**).
 2. Gercek akista kullanici saglayicinin **hosted 3D** sayfasina gider (bizde kart formu YOK).
-   Lokalde saglayici olmadigi icin callback'i biz taklit ederiz:
+   Lokalde saglayici olmadigi icin, saglayicinin attigi imzali callback'i biz taklit ederiz.
+   Script'e **karta cekilen** tutari verirsin (saglayici onu bildirir):
 
    ```powershell
-   node scripts/sandbox-pos-callback.mjs S2-CARI-001-AB12CD 1000.00
+   node scripts/sandbox-pos-callback.mjs S2-CARI-001-0C98FB 4080.00 --taksit 3
    ```
 
-   → Bakiye duser (`processed: true`).
+   → `processed: true`. Bakiye **4.000** duser (4.080 degil!) — vade farki borca yazilmaz.
 
 3. **Ayni komutu tekrar calistir** → `alreadyConfirmed: true`, bakiye DEGISMEZ (idempotency).
-4. Reddedilen odeme: `... 1000.00 --declined` → talep PENDING kalir, bakiye degismez.
-5. Taksitli: `... 4000.00 --taksit 3` → karta 4.080 cekilir ama **cariden 4.000 duser**
-   (vade farki bankanin geliridir, borca yazilmaz).
+4. Tek cekim: `node scripts/sandbox-pos-callback.mjs <REF> 1000.00`
+5. Reddedilen odeme: `node scripts/sandbox-pos-callback.mjs <REF> 1000.00 --declined`
+   → talep PENDING kalir (musteri tekrar deneyebilir), bakiye degismez.
 
 ---
 
