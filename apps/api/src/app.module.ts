@@ -11,9 +11,11 @@ import { TenantGuard } from './common/guards/tenant.guard';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { TenantContextMiddleware } from './common/middleware/tenant-context.middleware';
 import { AuditModule } from './common/audit/audit.module';
+import { StorageModule } from './common/storage/storage.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BuyersModule } from './modules/buyers/buyers.module';
+import { ImportsModule } from './modules/imports/imports.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
 import { RepresentativesModule } from './modules/representatives/representatives.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
@@ -29,11 +31,13 @@ import { HealthController } from './modules/health/health.controller';
     }),
     PrismaModule,
     AuditModule,
+    StorageModule,
     AuthModule,
     BuyersModule,
     RepresentativesModule,
     TransactionsModule,
     InvoicesModule,
+    ImportsModule,
   ],
   controllers: [HealthController],
   providers: [

@@ -55,6 +55,15 @@ enum ImportSourceType {
   BANK_STATEMENT
 }
 
+/// Ayni dosya bicimi farkli hedeflere yazilabilir (§9): cari listesi, hareket, devir, fatura, ekstre.
+enum ImportTarget {
+  BUYER_ACCOUNTS
+  TRANSACTIONS
+  OPENING_BALANCES
+  INVOICES
+  BANK_STATEMENT
+}
+
 enum ImportStatus {
   PENDING
   PARSED
@@ -103,6 +112,7 @@ model Seller {
   collectIntents CollectIntent[]
   statementRows  BankStatementRow[]
   importBatches  ImportBatch[]
+  importTemplates ImportTemplate[]
   invites        Invite[]
   notifications  Notification[]
   auditLogs      AuditLog[]
@@ -476,15 +486,20 @@ model BankStatementRow {
 // ---------------------------------------------------------------- import (§6.6 / §9)
 
 model ImportBatch {
-  id         String           @id @default(cuid())
-  sellerId   String           @map("seller_id")
-  sourceType ImportSourceType @map("source_type")
-  fileUrl    String?          @map("file_url")
-  fileHash   String?          @map("file_hash")
-  status     ImportStatus     @default(PENDING)
-  totals     Json?
-  createdById String?         @map("created_by")
-  createdAt  DateTime         @default(now()) @map("created_at")
+  id          String           @id @default(cuid())
+  sellerId    String           @map("seller_id")
+  sourceType  ImportSourceType @map("source_type")
+  /// Satirlarin hangi tabloya yazilacagi (§9).
+  target      ImportTarget
+  fileName    String?          @map("file_name")
+  fileUrl     String?          @map("file_url")
+  fileHash    String?          @map("file_hash")
+  status      ImportStatus     @default(PENDING)
+  /// Kullanilan kolon eslemesi + toplamlar + dogrulama raporu.
+  mapping     Json?
+  totals      Json?
+  createdById String?          @map("created_by")
+  createdAt   DateTime         @default(now()) @map("created_at")
 
   seller        Seller             @relation(fields: [sellerId], references: [id], onDelete: Cascade)
   rows          ImportRow[]
@@ -494,6 +509,24 @@ model ImportBatch {
   @@index([sellerId, status])
   @@index([sellerId, fileHash])
   @@map("import_batches")
+}
+
+/// §9 — "onaylanan esleme sablon olarak saklanir": taninmayan Excel bir kez eslendi mi tekrar sorulmaz.
+model ImportTemplate {
+  id         String           @id @default(cuid())
+  sellerId   String           @map("seller_id")
+  name       String
+  sourceType ImportSourceType @map("source_type")
+  target     ImportTarget
+  mapping    Json
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+
+  seller Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@unique([sellerId, name])
+  @@index([sellerId])
+  @@map("import_templates")
 }
 
 model ImportRow {

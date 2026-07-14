@@ -22,6 +22,7 @@ export const TENANT_MODELS: ReadonlySet<string> = new Set([
   'CollectIntent',
   'BankStatementRow',
   'ImportBatch',
+  'ImportTemplate',
   'Invite',
   'Notification',
   'SellerMember',

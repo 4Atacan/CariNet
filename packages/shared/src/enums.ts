@@ -67,6 +67,17 @@ export const ImportSourceType = {
 export type ImportSourceType = (typeof ImportSourceType)[keyof typeof ImportSourceType];
 export const importSourceTypeSchema = z.nativeEnum(ImportSourceType);
 
+/** import_batches.target — ayni dosya bicimi farkli tablolara yazilabilir (§9). */
+export const ImportTarget = {
+  BUYER_ACCOUNTS: 'BUYER_ACCOUNTS',
+  TRANSACTIONS: 'TRANSACTIONS',
+  OPENING_BALANCES: 'OPENING_BALANCES',
+  INVOICES: 'INVOICES',
+  BANK_STATEMENT: 'BANK_STATEMENT',
+} as const;
+export type ImportTarget = (typeof ImportTarget)[keyof typeof ImportTarget];
+export const importTargetSchema = z.nativeEnum(ImportTarget);
+
 export const ImportStatus = {
   PENDING: 'PENDING',
   PARSED: 'PARSED',
