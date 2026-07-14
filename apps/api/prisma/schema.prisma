@@ -94,6 +94,10 @@ model Seller {
   id        String   @id @default(cuid())
   name      String
   slug      String   @unique
+  /// Referans kodunun (§7: S{sellerNo}-{accountCode}-{6 CSPRNG}) kisa satici numarasi.
+  /// Dis ID'ler cuid'dir (§6.1); bu numara YALNIZ referans kodunda kullanilir — havale
+  /// aciklamasina elle yazilan kod kisa olmak zorunda.
+  sellerNo  Int      @unique @default(autoincrement()) @map("seller_no")
   logoUrl   String?  @map("logo_url")
   isActive  Boolean  @default(true) @map("is_active")
   createdAt DateTime @default(now()) @map("created_at")

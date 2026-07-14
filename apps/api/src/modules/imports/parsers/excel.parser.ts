@@ -1,3 +1,4 @@
+import { Readable } from 'node:stream';
 import { Injectable } from '@nestjs/common';
 import ExcelJS from 'exceljs';
 import {
@@ -63,7 +64,33 @@ export class ExcelParser {
     if (!sheet) {
       throw new AppError(ErrorCode.VALIDATION_ERROR, 'Dosyada okunabilir sayfa bulunamadi');
     }
+    return this.extract(sheet, target, overrideMapping);
+  }
 
+  /**
+   * Banka ekstreleri cogunlukla CSV iner (§8 Kanal 1). Ayirici bankaya gore degisir:
+   * TR bankalari genelde ";" kullanir (ondalik virgul yuzunden), bazilari "," veya TAB.
+   */
+  async parseCsv(
+    buffer: Buffer,
+    target: ImportTarget,
+    overrideMapping?: ColumnMapping,
+  ): Promise<ParsedSheet> {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = await workbook.csv.read(Readable.from(buffer), {
+      parserOptions: { delimiter: detectDelimiter(buffer) },
+    });
+    if (!sheet) {
+      throw new AppError(ErrorCode.VALIDATION_ERROR, 'CSV okunamadi');
+    }
+    return this.extract(sheet, target, overrideMapping);
+  }
+
+  private extract(
+    sheet: ExcelJS.Worksheet,
+    target: ImportTarget,
+    overrideMapping?: ColumnMapping,
+  ): ParsedSheet {
     const headerRow = sheet.getRow(1);
     const headers: string[] = [];
     headerRow.eachCell({ includeEmpty: false }, (cell, col) => {
@@ -125,6 +152,15 @@ export class ExcelParser {
     }
     return { headers, rows, mapping, missing: [] };
   }
+}
+
+/** Baslik satirindaki ayirici adaylarindan en cok geceni secer. */
+function detectDelimiter(buffer: Buffer): string {
+  const firstLine = buffer.toString('utf8').split(/\r?\n/)[0] ?? '';
+  const candidates = [';', ',', '\t'];
+  return candidates.reduce((best, candidate) =>
+    firstLine.split(candidate).length > firstLine.split(best).length ? candidate : best,
+  );
 }
 
 /** ExcelJS hucre degerleri zengin tiplerdir (formul/hyperlink/rich text) → sade degere indir. */

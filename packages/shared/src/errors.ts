@@ -31,6 +31,12 @@ export const ErrorCode = {
   ALREADY_CONFIRMED: 'ALREADY_CONFIRMED',
   IMPORT_ROW_ERRORS: 'IMPORT_ROW_ERRORS',
   SELLER_INACTIVE: 'SELLER_INACTIVE',
+
+  // tahsilat (§8)
+  INTENT_NOT_PENDING: 'INTENT_NOT_PENDING',
+  ROW_ALREADY_MATCHED: 'ROW_ALREADY_MATCHED',
+  POS_NOT_CONFIGURED: 'POS_NOT_CONFIGURED',
+  POS_SIGNATURE_INVALID: 'POS_SIGNATURE_INVALID',
 } as const;
 
 export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
@@ -62,6 +68,11 @@ export const ERROR_MESSAGES: Record<ErrorCode, string> = {
   ALREADY_CONFIRMED: 'Bu odeme zaten onaylanmis.',
   IMPORT_ROW_ERRORS: 'Yuklenen dosyada hatali satirlar var.',
   SELLER_INACTIVE: 'Satici firma pasif durumda.',
+
+  INTENT_NOT_PENDING: 'Bu odeme talebi artik bekleyen durumda degil.',
+  ROW_ALREADY_MATCHED: 'Bu ekstre satiri zaten bir tahsilatla eslestirilmis.',
+  POS_NOT_CONFIGURED: 'Satici firmanin aktif bir sanal POS tanimi yok.',
+  POS_SIGNATURE_INVALID: 'Odeme saglayicisindan gelen bildirim dogrulanamadi.',
 };
 
 export const HTTP_STATUS_BY_ERROR_CODE: Record<ErrorCode, number> = {
@@ -90,6 +101,11 @@ export const HTTP_STATUS_BY_ERROR_CODE: Record<ErrorCode, number> = {
   ALREADY_CONFIRMED: 409,
   IMPORT_ROW_ERRORS: 422,
   SELLER_INACTIVE: 403,
+
+  INTENT_NOT_PENDING: 409,
+  ROW_ALREADY_MATCHED: 409,
+  POS_NOT_CONFIGURED: 422,
+  POS_SIGNATURE_INVALID: 400,
 };
 
 export interface AppErrorDetails {

@@ -60,6 +60,9 @@ export const apiPost = <T>(path: string, payload: unknown): Promise<T> =>
 export const apiPatch = <T>(path: string, payload: unknown): Promise<T> =>
   api<T>(path, { method: 'PATCH', body: JSON.stringify(payload) });
 
+export const apiPut = <T>(path: string, payload: unknown): Promise<T> =>
+  api<T>(path, { method: 'PUT', body: JSON.stringify(payload) });
+
 export const apiDelete = <T>(path: string): Promise<T> => api<T>(path, { method: 'DELETE' });
 
 /** Import: multipart (Content-Type'i tarayici sinir dizesiyle kendisi koyar). */

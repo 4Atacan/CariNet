@@ -41,6 +41,17 @@ export const TenantContext = {
     return storage.run({ ...current, system: true }, async () => await fn());
   },
 
+  /**
+   * Misafir odeme ve POS callback'i (§8): JWT yoktur, satici slug'dan veya referans kodundan
+   * BULUNUR ve baglam burada kurulur. Bulma sorgusu sistem modunda calisir; bu cagridan
+   * SONRA tenant filtresi normal isler (kural #3 delinmez).
+   */
+  setSeller(sellerId: string): void {
+    const store = storage.getStore();
+    if (!store) throw new Error('TenantContext store yok — middleware calismamis');
+    store.sellerId = sellerId;
+  },
+
   get(): TenantStore {
     return storage.getStore() ?? EMPTY;
   },

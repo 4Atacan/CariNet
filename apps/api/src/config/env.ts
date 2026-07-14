@@ -32,6 +32,13 @@ export const envSchema = z.object({
   SENTRY_DSN: z.string().optional(),
 
   PANEL_ORIGIN: z.string().default('http://localhost:3000'),
+  /** POS callback URL'i saglayiciya bu adresle verilir (§8). */
+  API_PUBLIC_URL: z.string().default('http://localhost:3001'),
+
+  /** Sandbox POS'un hosted 3D sayfasi — BIZIM alan adimiz DEGIL (kural #5). */
+  POS_SANDBOX_HOSTED_URL: z.string().url().default('https://sandbox-pos.example.com/hosted-3d'),
+  /** §11.3 — mumkunse callback IP allowlist'i. Bos ise IP kontrolu yapilmaz. */
+  POS_CALLBACK_IPS: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

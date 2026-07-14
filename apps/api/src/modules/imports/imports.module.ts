@@ -10,5 +10,7 @@ import { UblParser } from './parsers/ubl.parser';
   imports: [StorageModule],
   controllers: [ImportsController],
   providers: [ImportsRepository, ImportsService, ExcelParser, UblParser],
+  /** Banka ekstresi de ayni ayristiriciyi kullanir (§8 Kanal 1). */
+  exports: [ExcelParser],
 })
 export class ImportsModule {}

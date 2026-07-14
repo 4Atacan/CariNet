@@ -1,6 +1,7 @@
 import { type MiddlewareConsumer, Module, type NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { validateEnv } from './config/env';
@@ -16,10 +17,13 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AddressesModule } from './modules/addresses/addresses.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BuyersModule } from './modules/buyers/buyers.module';
+import { CollectionsModule } from './modules/collections/collections.module';
 import { ImportsModule } from './modules/imports/imports.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { ReportsModule } from './modules/reports/reports.module';
 import { RepresentativesModule } from './modules/representatives/representatives.module';
+import { SellersModule } from './modules/sellers/sellers.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { HealthController } from './modules/health/health.controller';
 
@@ -31,6 +35,8 @@ import { HealthController } from './modules/health/health.controller';
       // Testlerde rate limit kapali; kural olarak dev/prod'da HER ZAMAN acik (§11.1).
       skipIf: () => process.env.NODE_ENV === 'test',
     }),
+    // Testte cron calismasin: intent suresi dolma isi e2e'yi zamanla yarisa sokmasin.
+    ...(process.env.NODE_ENV === 'test' ? [] : [ScheduleModule.forRoot()]),
     PrismaModule,
     AuditModule,
     StorageModule,
@@ -42,6 +48,9 @@ import { HealthController } from './modules/health/health.controller';
     ImportsModule,
     ReportsModule,
     AddressesModule,
+    NotificationsModule,
+    CollectionsModule,
+    SellersModule,
   ],
   controllers: [HealthController],
   providers: [

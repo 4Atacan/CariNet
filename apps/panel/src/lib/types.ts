@@ -134,6 +134,88 @@ export interface RiskDetail {
   }[];
 }
 
+// ---------------------------------------------------------------- tahsilat (§8)
+
+export type IntentStatus = 'PENDING' | 'CONFIRMED' | 'EXPIRED' | 'CANCELLED';
+export type CollectChannel = 'BANK_TRANSFER' | 'CARD_POS';
+
+export interface CollectIntent {
+  id: string;
+  buyerAccountId: string | null;
+  buyerAccount: { id: string; accountCode: string; title: string } | null;
+  amount: MoneyString;
+  currencyCode: string;
+  channel: CollectChannel;
+  status: IntentStatus;
+  referenceCode: string;
+  installmentCount: number | null;
+  providerRef: string | null;
+  expiresAt: string;
+  confirmedAt: string | null;
+  createdAt: string;
+}
+
+export interface BankAccount {
+  id: string;
+  bankName: string;
+  iban: string;
+  holderName: string;
+  isActive: boolean;
+}
+
+export interface PosConfig {
+  id: string;
+  provider: string;
+  merchantId: string;
+  apiKeyMasked: string;
+  secretMasked: string;
+  isActive: boolean;
+  updatedAt: string;
+}
+
+export interface StatementRow {
+  id: string;
+  rowNo: number;
+  txDate: string;
+  description: string;
+  amount: MoneyString;
+  matchedIntentId: string | null;
+}
+
+export interface StatementMatch {
+  rowId: string;
+  confidence: 'EXACT' | 'SUGGESTED' | 'NONE';
+  intentId: string | null;
+  buyerAccountId: string | null;
+  buyerAccountLabel: string | null;
+  amountMatches: boolean;
+  difference: MoneyString | null;
+  partial: boolean;
+  reason: string;
+}
+
+export interface StatementImport {
+  batchId: string;
+  fileName: string | null;
+  rows: StatementRow[];
+  matches: StatementMatch[];
+  pendingIntentCount: number;
+  skippedOutgoing?: number;
+  errors?: { rowNo: number; error: string }[];
+}
+
+export interface BulkConfirmResult {
+  batchId: string;
+  confirmed: number;
+  results: {
+    rowId: string;
+    status: 'CONFIRMED' | 'ALREADY_MATCHED' | 'FAILED';
+    intentId?: string;
+    remainderIntentId?: string | null;
+    error?: string;
+  }[];
+}
+
 export interface ImportTotals {
   rowCount: number;
   validCount: number;

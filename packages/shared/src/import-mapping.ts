@@ -26,15 +26,15 @@ export const IMPORT_FIELDS = {
   vknTckn: ['vkn', 'tckn', 'vknTckn', 'vknktckn', 'verginumarasi', 'vergino', 'tckimlikno'],
   creditLimit: ['risklimiti', 'kredilimiti', 'limit', 'creditlimit'],
   representative: ['temsilci', 'satistemsilcisi', 'plasiyer'],
-  documentDate: ['tarih', 'belgetarihi', 'fistarihi', 'islemtarihi', 'date'],
+  documentDate: ['tarih', 'belgetarihi', 'fistarihi', 'islemtarihi', 'valortarihi', 'date'],
   dueDate: ['vade', 'vadetarihi', 'duedate'],
   documentNo: ['belgeno', 'faturano', 'evrakno', 'fisno', 'documentno'],
   documentType: ['belgeturu', 'evrakturu', 'tur', 'documenttype'],
-  debit: ['borc', 'debit'],
-  credit: ['alacak', 'credit'],
-  amount: ['tutar', 'amount'],
+  debit: ['borc', 'cikan', 'debit'],
+  credit: ['alacak', 'giren', 'credit'],
+  amount: ['tutar', 'islemtutari', 'tutartl', 'amount'],
   type: ['hareketturu', 'islemturu', 'type'],
-  description: ['aciklama', 'description'],
+  description: ['aciklama', 'islemaciklamasi', 'detay', 'description'],
   currencyCode: ['parabirimi', 'doviz', 'dovizcinsi', 'currency'],
   exchangeRate: ['kur', 'dovizkuru', 'rate'],
   balance: ['bakiye', 'devir', 'devirbakiyesi', 'acilisbakiyesi', 'balance'],
@@ -48,7 +48,8 @@ export const REQUIRED_FIELDS: Record<ImportTarget, readonly ImportField[]> = {
   [ImportTarget.TRANSACTIONS]: ['accountCode', 'documentDate'],
   [ImportTarget.OPENING_BALANCES]: ['accountCode'],
   [ImportTarget.INVOICES]: [],
-  [ImportTarget.BANK_STATEMENT]: [],
+  /** Banka ekstresi (§8 Kanal 1): tarih + aciklama zorunlu; tutar hasAmountField ile aranir. */
+  [ImportTarget.BANK_STATEMENT]: ['documentDate', 'description'],
 };
 
 /** Hedefte anlamli olan tum alanlar (fazlasi gormezden gelinir). */
@@ -83,7 +84,7 @@ export const TARGET_FIELDS: Record<ImportTarget, readonly ImportField[]> = {
     'credit',
   ],
   [ImportTarget.INVOICES]: [],
-  [ImportTarget.BANK_STATEMENT]: [],
+  [ImportTarget.BANK_STATEMENT]: ['documentDate', 'description', 'amount', 'debit', 'credit'],
 };
 
 /** Kolon eslemesi: kanonik alan → dosyadaki baslik. */
@@ -117,6 +118,10 @@ export function hasAmountField(mapping: ColumnMapping, target: ImportTarget): bo
   }
   if (target === ImportTarget.OPENING_BALANCES) {
     return Boolean(mapping.balance ?? mapping.debit ?? mapping.credit);
+  }
+  if (target === ImportTarget.BANK_STATEMENT) {
+    // Ekstrede gelen para "tutar" veya "alacak" kolonundadir; yalniz "borc" varsa cikis hareketidir.
+    return Boolean(mapping.amount ?? mapping.credit);
   }
   return true;
 }

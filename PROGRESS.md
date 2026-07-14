@@ -1,8 +1,110 @@
 # PROGRESS.md — CariNet AI Calisma Gunlugu
 
 > Bu dosya oturumlar arasi hafizadir (CLAUDE.md §16.3). Her calisma blogu sonunda guncellenir.
-> **Aktif faz: Faz 2 — Finansal Raporlar** → tamamlandi. (Faz 1'in "pilot verisi sifir farkla tasindi"
+> **Aktif faz: Faz 3 — Tahsilat (iki kanal)** → tamamlandi. (Faz 1'in "pilot verisi sifir farkla tasindi"
 > maddesi hala gercek veri bekliyor; kod tarafi bitti.)
+
+---
+
+## 2026-07-14 · Faz 3 — Tahsilat: Iki Kanal (§8)
+
+### Yapilan
+
+**shared (15 yeni unit test):**
+
+- `collections.ts` — eslestirmenin SAF cekirdegi: `matchStatementRows(rows, intents, accountCodes)`.
+  Iki gecis: (1) referans kodu aciklamada geciyorsa EXACT, (2) kalanlarda cari kodu geciyorsa SUGGESTED.
+  Banka aciklamasi kodu bozar (bosluk atar, kucuk harfe cevirir) → karsilastirma alfanumerik cekirdek
+  uzerinden (`normalizeReference`). Bir intent iki satira BAGLANAMAZ (eslesince havuzdan cikar).
+- `isValidIban` — mod-97 (ISO 13616). Yanlis IBAN = parayi baska hesaba yonlendirmek demek.
+- `schemas/collections.ts` — intent/misafir/onay/toplu onay/IBAN/POS semalari (kural #7).
+
+**api:**
+
+- `modules/collections/` — §6.5 `CollectionProvider` soyutlamasi; `BankTransferProvider` (Kanal 1) ve
+  `CardPosProvider` (Kanal 2) ayni arayuzu uygular ve onayda AYNI hatta birlesir: `ReconciliationService`
+  → CONFIRMED → CREDIT → bildirim → audit.
+- `StatementService` — banka ekstresi (CSV/Excel) → staging (`bank_statement_rows`) → otomatik eslestirme
+  onerisi → insan onayi → toplu onay. Cikis hareketleri (yalniz "borc" kolonu / negatif tutar) atlanir.
+- `SandboxPosAdapter` + `PosRegistry` — hosted 3D paketi (HMAC-SHA256 imzali) + callback dogrulamasi.
+- `IntentExpiryTask` — 30 dk'da bir, suresi dolan PENDING talepler EXPIRED (sistem modu, cross-tenant).
+- `modules/sellers/` — tahsilat IBAN'lari + POS config CRUD (AES-256-GCM, 2FA'li, maskeli gorunum).
+- `modules/notifications/` — yalniz DB bildirimi (ortak hattin bir adimi).
+
+**panel:** Tahsilat sayfasi (bekleyen talepler + manuel onay + ekstre yukle → eslestirme → toplu onay),
+Ayarlar sayfasi (IBAN + POS, 2FA kodu alani), misafir odeme sayfasi `pay/{sellerSlug}`.
+
+**mobil:** "Odeme Yap" ekrani — havale (referans kodu + IBAN, kopyala/paylas) veya kart
+(saglayicinin hosted sayfasina yonlendirme; taksit tablosu).
+
+### Karar
+
+- **Idempotency UC KATMANLI** (bitti kriteri 3). Yalniz uygulama kontrolune guvenilmedi:
+  1. **intent**: `PENDING → CONFIRMED` compare-and-set (`updateMany where status='PENDING'`).
+     Yaris kosulunda ikinci istek 0 satir gunceller → cift CREDIT imkansiz.
+  2. **ekstre satiri**: `bank_statement_rows.matched_intent_id` UNIQUE → DB seviyesinde kilit.
+  3. **CREDIT**: intent'e bagli iptal edilmemis hareket varsa yenisi YAZILMAZ (erken donus).
+     Hepsi TEK transaction icinde.
+- **Karta cekilen tutar ≠ cariden dusulen tutar.** Taksit vade farki BANKANIN gelirdir, saticiya gelmez.
+  6 taksitte 10.000 TL borc icin karta 10.400 cekilir ama cari YALNIZ 10.000 duser. Callback'teki
+  `chargedAmount` sadece kanit/audit icindir; CREDIT'e intent tutari yazilir. (Aksi halde alicinin borcu
+  odedigi paradan FAZLA azalirdi.)
+- **Kismi odeme**: gerceklesen tutar islenir, fark icin otomatik YENI bekleyen talep acilir (§8).
+  Fazla odemede tamami islenir (bakiye negatife dusebilir — alacakli duruma gecer, dogru davranis).
+- **Tahsilat TRY'dir.** Bakiye TRY uzerinden turetilir (§6.4) ve tahsilat aninda dovize kur uygulamak
+  gunluk TCMB kuru ister (Faz 4). Dovizli faturasi olan alici TRY karsiligini oder.
+- **Misafir yolunda var/yok sizdirilmaz**: olmayan cari kodu ile hatali tutar AYNI mesaji alir
+  ("Cari kodu veya tutar hatali"). Ustune siki rate limit (5/dk) + Turnstile.
+- **POS callback'inde JWT yok** → referans kodu (yalniz bir ARAMA anahtari) ile satici bulunur,
+  `TenantContext.setSeller` ile baglam kurulur, imza O saticinin anahtariyla dogrulanir.
+  Imza tutmadan hicbir sey yazilmaz; dogrulanamayan bildirim `POS_CALLBACK_REJECTED` audit'i uretir (§11.8).
+- **Toplu onayda satir tutari CLIENT'TAN DEGIL DB'den okunur** — onaylayan yalniz eslesmeyi secer,
+  tutari degistiremez.
+- **Aciklamasiz dekont da tek hattan gecer**: insan cariyi secer, sistem talebi kendi acar ve hemen
+  onaylar → her CREDIT'in arkasinda bir intent vardir (izlenebilirlik).
+- **Sandbox POS**, pilotun saglayicisi belli olana kadar TEK adaptordur (§8: "ilki pilot saticinin
+  saglayicisina gore yazilir"). Hosted sayfa adresi env'den gelir ve BIZIM alan adimiz degildir (kural #5).
+
+### Sema degisikligi
+
+`sellers.seller_no` (SERIAL UNIQUE) eklendi — migration `20260714150000_seller_no`.
+Gerekce: §7 referans kodu formati `S{sellerNo}-{accountCode}-{6 CSPRNG}` bir satici numarasi varsayiyor
+ama `sellers` tablosunda karsiligi yoktu. Dis ID'ler cuid olarak KALIR (§6.1); bu numara yalniz havale
+aciklamasina ELLE yazilan referans kodunda kullanilir — kod kisa ve telefonda okunabilir olmak zorunda.
+
+### Duzeltilen hata (seed)
+
+Seed'deki Is Bankasi IBAN'i (`TR12...`) mod-97 kontrolunden gecmiyordu → `TR18...` ile duzeltildi.
+Yeni `isValidIban` bunu yakaladi.
+
+### VARSAYIM:
+
+- **Push GONDERIMI Faz 4'te.** Faz 3'un ortak hatti (CONFIRMED → CREDIT → bildirim → audit) bildirimi
+  `notifications` tablosuna yazar; cihaza push (expo-notifications + token kaydi) Faz 4'un isi. Payload'in
+  hesap baglami (sellerId + buyerAccountId) satirda zaten var, Faz 4 bunun uzerine kurulur.
+- **Bitti kriteri (2)** "sandbox kartla hosted sayfadan odeme": gercek bir saglayici sandbox hesabimiz yok.
+  Test SINIRIN BIZDEKI TARAFINI kanitlar: intent → imzali hosted 3D paketi → imzali callback → CREDIT →
+  bakiye duser + tekrar eden callback islenmez. Hosted sayfanin KENDISI saglayicinindir; pilotun saglayicisi
+  belli olunca adaptor onun sandbox'ina baglanip ayni testler gercek uctan gecirilir.
+
+### Bitti kriteri kontrolu (Faz 3)
+
+- [x] (1) Sahte ekstreyle havale akisi UCTAN UCA — `collections.e2e-spec.ts`: talep → CSV ekstre →
+      otomatik eslestirme (EXACT + NONE) → toplu onay → bakiye 20.000 → 14.250 (elle hesaplanan)
+- [x] (2) Sandbox POS: hosted 3D paketi → imzali callback → bakiye duser (10.000 → 6.000; karta 4.080
+      cekilmesine ragmen cariden 4.000 dusuldu)
+- [x] (3) Ayni intent / ayni satir / ayni callback IKINCI KEZ islenemiyor — uc test, her birinde
+      bakiye degismiyor ve intent'e bagli CREDIT sayisi 1
+- [x] Kural #5: kart formu yok, PAN/CVV islenmez, para platform hesabina girmez (misafir sayfa ve mobil
+      kullaniciyi saglayicinin adresine yonlendirir)
+- [x] Kenar durumlar: kismi odeme (fark → yeni talep), aciklamasiz dekont (insan onayi), reddedilen odeme
+      (talep PENDING kalir), suresi dolmus talep onaylanamaz
+- [x] Kapilar: **69 unit** (63 shared + 6 api) · **114 e2e** (8 dosya) · lint/typecheck/build temiz
+
+### Sonraki adim
+
+Faz 4 — Katalog ve Iletisim: urunler/stoklar, kampanyalar, **push altyapisi** (yeni fatura, vade hatirlatma
+cronu, tahsilat onayi — hesap baglamli payload), bildirim merkezi, talep-oneri, TCMB kur cronu, Excel disa aktarma.
 
 ---
 

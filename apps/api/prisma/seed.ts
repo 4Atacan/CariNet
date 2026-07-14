@@ -377,7 +377,8 @@ async function main(): Promise<void> {
     data: {
       sellerId: seller2.id,
       bankName: 'Is Bankasi',
-      iban: 'TR120006200119000006672315',
+      // Kontrol hanesi mod-97 ile dogrulanabilir olmali (isValidIban) — TR12 gecersizdi.
+      iban: 'TR180006200119000006672315',
       holderName: 'Ege Tekstil Ltd. Sti.',
     },
   });

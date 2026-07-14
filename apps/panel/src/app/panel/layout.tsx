@@ -7,9 +7,11 @@ import {
   FileText,
   LayoutDashboard,
   LogOut,
+  Settings,
   Upload,
   UserRound,
   Users,
+  Wallet,
   Wand2,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -30,9 +32,11 @@ const NAV = [
   { href: '/panel/hareketler', label: tr.nav.transactions, icon: ArrowRightLeft },
   { href: '/panel/faturalar', label: tr.nav.invoices, icon: FileText },
   { href: '/panel/raporlar', label: tr.nav.reports, icon: BarChart3 },
+  { href: '/panel/tahsilat', label: tr.nav.collections, icon: Wallet },
   { href: '/panel/ice-aktarim', label: tr.nav.imports, icon: Upload },
   { href: '/panel/gecis-sihirbazi', label: tr.nav.wizard, icon: Wand2 },
   { href: '/panel/temsilciler', label: tr.nav.representatives, icon: UserRound },
+  { href: '/panel/ayarlar', label: tr.nav.settings, icon: Settings },
 ] as const;
 
 export default function PanelLayout({ children }: { children: React.ReactNode }) {

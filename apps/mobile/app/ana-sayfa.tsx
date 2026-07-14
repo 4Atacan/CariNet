@@ -196,6 +196,11 @@ export default function HomeScreen() {
               </View>
             ) : null}
 
+            {/* §8 — iki kanalli tahsilat: havale referansi veya saticinin hosted 3D POS sayfasi. */}
+            <Pressable style={styles.payButton} onPress={() => router.push('/odeme')}>
+              <Text style={styles.payButtonText}>{tr.pay.cta}</Text>
+            </Pressable>
+
             {data.account.representative ? (
               <View style={styles.repCard}>
                 <Text style={styles.cardLabel}>{tr.home.representative}</Text>
@@ -360,6 +365,14 @@ const styles = StyleSheet.create({
   bucketLabel: { fontSize: 11, color: '#64748b' },
   bucketValue: { fontSize: 12, fontWeight: '600', color: '#0f172a', marginTop: 2 },
   bucketEmpty: { color: '#cbd5e1', fontWeight: '400' },
+  payButton: {
+    marginTop: 12,
+    backgroundColor: '#0f172a',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  payButtonText: { color: '#fff', fontWeight: '600', fontSize: 15 },
   repCard: {
     marginTop: 12,
     backgroundColor: '#fff',
