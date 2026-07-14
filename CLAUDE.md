@@ -318,7 +318,9 @@ Conventional Commits (`feat(api): …`, `docs: …`) · `main` + `feature/*` · 
 
 **Panel:** cari CRUD+temsilci+limit · hareket girişi · fatura+kalem · **Excel import** (şablon→hata raporu→onay) · **GEÇİŞ SİHİRBAZI** (kesim tarihi→cari+devir→ops. UBL ZIP→Doğrulama Raporu→commit, §9) · davet linki/QR · kullanıcı yönetimi · listede canlı bakiye
 **Mobil:** giriş+beni hatırla+**hesap değiştirici** · Dashboard (cari kodu, bakiye, limit, temsilci, borç/alacak pastası, son 10 hareket) · Ekstre (tarih filtre+yürüyen bakiye+sonsuz kaydırma) · Fatura Detayı (kalem+satır kuru)
-**✅ Bitti:** 200 satırlık Excel hatasız; bakiye=Σhareket (test); çoklu-üyelik geçişi çalışıyor; **pilotun gerçek verisi sihirbazla sıfır farkla taşındı**; pilot satıcıya gösterilebilir.
+**✅ Bitti:** 200 satırlık Excel hatasız ✅; bakiye=Σhareket (test) ✅; çoklu-üyelik geçişi çalışıyor ✅; **pilotun gerçek verisi sihirbazla sıfır farkla taşındı** ⏳ (gerçek veri bekliyor); pilot satıcıya gösterilebilir ⏳.
+
+> Kod tarafı 14.07.2026'da tamamlandı (PROGRESS.md). Kalan iki madde pilot verisi gerektirir.
 
 ### Faz 2 — Finansal Raporlar (2–3 hafta)
 

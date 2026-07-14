@@ -12,6 +12,7 @@ import { tr } from '@/lib/tr';
 export default function LoginScreen() {
   const setSession = useSession((s) => s.setSession);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [remember, setRemember] = useState(true);
 
   const {
     control,
@@ -26,7 +27,8 @@ export default function LoginScreen() {
     setServerError(null);
     try {
       const result = await apiPublicPost<LoginResponse>('/auth/login', values);
-      await tokenStore.save(result.tokens); // kural #9: expo-secure-store
+      // kural #9: expo-secure-store. "Beni hatirla" kapaliysa token kalici YAZILMAZ.
+      await tokenStore.save(result.tokens, remember);
       setSession(result.user, result.memberships);
       router.replace('/ana-sayfa');
     } catch (error) {
@@ -78,6 +80,13 @@ export default function LoginScreen() {
           )}
         />
 
+        <Pressable style={styles.remember} onPress={() => setRemember((v) => !v)}>
+          <View style={[styles.checkbox, remember && styles.checkboxOn]}>
+            {remember ? <Text style={styles.checkmark}>✓</Text> : null}
+          </View>
+          <Text style={styles.rememberText}>{tr.login.remember}</Text>
+        </Pressable>
+
         {serverError ? <Text style={styles.serverError}>{serverError}</Text> : null}
 
         <Pressable style={styles.button} onPress={onSubmit} disabled={isSubmitting}>
@@ -110,6 +119,20 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   error: { color: '#dc2626', fontSize: 12, marginTop: 4 },
+  remember: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 },
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  checkboxOn: { backgroundColor: '#0f172a', borderColor: '#0f172a' },
+  checkmark: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  rememberText: { fontSize: 13, color: '#334155' },
   serverError: {
     color: '#b91c1c',
     backgroundColor: '#fef2f2',

@@ -195,5 +195,16 @@ describe('Cari hesaplar (e2e)', () => {
     it('satici tarafi /buyers/me ucunu kullanamaz', async () => {
       await http().get('/v1/buyers/me').set(auth(tokens.s1Admin!)).expect(403);
     });
+
+    it('alici kendi ekstresini yuruyen bakiyeyle ceker (mobil sonsuz kaydirma)', async () => {
+      const res = await http()
+        .get('/v1/buyers/me/statement?limit=5')
+        .set(auth(tokens.buyer1!))
+        .expect(200);
+
+      expect(res.body.data.length).toBeGreaterThan(0);
+      expect(res.body.data[0].runningBalance).toMatch(/^-?\d+\.\d{2}$/);
+      expect(res.body.meta.total).toBeGreaterThan(5); // sayfalama meta'si dolu
+    });
   });
 });

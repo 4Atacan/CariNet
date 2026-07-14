@@ -3,6 +3,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 import {
+  AppError,
+  ErrorCode,
   UserRole,
   buyerListQuerySchema,
   createBuyerAccountSchema,
@@ -40,6 +42,15 @@ export class BuyersController {
   @ApiOperation({ summary: 'Alicinin kendi carisi: bakiye, limit, temsilci, son 10 hareket' })
   me(@CurrentUser() user: RequestUser) {
     return this.buyers.dashboard(user);
+  }
+
+  /** Mobil ekstre — ':id/statement' rotasindan ONCE tanimlanmali. */
+  @Roles(UserRole.BUYER_USER)
+  @Get('me/statement')
+  @ApiOperation({ summary: 'Alicinin kendi ekstresi (yuruyen bakiye)' })
+  myStatement(@Query() query: StatementQueryDto, @CurrentUser() user: RequestUser) {
+    if (!user.buyerAccountId) throw new AppError(ErrorCode.TENANT_FORBIDDEN);
+    return this.buyers.statement(user.buyerAccountId, user, query);
   }
 
   @Get(':id')
