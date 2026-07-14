@@ -11,6 +11,7 @@ import { createBuyerAccountSchema, type CreateBuyerAccountInput } from '@carinet
 import { DataTable } from '@/components/data-table';
 import { Alert, Badge, Button, Card, Field, Input, PageHeader, Select } from '@/components/ui';
 import { ApiError, apiGet, apiGetPaged, apiPost, qs } from '@/lib/api';
+import { downloadExcel } from '@/lib/export';
 import { tr } from '@/lib/tr';
 import { type BuyerWithBalance, type Representative } from '@/lib/types';
 import { balanceTone, money } from '@/lib/utils';
@@ -71,7 +72,14 @@ export default function BuyersPage() {
       <PageHeader
         title={tr.buyers.title}
         description={tr.buyers.description}
-        action={<Button onClick={() => setCreating((v) => !v)}>{tr.buyers.new}</Button>}
+        action={
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => void downloadExcel('BUYERS')}>
+              {tr.exports.excel}
+            </Button>
+            <Button onClick={() => setCreating((v) => !v)}>{tr.buyers.new}</Button>
+          </div>
+        }
       />
 
       {creating ? <NewBuyerForm onDone={() => setCreating(false)} /> : null}

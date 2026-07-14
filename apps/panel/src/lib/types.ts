@@ -216,6 +216,53 @@ export interface BulkConfirmResult {
   }[];
 }
 
+// ---------------------------------------------------------------- katalog / iletisim (Faz 4)
+
+export interface Product {
+  id: string;
+  code: string;
+  name: string;
+  unit: string;
+  price: MoneyString | null;
+  currencyCode: string;
+  imageUrl: string | null;
+  isActive: boolean;
+  quantity: string;
+  stockUpdatedAt: string | null;
+}
+
+export interface Campaign {
+  id: string;
+  title: string;
+  body: string;
+  imageUrl: string | null;
+  startsAt: string;
+  endsAt: string;
+  createdAt: string;
+}
+
+export type RequestType = 'SUGGESTION' | 'COMPLAINT' | 'RECONCILIATION_OBJECTION' | 'OTHER';
+export type RequestStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+
+export interface SupportRequest {
+  id: string;
+  buyerAccountId: string;
+  buyerAccount: { id: string; accountCode: string; title: string } | null;
+  type: RequestType;
+  subject: string;
+  body: string;
+  status: RequestStatus;
+  reply: string | null;
+  repliedAt: string | null;
+  createdAt: string;
+}
+
+export interface ExchangeRate {
+  date: string;
+  currencyCode: string;
+  rate: MoneyString;
+}
+
 export interface ImportTotals {
   rowCount: number;
   validCount: number;

@@ -33,7 +33,8 @@ async function reset(): Promise<void> {
   // Seed idempotent: tablolari bosalt (yalniz lokal/test — prod'da CALISTIRILMAZ).
   await prisma.$executeRawUnsafe(`
     TRUNCATE TABLE
-      audit_logs, notifications, import_rows, import_batches, bank_statement_rows,
+      audit_logs, notifications, push_tokens, support_requests,
+      import_rows, import_batches, bank_statement_rows,
       collect_intents, seller_pos_configs, seller_bank_accounts, addresses, campaigns,
       stocks, products, invoice_items, invoices, transactions, representatives,
       account_code_history, account_memberships, invites, seller_members,

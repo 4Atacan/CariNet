@@ -1,8 +1,105 @@
 # PROGRESS.md — CariNet AI Calisma Gunlugu
 
 > Bu dosya oturumlar arasi hafizadir (CLAUDE.md §16.3). Her calisma blogu sonunda guncellenir.
-> **Aktif faz: Faz 3 — Tahsilat (iki kanal)** → tamamlandi. (Faz 1'in "pilot verisi sifir farkla tasindi"
+> **Aktif faz: Faz 4 — Katalog ve Iletisim** → tamamlandi. (Faz 1'in "pilot verisi sifir farkla tasindi"
 > maddesi hala gercek veri bekliyor; kod tarafi bitti.)
+
+---
+
+## 2026-07-14 · Faz 4 — Katalog ve Iletisim (§13)
+
+### Yapilan
+
+**shared (11 yeni unit test):**
+
+- `reminders.ts` — vade hatirlatma kuralinin SAF cekirdegi: `reminderFor(dueDate, asOf)` →
+  vadeye 3 gun kala DUE_SOON, vade gunu DUE_TODAY, vadesi gectikten 1/7/30 gun sonra OVERDUE.
+  Ara gunlerde `null` → **her gun spam yok**.
+- `schemas/catalog.ts` — urun/stok/kampanya/bildirim/push token/kur/talep/export semalari (kural #7).
+
+**api (6 yeni unit test):**
+
+- `products` — CRUD + stok. Stok MUTLAK yazilir (sayim sonucu), artirma/azaltma yok.
+  Alici yalniz AKTIF urunleri gorur (mobil vitrin) — sunucu kisitlar, istemciye guvenilmez.
+- `campaigns` — CRUD + `announce`: kampanyayi TUM alicilara push'lar.
+- `notifications` — bildirim merkezi (hesap bazli liste + rozet + okundu) · `PushService`
+  (Expo Push API, UCRETSIZ → kural #8) · `push_tokens` CRUD.
+- `due-reminder.task` — gunluk 09:00 cronu: FIFO ile ACIK kalemleri bulur, yalniz onlara hatirlatir.
+- `exchange-rates` — TCMB `today.xml` parser (6 unit test) + gunluk 16:00 cronu + Kurlar ucu.
+- `requests` — Talep-Oneri (alici acar, satici yanitlar → bildirim + push).
+- `exports` — Excel disa aktarma (cari/ekstre/urun/risk), CSV injection korumali (§11.3).
+
+**panel:** Urunler (satir ici stok girisi) · Kampanyalar (+ "Duyur" push) · Talepler (yanitla/kapat) ·
+Kurlar · cari/rapor/urun sayfalarina **Excel indir** dugmeleri.
+
+**mobil:** Bildirim merkezi + **rozet** · Vitrin · Kampanyalar+Kurlar · Talep-Oneri ·
+push izni/token kaydi (`expo-notifications`).
+
+### Karar
+
+- **Push, DB bildiriminden AYRI ve SONRA gonderilir.** `notify()` finansal islemle ayni
+  transaction'da yazar (geri alinirsa bildirim de gitmez); `sendPush()` commit'ten SONRA cagrilir.
+  Aksi halde geri alinan bir tahsilat icin telefon calardi. Push basarisiz olsa bile bildirim
+  merkezi calisir (kayit DB'de durur) → push BEST-EFFORT'tur, hata firlatmaz.
+- **Vade hatirlatmasi yalniz ACIK kalemlere gider.** Cron, Faz 2'nin FIFO yaslandirmasini kullanir:
+  alici borcunu odemisse o fatura icin telefon calmaz. **Odemis musteriye "borcunuz var" demek
+  en kotu hatadir** — e2e bunu ayrica test eder (odenmis cari → bildirim YOK).
+- **Hatirlatma tekrari 1/7/30. gunlerle sinirli.** Her gun bildirim atmak uygulamayi sessize aldirir.
+- **Push tokeni SATICI bazli DEGIL** (§6.2): kullanici+cihaz bazlidir, `PushToken` tenant modeli
+  degildir. Bildirimin hangi hesaba ait oldugu PAYLOAD'da tasinir (`sellerId` + `buyerAccountId`);
+  mobil rozeti aktif hesaba gore hesaplar. Hesap degistirince token yeniden kaydedilmez.
+- **Kampanya bildirimi HER CARI icin ayri yazilir**: ayni kullanici iki carinin uyesiyse iki bildirim
+  alir ve her biri kendi hesabinin rozetine duser (coklu uyelik).
+- **TCMB kurlari BILGI amaclidir.** Faturaya yazilan kur KAYIT ANINDA satira sabitlenir (§7) →
+  gecmise donuk kur degisimi bakiyeyi OYNATMAZ (kural #2). Kur XML'i string olarak okunur,
+  `parseFloat`'a sokulmaz; JPY gibi 100 birim uzerinden kote edilenler birime indirgenir.
+- **Excel'de metin hucreleri notrlestirilir** (§11.3): cari unvani `=cmd|...` ise dosyayi acan
+  muhasebecinin makinesinde komut calisirdi. `neutralizeFormula` basina tirnak koyar.
+
+### Sema degisikligi
+
+Iki tablo eklendi (migration `20260714…_catalog_push_requests`) — ikisi de §13 Faz 4'un gerektirdigi
+ama §7'de karsiligi olmayan tablolar:
+
+- `push_tokens` (user_id, token UNIQUE, platform, device_name) — §6.2 "push token kullanici+cihaz
+  bazlidir" diyor ama tablosu yoktu. Tenant modeli DEGILDIR.
+- `support_requests` (+ `RequestType`, `RequestStatus` enumlari) — Talep-Oneri; §9'daki devir
+  mutabakati itirazi da buradan akar. Tenant modelidir.
+
+### Duzeltilen hatalar
+
+- **`/exports?target=BUYERS` ile ALICI, saticinin TUM cari listesini (unvan, bakiye, limit)
+  indirebiliyordu** — IDOR. Rol kapisi eklendi, e2e ile kanitlandi.
+- `transactions.e2e` "bakiye = Σ hareket" testi ham tutar toplami varsayiyordu; baska bir test
+  o cariye dovizli satir birakirsa kiriliyordu (sira bagimli, ara ara patliyordu). §6.4'e uygun
+  sekilde TRY normalizasyonuyla karsilastiracak hale getirildi → iki ardisik tam kosuda kararli.
+- `pnpm add expo-notifications` SDK 54 ile uyumsuz surumu (57) cekti; `npx expo install` ile
+  SDK'ya uygun surume (0.32) alindi. **Expo paketleri her zaman `expo install` ile eklenmeli.**
+
+### VARSAYIM:
+
+- Push GONDERIMI Expo sunucusuna cikar; e2e testleri BIZIM tarafimizdaki her seyi kanitlar
+  (dogru kullanicilar, dogru hesap baglami, dogru payload, rozet). Gercek cihaza teslimi
+  fiziksel cihazla dogrulanir (Expo Go'da push izni gerekir; simulatorde token uretilmez).
+- `expo-notifications` uygulama icinde bildirim gosterimi icin `app.json` plugin kaydi eklendi;
+  standalone build'de ayrica FCM/APNs kimlik bilgileri gerekir (Faz 5 magaza isi).
+
+### Bitti kriteri kontrolu (Faz 4)
+
+- [x] (1) **Vadesi yaklasan fatura cron bildirimi uretiyor** — `catalog.e2e-spec.ts`: vadesi TAM
+      3 gun sonra olan fatura icin DUE_REMINDER bildirimi, dogru satici + dogru cari baglamiyla,
+      metinde belge no ve "3 gun". Ayrica **odenmis cariye bildirim GITMIYOR** (FIFO).
+- [x] (2) **Kampanya push'u hesap baglamiyla ulasiyor** — duyuru sonrasi her cari icin AYRI
+      bildirim, `sellerId` dogru, ayni kullanicinin iki carisi icin iki ayri kayit.
+- [x] Urunler+stoklar (panel CRUD + mobil vitrin) · Kampanyalar+push · Bildirim merkezi (hesap bazli
+      rozet) · Talep-Oneri · TCMB kur cronu + Kurlar ekrani · Excel disa aktarma (CSV injection korumali)
+- [x] Kapilar: **86 unit** (74 shared + 12 api) · **135 e2e** (9 dosya) · lint/typecheck/build temiz
+
+### Sonraki adim
+
+Faz 5 — Sertlestirme ve Yayin: §11'in TUM maddeleri (release kapisi) · 2FA zorunlu + revoke-all ·
+VPS+Cloudflare sertlestirme · sifreli yedek→R2 + restore provasi · Trivy+ZAP CI'da · Sentry ×3 ·
+hesap silme akisi (Apple) · KVKK sayfalari · Coolify prod deploy · yuk hedefi: 100 eszamanli ekstre <500ms.
 
 ---
 

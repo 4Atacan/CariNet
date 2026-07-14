@@ -1,7 +1,7 @@
 import { type INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { computeBalance, sub } from '@carinet/shared';
+import { computeBalance, sub, toMoney } from '@carinet/shared';
 import {
   SEED_PASSWORD,
   USERS,
@@ -49,9 +49,13 @@ describe('Hareketler (e2e)', () => {
       const rows = await rawPrisma.transaction.findMany({
         where: { buyerAccountId: ids.a2Id, isCancelled: false },
       });
-      // Seed'de a2 yalniz TRY hareket tasir → ham toplam ile TRY normalizasyonu ayni sonucu verir.
+      // §6.4: bakiye TRY'dir → her satir KENDI kuruyla TRY'ye cevrilir (yuvarlama satir bazinda).
+      // Ham tutar toplami varsayimi yapilmaz: bu cariye baska bir test dovizli satir birakabilir.
       const expected = computeBalance(
-        rows.map((r) => ({ type: r.type, amount: r.amount.toString() })),
+        rows.map((r) => ({
+          type: r.type,
+          amount: toMoney(r.amount.mul(r.exchangeRate).toString()),
+        })),
       );
 
       expect(await balanceOf(ids.a2Id, tokens.s1Admin!)).toBe(expected);

@@ -17,12 +17,17 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AddressesModule } from './modules/addresses/addresses.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BuyersModule } from './modules/buyers/buyers.module';
+import { CampaignsModule } from './modules/campaigns/campaigns.module';
 import { CollectionsModule } from './modules/collections/collections.module';
+import { ExchangeRatesModule } from './modules/exchange-rates/exchange-rates.module';
+import { ExportsModule } from './modules/exports/exports.module';
 import { ImportsModule } from './modules/imports/imports.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { ProductsModule } from './modules/products/products.module';
 import { ReportsModule } from './modules/reports/reports.module';
 import { RepresentativesModule } from './modules/representatives/representatives.module';
+import { RequestsModule } from './modules/requests/requests.module';
 import { SellersModule } from './modules/sellers/sellers.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { HealthController } from './modules/health/health.controller';
@@ -51,6 +56,11 @@ import { HealthController } from './modules/health/health.controller';
     NotificationsModule,
     CollectionsModule,
     SellersModule,
+    ProductsModule,
+    CampaignsModule,
+    ExchangeRatesModule,
+    RequestsModule,
+    ExportsModule,
   ],
   controllers: [HealthController],
   providers: [

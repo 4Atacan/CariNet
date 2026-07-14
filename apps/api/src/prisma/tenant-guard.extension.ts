@@ -26,6 +26,9 @@ export const TENANT_MODELS: ReadonlySet<string> = new Set([
   'Invite',
   'Notification',
   'SellerMember',
+  'SupportRequest',
+  // PushToken BILEREK yok: token kullanici+cihaz bazlidir, satici bazli degil (§6.2).
+  // Hangi baglamda bildirim gittigi PAYLOAD'da tasinir (sellerId + buyerAccountId).
 ]);
 
 const WHERE_OPS = new Set([

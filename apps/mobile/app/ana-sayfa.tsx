@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { Link, router } from 'expo-router';
 import { PieChart } from 'react-native-gifted-charts';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -10,6 +11,7 @@ import {
   type MoneyString,
 } from '@carinet/shared';
 import { apiGet, apiPost, tokenStore } from '@/lib/api';
+import { registerForPush, unregisterPush } from '@/lib/push';
 import { balanceColor, limitUsage, money, trDate } from '@/lib/format';
 import { useSession } from '@/store/session';
 import { tr } from '@/lib/tr';
@@ -76,11 +78,24 @@ export default function HomeScreen() {
     retry: false,
   });
 
+  /** Rozet: AKTIF hesabin okunmamis bildirim sayisi (§13 Faz 4). */
+  const unread = useQuery({
+    queryKey: ['unread'],
+    queryFn: () => apiGet<{ unread: number }>('/notifications/unread-count'),
+    retry: false,
+  });
+
+  // Push izni + token kaydi. Reddedilirse sessizce gecer; bildirim merkezi yine calisir.
+  useEffect(() => {
+    void registerForPush();
+  }, []);
+
   const switchAccount = useMutation({
     mutationFn: (membershipId: string) =>
       apiPost<LoginResponse>('/auth/switch-account', { membershipId }),
     onSuccess: async (result) => {
       await tokenStore.save(result.tokens); // yeni baglam → yeni token cifti (§6.2)
+      // Token AYNI kalir (kullanici+cihaz bazli); rozet/bildirimler yeni hesaba gore tazelenir.
       await queryClient.invalidateQueries();
     },
   });
@@ -88,6 +103,7 @@ export default function HomeScreen() {
   const logout = useMutation({
     mutationFn: async () => {
       const refreshToken = await tokenStore.getRefresh();
+      await unregisterPush(); // baska hesap bu cihazda bizim bildirimlerimizi almasin
       await apiPost<{ ok: true }>('/auth/logout', { refreshToken });
     },
     onSettled: async () => {
@@ -123,9 +139,21 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.greeting}>
-          {tr.home.greeting}, {me.data.fullName}
-        </Text>
+        <View style={styles.topRow}>
+          <Text style={styles.greeting}>
+            {tr.home.greeting}, {me.data.fullName}
+          </Text>
+
+          {/* Rozet AKTIF hesabin okunmamis bildirimlerini sayar (§6.2). */}
+          <Pressable style={styles.bell} onPress={() => router.push('/bildirimler')}>
+            <Text style={styles.bellIcon}>🔔</Text>
+            {(unread.data?.unread ?? 0) > 0 ? (
+              <View style={styles.bellBadge}>
+                <Text style={styles.bellBadgeText}>{unread.data!.unread}</Text>
+              </View>
+            ) : null}
+          </Pressable>
+        </View>
 
         {data ? (
           <>
@@ -200,6 +228,19 @@ export default function HomeScreen() {
             <Pressable style={styles.payButton} onPress={() => router.push('/odeme')}>
               <Text style={styles.payButtonText}>{tr.pay.cta}</Text>
             </Pressable>
+
+            {/* §13 Faz 4 — vitrin, kampanya/kurlar, talepler. */}
+            <View style={styles.quickRow}>
+              <Pressable style={styles.quickTile} onPress={() => router.push('/vitrin')}>
+                <Text style={styles.quickText}>{tr.catalog.title}</Text>
+              </Pressable>
+              <Pressable style={styles.quickTile} onPress={() => router.push('/kampanyalar')}>
+                <Text style={styles.quickText}>{tr.campaigns.title}</Text>
+              </Pressable>
+              <Pressable style={styles.quickTile} onPress={() => router.push('/talepler')}>
+                <Text style={styles.quickText}>{tr.requests.title}</Text>
+              </Pressable>
+            </View>
 
             {data.account.representative ? (
               <View style={styles.repCard}>
@@ -365,6 +406,31 @@ const styles = StyleSheet.create({
   bucketLabel: { fontSize: 11, color: '#64748b' },
   bucketValue: { fontSize: 12, fontWeight: '600', color: '#0f172a', marginTop: 2 },
   bucketEmpty: { color: '#cbd5e1', fontWeight: '400' },
+  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  bell: { padding: 6 },
+  bellIcon: { fontSize: 22 },
+  bellBadge: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    backgroundColor: '#dc2626',
+    borderRadius: 999,
+    minWidth: 18,
+    height: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  bellBadgeText: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  quickRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  quickTile: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  quickText: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
   payButton: {
     marginTop: 12,
     backgroundColor: '#0f172a',

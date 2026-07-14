@@ -87,6 +87,21 @@ enum NotificationType {
   SYSTEM
 }
 
+/// Talep-Oneri (§13 Faz 4). Devir mutabakatina itiraz da buradan akar (§9).
+enum RequestType {
+  SUGGESTION
+  COMPLAINT
+  RECONCILIATION_OBJECTION
+  OTHER
+}
+
+enum RequestStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
 // ---------------------------------------------------------------- kimlik (§6.2)
 
 /// Tenant koku. slug misafir odeme URL'inde kullanilir.
@@ -119,6 +134,7 @@ model Seller {
   importTemplates ImportTemplate[]
   invites        Invite[]
   notifications  Notification[]
+  supportRequests SupportRequest[]
   auditLogs      AuditLog[]
 
   @@map("sellers")
@@ -144,9 +160,30 @@ model User {
   refreshTokens       RefreshToken[]
   passwordResetTokens PasswordResetToken[]
   notifications       Notification[]
+  pushTokens          PushToken[]
+  supportRequests     SupportRequest[]
   auditLogs           AuditLog[]
 
   @@map("users")
+}
+
+/// §6.2 — "Push token kullanici+cihaz bazlidir." Tenant modeli DEGILDIR: ayni kullanici
+/// birden cok saticinin carisinde olabilir; hangi baglamda bildirim gittigi PAYLOAD'da
+/// tasinir (sellerId + buyerAccountId), tokenda degil.
+model PushToken {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  /// Expo push token (ExponentPushToken[...]). Cihaz basina benzersiz.
+  token      String   @unique
+  platform   String
+  deviceName String?  @map("device_name")
+  lastSeenAt DateTime @default(now()) @map("last_seen_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_tokens")
 }
 
 /// Satici personeli (§6.2)
@@ -188,6 +225,7 @@ model BuyerAccount {
   invites        Invite[]
   collectIntents CollectIntent[]
   notifications  Notification[]
+  supportRequests SupportRequest[]
 
   @@unique([sellerId, accountCode])
   @@index([sellerId])
@@ -391,6 +429,32 @@ model Campaign {
 
   @@index([sellerId, startsAt, endsAt])
   @@map("campaigns")
+}
+
+/// Talep-Oneri (§13 Faz 4): alici yazar, satici yanitlar. Devir mutabakatina itiraz da
+/// buradan akar (§9). Finansal kayit DEGILDIR → kapatilabilir ama silinmez (izlenebilirlik).
+model SupportRequest {
+  id             String        @id @default(cuid())
+  sellerId       String        @map("seller_id")
+  buyerAccountId String        @map("buyer_account_id")
+  createdById    String        @map("created_by")
+  type           RequestType
+  subject        String
+  body           String
+  status         RequestStatus @default(OPEN)
+  reply          String?
+  repliedById    String?       @map("replied_by")
+  repliedAt      DateTime?     @map("replied_at")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  seller       Seller       @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyerAccount BuyerAccount @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
+  createdBy    User         @relation(fields: [createdById], references: [id])
+
+  @@index([sellerId, status])
+  @@index([buyerAccountId])
+  @@map("support_requests")
 }
 
 model Address {

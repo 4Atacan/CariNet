@@ -9,5 +9,7 @@ import { ReportsService } from './reports.service';
   imports: [LedgerModule],
   controllers: [ReportsController],
   providers: [ReportsRepository, ReportsService, PdfService],
+  /** Excel disa aktarma risk foyunu buradan alir (tek dogruluk kaynagi). */
+  exports: [ReportsService],
 })
 export class ReportsModule {}

@@ -15,8 +15,9 @@ import {
 } from 'recharts';
 import { sum, type MoneyString } from '@carinet/shared';
 import { DataTable } from '@/components/data-table';
-import { Badge, Card, PageHeader, Select, Stat } from '@/components/ui';
+import { Badge, Button, Card, PageHeader, Select, Stat } from '@/components/ui';
 import { apiGet, qs } from '@/lib/api';
+import { downloadExcel } from '@/lib/export';
 import { tr } from '@/lib/tr';
 import { type BuyerWithBalance } from '@/lib/types';
 import { balanceTone, money, trDate } from '@/lib/utils';
@@ -123,7 +124,15 @@ export default function ReportsPage() {
 
   return (
     <>
-      <PageHeader title={tr.reports.title} description={tr.reports.description} />
+      <PageHeader
+        title={tr.reports.title}
+        description={tr.reports.description}
+        action={
+          <Button variant="outline" onClick={() => void downloadExcel('RISK')}>
+            {tr.exports.excel}
+          </Button>
+        }
+      />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         <Stat

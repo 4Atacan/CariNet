@@ -908,37 +908,37 @@
     "16": [
       "claude",
       "claude_0_kimlik_ve_kapsam",
-      "claude_10_api_s\u00f6zle\u015fmesi",
-      "claude_11_g\u00fcvenlik_8_katman_faz_5_in_release_kap\u0131s\u0131_\u00f6neri_de\u011fil_gereksi\u0307ni\u0307m",
-      "claude_12_kodlama_standartlar\u0131",
-      "claude_13_geli\u015ftirme_fazlar\u0131_s\u0131ral\u0131_bitti_kriteri_sa\u011flanmadan_faz_kapanmaz",
-      "claude_14_yap\u0131lmayacaklar_a\u00e7\u0131k_yasaklar",
-      "claude_15_definition_of_done_her_g\u00f6rev",
-      "claude_16_ai_\u00e7al\u0131\u015fma_protokol\u00fc_claude_code",
-      "claude_1_de\u011fi\u015fmez_kurallar_non_negotiable_12_madde",
-      "claude_2_teknoloji_y\u0131\u011f\u0131n\u0131_tamam\u0131_\u00fccretsiz_s\u00fcr\u00fcmler_bilinen_iyi_alt_s\u0131n\u0131r_kurulumda_en_g\u00fcncel_kararl\u0131y\u0131_kullan",
-      "claude_3_depo_yap\u0131s\u0131",
+      "claude_10_api_sözleşmesi",
+      "claude_11_güvenlik_8_katman_faz_5_in_release_kapısı_öneri_değil_gereksi̇ni̇m",
+      "claude_12_kodlama_standartları",
+      "claude_13_geliştirme_fazları_sıralı_bitti_kriteri_sağlanmadan_faz_kapanmaz",
+      "claude_14_yapılmayacaklar_açık_yasaklar",
+      "claude_15_definition_of_done_her_görev",
+      "claude_16_ai_çalışma_protokolü_claude_code",
+      "claude_1_değişmez_kurallar_non_negotiable_12_madde",
+      "claude_2_teknoloji_yığını_tamamı_ücretsiz_sürümler_bilinen_iyi_alt_sınır_kurulumda_en_güncel_kararlıyı_kullan",
+      "claude_3_depo_yapısı",
       "claude_4_ortam_ve_komutlar",
-      "claude_5_graphify_obsidian_entegrasyonu_token_tasarrufu_katman\u0131_si\u0307stemi\u0307n_par\u00e7asi",
+      "claude_5_graphify_obsidian_entegrasyonu_token_tasarrufu_katmanı_si̇stemi̇n_parçasi",
       "claude_6_1_multi_tenancy",
-      "claude_6_2_kimlik_k\u00fcresel_kullan\u0131c\u0131_\u00fcyelikler_kri\u0307ti\u0307k_1_1_kurma",
+      "claude_6_2_kimlik_küresel_kullanıcı_üyelikler_kri̇ti̇k_1_1_kurma",
       "claude_6_3_jwt",
-      "claude_6_4_bakiye_y\u00fcr\u00fcyen_bakiye_kural_2_nin_sql_i",
-      "claude_6_5_tahsilat_soyutlamas\u0131",
-      "claude_6_6_import_hatt\u0131",
+      "claude_6_4_bakiye_yürüyen_bakiye_kural_2_nin_sql_i",
+      "claude_6_5_tahsilat_soyutlaması",
+      "claude_6_6_import_hattı",
       "claude_6_mimari_kararlar",
       "claude_7_veri_modeli",
-      "claude_8_tahsilat_sistemi_i\u0307ki_kanal_platform_para_ak\u0131\u015f\u0131na_gi\u0307rmez",
-      "claude_9_veri_ge\u00e7i\u015fi_onboarding_birikmi\u015f_cari_fatura_tarih\u00e7esi",
+      "claude_8_tahsilat_sistemi_i̇ki_kanal_platform_para_akışına_gi̇rmez",
+      "claude_9_veri_geçişi_onboarding_birikmiş_cari_fatura_tarihçesi",
       "claude_claude_md_carinet_b2b_cari_hesap_platformu_ana_beyin",
       "claude_enumlar_packages_shared",
-      "claude_faz_0_i\u0307skelet_ve_temel_1_2_hafta",
-      "claude_faz_1_\u00e7ekirdek_mvp_5_7_hafta",
+      "claude_faz_0_i̇skelet_ve_temel_1_2_hafta",
+      "claude_faz_1_çekirdek_mvp_5_7_hafta",
       "claude_faz_2_finansal_raporlar_2_3_hafta",
-      "claude_faz_3_tahsilat_i\u0307ki_kanal_3_4_hafta_8",
-      "claude_faz_4_katalog_ve_i\u0307leti\u015fim_3_4_hafta",
-      "claude_faz_5_sertle\u015ftirme_ve_yay\u0131n_2_hafta",
-      "claude_tablolar_prisma_\u015femas\u0131n\u0131n_kayna\u011f\u0131"
+      "claude_faz_3_tahsilat_i̇ki_kanal_3_4_hafta_8",
+      "claude_faz_4_katalog_ve_i̇letişim_3_4_hafta",
+      "claude_faz_5_sertleştirme_ve_yayın_2_hafta",
+      "claude_tablolar_prisma_şemasının_kaynağı"
     ],
     "17": [
       "apps_api_src_config_env",
@@ -2476,8 +2476,41 @@
       "why": "inferred connection - not explicitly stated in source"
     }
   ],
-  "tokens": {
-    "input": 0,
-    "output": 0
-  }
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `StatementCard()` connect `types.ts` to `TxClient`?",
+      "why": "High betweenness centrality (0.077) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `row()` connect `row` to `tenant-guard.extension.ts`, `BuyersService`, `pdf.service.ts`, `collections.ts`, `TxClient`, `InvoicesRepository`?",
+      "why": "High betweenness centrality (0.074) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `PrismaService` connect `PrismaService` to `BuyersService`, `ImportsRepository`, `TenantContext`, `pdf.service.ts`, `.log`, `.constructor`, `RepresentativesController`, `index.ts`, `PrismaModule`, `collections.module.ts`, `AuthRepository`, `TxClient`, `InvoicesRepository`, `TransactionsRepository`, `app.module.ts`?",
+      "why": "High betweenness centrality (0.061) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)` to the rest of the system?",
+      "why": "648 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `types.ts` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.07185354691075514 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `BuyersService` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.05209274314965372 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `ImportsRepository` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.050721954831543875 - nodes in this community are weakly interconnected."
+    }
+  ]
 }

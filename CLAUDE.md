@@ -1,6 +1,6 @@
 # CLAUDE.md — CariNet · B2B Cari Hesap Platformu (Ana Beyin)
 
-> **Sürüm 3.2 · 14.07.2026 — Tek doğruluk kaynağı.** (3.2: Faz 3 kapandı → §7'ye `sellers.seller_no`, §10'a tahsilat uçları ve hata kodları eklendi. 3.1: §6.4 bakiye SQL'i dövizli satırlar için TRY normalizasyonuyla güncellendi.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
+> **Sürüm 3.3 · 14.07.2026 — Tek doğruluk kaynağı.** (3.3: Faz 4 kapandı → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
 
 ---
 
@@ -233,7 +233,9 @@ CollectChannel = 'BANK_TRANSFER' | 'CARD_POS';
 | `import_batches`             | seller_id, source_type(EXCEL_GENERIC/PRESET_*/UBL_XML/WIZARD), file_url, status, totals jsonb, created_by                                                                                     | Geçiş + rutin importlar (§9)                                                                              |
 | `import_rows`                | batch_id, row_no, raw jsonb, parsed jsonb, status, error                                                                                                                                      | Staging + izlenebilirlik                                                                                  |
 | `notifications`              | user_id, seller_id, buyer_account_id?, title, body, type, read_at                                                                                                                             | Hesap bazlı rozet                                                                                         |
-| `exchange_rates`             | date, currency_code, rate                                                                                                                                                                     | TCMB cron                                                                                                 |
+| `push_tokens`                | user_id, token UNIQUE, platform, device_name?, last_seen_at                                                                                                                                   | **Tenant tablosu DEĞİL** — token kullanıcı+cihaz bazlı (§6.2); hesap bağlamı push payload'ında taşınır    |
+| `support_requests`           | seller_id, buyer_account_id, created_by, type, subject, body, status, reply?, replied_by?, replied_at?                                                                                        | Talep-Öneri; §9 devir mutabakatı itirazı da buradan akar                                                  |
+| `exchange_rates`             | date, currency_code, rate                                                                                                                                                                     | TCMB cron — **bilgi amaçlı**; satıra sabitlenen kuru DEĞİŞTİRMEZ                                          |
 | `audit_logs`                 | actor_user_id, seller_id?, action, entity, entity_id, before/after jsonb                                                                                                                      | Finansal değişimde zorunlu                                                                                |
 | `refresh_tokens`             | user_id, membership_ctx, family_id, token_hash, expires_at, revoked_at                                                                                                                        | Rotasyon + reuse                                                                                          |
 
@@ -287,7 +289,7 @@ Taban `/v1` · REST+JSON · Swagger `/docs` (prod'da auth arkasında) her zaman 
 
 Hata kodları `packages/shared/errors.ts`: VALIDATION_ERROR · UNAUTHORIZED · TENANT_FORBIDDEN · NOT_FOUND · CREDIT_LIMIT_EXCEEDED · INTENT_EXPIRED · INTENT_NOT_PENDING · ALREADY_CONFIRMED · ROW_ALREADY_MATCHED · POS_NOT_CONFIGURED · POS_SIGNATURE_INVALID · IMPORT_ROW_ERRORS…
 Sayfalama `?page=&limit=` (vars. 20, maks 100) + meta; ekstrede `?from=&to=`. Tarihler ISO 8601 UTC; arayüz Europe/Istanbul. State değiştiren uçlar idempotency gözetir; misafir uçlar Turnstile'lı.
-Uç grupları: `/auth` (login, refresh, logout, forgot, switch-account, sessions, revoke-all) · `/buyers` · `/transactions` · `/invoices` · `/reports` (risk, periodic-balance, average-due, statement-pdf) · `/collections` (intents, intents/:id/confirm·cancel·pay, installments, guest/{sellerSlug}, statement-import → matches → confirm, pos-callback/{provider}) · `/sellers` (me, bank-accounts, pos-config, pos-providers) · `/imports` (wizard, ubl, presets) · `/products` · `/campaigns` · `/notifications` · `/exchange-rates` · `/audit`.
+Uç grupları: `/auth` (login, refresh, logout, forgot, switch-account, sessions, revoke-all) · `/buyers` · `/transactions` · `/invoices` · `/reports` (risk, periodic-balance, average-due, statement-pdf) · `/collections` (intents, intents/:id/confirm·cancel·pay, installments, guest/{sellerSlug}, statement-import → matches → confirm, pos-callback/{provider}) · `/sellers` (me, bank-accounts, pos-config, pos-providers) · `/imports` (wizard, ubl, presets) · `/products` (+ :id/stock, :id/active) · `/campaigns` (+ :id/announce) · `/notifications` (unread-count, read, tokens) · `/requests` (+ :id/reply·close) · `/exchange-rates` (latest, sync) · `/exports` (zarf dışında XLSX) · `/audit`.
 
 ---
 
@@ -350,15 +352,19 @@ Conventional Commits (`feat(api): …`, `docs: …`) · `main` + `feature/*` · 
       **✅ Bitti:** (1) sahte ekstreyle havale akışı uçtan uca ✅; (2) sandbox POS: hosted 3D paketi→imzalı callback→bakiye düşer ✅; (3) aynı intent/satır/callback ikinci kez işlenemiyor ✅ — üçü de `collections.e2e-spec.ts` ile kanıtlı (23 test).
 
 > **Karta çekilen ≠ cariden düşülen:** taksit vade farkı bankanındır; borç yalnız intent tutarı kadar düşer.
-> **Push gönderimi Faz 4'te:** ortak hat bildirimi `notifications` tablosuna yazar; cihaza push Faz 4.
+> **Push:** ortak hat bildirimi `notifications` tablosuna yazar; cihaza gönderim Faz 4'te eklendi (commit sonrası, best-effort).
 > **Pilotun POS sağlayıcısı belli olunca** ikinci adaptör yazılır (§8: "adaptörler talep geldikçe eklenir").
 
-### Faz 4 — Katalog ve İletişim (3–4 hafta)
+### Faz 4 — Katalog ve İletişim (3–4 hafta) — ✅ TAMAMLANDI (14.07.2026)
 
-- [ ] Ürünler+Stoklar (panel CRUD+mobil vitrin) · Kampanyalar+push duyuru
-- [ ] Push altyapısı: yeni fatura, vade hatırlatma (cron), tahsilat onayı — payload hesap bağlamlı
-- [ ] Bildirim merkezi (hesap bazlı rozet) · Talep-Öneri · TCMB kur cronu+Kurlar ekranı · Excel dışa aktarma (CSV injection korumalı)
-      **✅ Bitti:** vadesi yaklaşan seed faturası cron bildirimi üretiyor; kampanya push'u test cihazına hesap bağlamıyla ulaşıyor.
+- [x] Ürünler+Stoklar (panel CRUD+mobil vitrin) · Kampanyalar+push duyuru
+- [x] Push altyapısı (Expo Push API, ücretsiz): vade hatırlatma (cron), tahsilat onayı, kampanya, talep yanıtı — payload hesap bağlamlı (`sellerId`+`buyerAccountId`)
+- [x] Bildirim merkezi (hesap bazlı rozet) · Talep-Öneri · TCMB kur cronu+Kurlar ekranı · Excel dışa aktarma (CSV injection korumalı)
+      **✅ Bitti:** vadesi yaklaşan fatura cron bildirimi üretiyor ✅; kampanya push'u hesap bağlamıyla ulaşıyor ✅ — `catalog.e2e-spec.ts` (21 test).
+
+> **Vade hatırlatması yalnız AÇIK kalemlere gider** (FIFO — Faz 2): ödemiş müşteriye "borcunuz var" denmez. Tekrar 1/7/30. günlerle sınırlı (her gün spam yok).
+> **Push, DB bildiriminden sonra ve transaction DIŞINDA gönderilir** — geri alınan bir işlem için telefon çalmaz. Push best-effort: başarısız olsa da bildirim merkezi çalışır.
+> **Kur bilgi amaçlıdır** — faturaya yazılan kur kayıt anında satıra sabitlenir (§7), geçmişe dönük kur değişimi bakiyeyi oynatmaz.
 
 ### Faz 5 — Sertleştirme ve Yayın (2 hafta)
 

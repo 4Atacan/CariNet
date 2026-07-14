@@ -106,3 +106,22 @@ export const NotificationType = {
 } as const;
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
 export const notificationTypeSchema = z.nativeEnum(NotificationType);
+
+/** Talep-Oneri (§13 Faz 4). Devir mutabakatina itiraz da buradan akar (§9). */
+export const RequestType = {
+  SUGGESTION: 'SUGGESTION',
+  COMPLAINT: 'COMPLAINT',
+  RECONCILIATION_OBJECTION: 'RECONCILIATION_OBJECTION',
+  OTHER: 'OTHER',
+} as const;
+export type RequestType = (typeof RequestType)[keyof typeof RequestType];
+export const requestTypeSchema = z.nativeEnum(RequestType);
+
+export const RequestStatus = {
+  OPEN: 'OPEN',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED',
+  CLOSED: 'CLOSED',
+} as const;
+export type RequestStatus = (typeof RequestStatus)[keyof typeof RequestStatus];
+export const requestStatusSchema = z.nativeEnum(RequestStatus);

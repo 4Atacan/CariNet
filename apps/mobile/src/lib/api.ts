@@ -124,6 +124,8 @@ export const apiGetPaged = <T>(path: string): Promise<{ data: T[]; meta: Paginat
 export const apiPost = <T>(path: string, payload: unknown): Promise<T> =>
   api<T>(path, { method: 'POST', body: JSON.stringify(payload) });
 
+export const apiDelete = <T>(path: string): Promise<T> => api<T>(path, { method: 'DELETE' });
+
 /** Giris/refresh oncesi token gerektirmeyen cagri. */
 export const apiPublicPost = <T>(path: string, payload: unknown): Promise<T> =>
   call<T>(path, { method: 'POST', body: JSON.stringify(payload) });

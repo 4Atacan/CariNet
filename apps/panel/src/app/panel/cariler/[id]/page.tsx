@@ -17,6 +17,7 @@ import {
   apiPost,
   qs,
 } from '@/lib/api';
+import { downloadExcel } from '@/lib/export';
 import { tr } from '@/lib/tr';
 import { type Address, type BuyerDetail, type RiskDetail, type StatementLine } from '@/lib/types';
 import { balanceTone, money, trDate } from '@/lib/utils';
@@ -105,6 +106,18 @@ export default function BuyerDetailPage() {
         action={
           b ? (
             <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() =>
+                  void downloadExcel('TRANSACTIONS', {
+                    buyerAccountId: id,
+                    from: range.from,
+                    to: range.to,
+                  })
+                }
+              >
+                {tr.exports.excel}
+              </Button>
               <Button
                 variant="outline"
                 onClick={() => void downloadStatementPdf(id, b.accountCode)}

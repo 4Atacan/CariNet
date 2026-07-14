@@ -705,13 +705,13 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1784037238.2618163,
-    "ast_hash": "ac7e173336e091e6a9d235ecc94e9f85",
+    "mtime": 1784050354.9137125,
+    "ast_hash": "560b7217ba8e035ba7c9eb57968c6edf",
     "semantic_hash": ""
   },
   "PROGRESS.md": {
-    "mtime": 1784037270.871795,
-    "ast_hash": "f4aaf5f2cb7314acd345d480ed01401e",
+    "mtime": 1784049270.9411197,
+    "ast_hash": "93e2f27bc191786506d4bb33b5a79827",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
@@ -870,7 +870,7 @@
     "semantic_hash": "ce50948f9f852f0dea52e2f3ca5a0760"
   },
   "apps/mobile/expo-env.d.ts": {
-    "mtime": 1784048744.6118534,
+    "mtime": 1784050706.1068187,
     "ast_hash": "0dd9dccdb4b08595bc83df70d6a154d3",
     "semantic_hash": "0dd9dccdb4b08595bc83df70d6a154d3"
   },
@@ -1088,5 +1088,15 @@
     "mtime": 1784047272.6413298,
     "ast_hash": "d69e6d0f6f3f3d052f931a7af7344404",
     "semantic_hash": "d69e6d0f6f3f3d052f931a7af7344404"
+  },
+  "scripts/sandbox-pos-callback.mjs": {
+    "mtime": 1784050594.4371274,
+    "ast_hash": "75469daf0d36831c83dcc5ded9b320b0",
+    "semantic_hash": ""
+  },
+  "CALISTIR.md": {
+    "mtime": 1784050870.191399,
+    "ast_hash": "d7a43ccb4af8ff209f480ae0c082e5ee",
+    "semantic_hash": ""
   }
 }

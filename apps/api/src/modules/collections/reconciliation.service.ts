@@ -14,7 +14,7 @@ import {
 } from '@carinet/shared';
 import { AuditService } from '../../common/audit/audit.service';
 import { PRISMA, type PrismaService } from '../../prisma/prisma.module';
-import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationsService, type NotifyInput } from '../notifications/notifications.service';
 import { CollectionsRepository } from './collections.repository';
 import { IntentFactory } from './intent-factory.service';
 import { type CollectionResult, type ReconcileInput } from './providers/collection-provider';
@@ -42,7 +42,10 @@ export class ReconciliationService {
   ) {}
 
   async apply(input: ReconcileInput, channel: CollectChannel): Promise<CollectionResult> {
-    return this.prisma.$transaction(async (tx) => {
+    /** Push TRANSACTION DISINDA gonderilir: geri alinan bir tahsilat icin telefon otmemeli. */
+    let pushAfterCommit: NotifyInput | null = null;
+
+    const result = await this.prisma.$transaction(async (tx) => {
       const intent = await this.repo.findIntent(input.intentId, tx);
       if (!intent) throw new AppError(ErrorCode.NOT_FOUND, 'Odeme talebi bulunamadi');
 
@@ -129,16 +132,17 @@ export class ReconciliationService {
       }
 
       const members = await this.repo.membersOfAccount(intent.buyerAccountId, tx);
-      await this.notifications.notify(
-        {
-          userIds: members.map((m) => m.userId),
-          buyerAccountId: intent.buyerAccountId,
-          title: 'Odemeniz alindi',
-          body: `${formatMoney(credited)} tutarindaki odemeniz hesabiniza islendi.`,
-          type: NotificationType.COLLECTION_CONFIRMED,
-        },
-        tx,
-      );
+      const notification: NotifyInput = {
+        userIds: members.map((m) => m.userId),
+        sellerId: intent.sellerId,
+        buyerAccountId: intent.buyerAccountId,
+        title: 'Odemeniz alindi',
+        body: `${formatMoney(credited)} tutarindaki odemeniz hesabiniza islendi.`,
+        type: NotificationType.COLLECTION_CONFIRMED,
+        entityId: intent.id,
+      };
+      await this.notifications.notify(notification, tx);
+      pushAfterCommit = notification;
 
       await this.audit.log(
         {
@@ -171,6 +175,10 @@ export class ReconciliationService {
         alreadyConfirmed: false,
       };
     });
+
+    // Commit BASARILI → telefonu simdi caldir (§13 Faz 4 ortak hat: CONFIRMED → CREDIT → push).
+    if (pushAfterCommit) await this.notifications.sendPush(pushAfterCommit);
+    return result;
   }
 }
 
