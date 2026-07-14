@@ -15,6 +15,15 @@ export const createPrismaClient = () =>
 
 export type PrismaService = ReturnType<typeof createPrismaClient>;
 
+/**
+ * $transaction geri cagriminin verdigi istemci: model delegate'leri (dolayisiyla tenant
+ * eklentisi) ayni, yalniz baglanti/transaction yonetimi yok.
+ */
+export type TxClient = Omit<
+  PrismaService,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends' | '$use'
+>;
+
 @Global()
 @Module({
   providers: [{ provide: PRISMA, useFactory: createPrismaClient }],

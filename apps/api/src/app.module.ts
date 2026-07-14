@@ -10,9 +10,13 @@ import { RolesGuard } from './common/guards/roles.guard';
 import { TenantGuard } from './common/guards/tenant.guard';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { TenantContextMiddleware } from './common/middleware/tenant-context.middleware';
+import { AuditModule } from './common/audit/audit.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BuyersModule } from './modules/buyers/buyers.module';
+import { InvoicesModule } from './modules/invoices/invoices.module';
+import { RepresentativesModule } from './modules/representatives/representatives.module';
+import { TransactionsModule } from './modules/transactions/transactions.module';
 import { HealthController } from './modules/health/health.controller';
 
 @Module({
@@ -24,8 +28,12 @@ import { HealthController } from './modules/health/health.controller';
       skipIf: () => process.env.NODE_ENV === 'test',
     }),
     PrismaModule,
+    AuditModule,
     AuthModule,
     BuyersModule,
+    RepresentativesModule,
+    TransactionsModule,
+    InvoicesModule,
   ],
   controllers: [HealthController],
   providers: [
