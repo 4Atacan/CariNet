@@ -1,8 +1,9 @@
 # CALISTIR.md — Lokalde ayaga kaldirma ve test rehberi
 
 > Her seyi sifirdan calistirmak icin gereken komutlar. Terminali **repo kokunde** ac.
-> `pnpm` taninmiyorsa: terminali kapat-ac (PATH eski). Gecici cozum:
-> `$env:PATH = "$env:APPDATA\npm;$env:PATH"`
+>
+> **`pnpm` taninmiyorsa** → §11'e bak (kullanici PATH'i sismis, kalici cozumu orada).
+> Hemen calisan yol: komutun basina `npx` koy → `npx pnpm dev`
 
 ---
 
@@ -190,9 +191,58 @@ docker compose down -v       # veritabanini da siler (seed'i tekrar calistirman 
 
 | Belirti                                              | Cozum                                                                    |
 | ---------------------------------------------------- | ------------------------------------------------------------------------ |
-| `pnpm : The term 'pnpm' is not recognized`           | Terminali kapat-ac (PATH eski).                                          |
+| `pnpm : The term 'pnpm' is not recognized`           | §11 (PATH sismis). Ara cozum: `npx pnpm ...`                             |
 | `Can't reach database server at localhost:5432`      | Docker Desktop kapali → ac, `docker compose up -d`.                      |
 | Panel build hatasi: `EINVAL ... .next\server\chunks` | `rm -rf apps/panel/.next` sonra tekrar dene (OneDrive/Windows kaynakli). |
 | Expo: "Project is incompatible with Expo Go"         | Expo Go'yu magazadan guncelle (proje SDK 54).                            |
 | Telefon API'ye baglanamiyor                          | `apps/mobile/.env` icindeki IP guncel mi? Ayni Wi-Fi'da misin?           |
 | Port 3000/3001 dolu                                  | `npx kill-port 3000 3001` veya calisan node islemlerini kapat.           |
+
+---
+
+## 11. "pnpm taninmiyor" — kullanici PATH'i sismis
+
+**Belirti:** Yeni terminal acsan da `pnpm` bulunamiyor, ama dosya diskte duruyor
+(`C:\Users\Ayurd\AppData\Roaming\npm\pnpm.cmd`).
+
+**Sebep:** Kullanici PATH'ine makine PATH'i defalarca kopyalanmis (4200 karakter, 102 giris,
+30 tekrar). Sisen deger uygulanmiyor ve listenin SONUNDAKI `AppData\Roaming\npm` dusuyor.
+Terminali kapat-ac ise yaramaz — sorun terminalde degil, kayitli PATH'in kendisinde.
+
+**Hemen calisan cozum (PATH'e dokunmadan):** komutun basina `npx` koy.
+
+```powershell
+npx pnpm dev
+npx pnpm --filter @carinet/mobile dev
+```
+
+`npx`, Node ile birlikte makine PATH'inde oldugu icin her zaman bulunur.
+
+**Kalici cozum:** kullanici PATH'ini tekrarlardan temizle (102 giris → 12).
+Silinen her sey ya makine PATH'inde zaten var ya da birebir tekrar; kayip olmaz.
+
+```powershell
+# 1) Once YEDEK al
+[Environment]::GetEnvironmentVariable('PATH','User') | Out-File "$env:USERPROFILE\path-yedek.txt" -Encoding utf8
+
+# 2) Makine PATH'inde zaten olanlari ve tekrarlari at
+$u = [Environment]::GetEnvironmentVariable('PATH','User')
+$m = [Environment]::GetEnvironmentVariable('PATH','Machine')
+$mSet = [System.Collections.Generic.HashSet[string]]::new(
+  [string[]]($m -split ';' | Where-Object { $_ } | ForEach-Object { $_.TrimEnd('\') }),
+  [StringComparer]::OrdinalIgnoreCase)
+$seen = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+$clean = foreach ($p in ($u -split ';')) {
+  if (-not $p) { continue }
+  $n = $p.TrimEnd('\')
+  if ($mSet.Contains($n)) { continue }
+  if (-not $seen.Add($n)) { continue }
+  $p
+}
+[Environment]::SetEnvironmentVariable('PATH', ($clean -join ';'), 'User')
+
+# 3) Terminali KAPAT-AC, sonra dogrula
+pnpm --version
+```
+
+Geri almak istersen: `[Environment]::SetEnvironmentVariable('PATH', (Get-Content "$env:USERPROFILE\path-yedek.txt" -Raw).Trim(), 'User')`
