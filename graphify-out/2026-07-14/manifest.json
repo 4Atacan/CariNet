@@ -1,11 +1,11 @@
 {
   ".husky/_/applypatch-msg": {
-    "mtime": 1783952758.450938,
+    "mtime": 1784012173.238098,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/commit-msg": {
-    "mtime": 1783952758.4499385,
+    "mtime": 1784012173.2370987,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
@@ -15,67 +15,67 @@
     "semantic_hash": "15239a01c5554e56ff745570fb583a91"
   },
   ".husky/_/husky.sh": {
-    "mtime": 1783952758.4554524,
+    "mtime": 1784012173.2410986,
     "ast_hash": "13871d2ab13e8423790ecb2c01c78c18",
     "semantic_hash": "13871d2ab13e8423790ecb2c01c78c18"
   },
   ".husky/_/post-applypatch": {
-    "mtime": 1783952758.4519398,
+    "mtime": 1784012173.2390978,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/post-checkout": {
-    "mtime": 1783952758.4529388,
+    "mtime": 1784012173.2400978,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/post-commit": {
-    "mtime": 1783952758.450938,
+    "mtime": 1784012173.238098,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/post-merge": {
-    "mtime": 1783952758.4544458,
+    "mtime": 1784012173.2400978,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/post-rewrite": {
-    "mtime": 1783952758.4529388,
+    "mtime": 1784012173.2390978,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-applypatch": {
-    "mtime": 1783952758.4519398,
+    "mtime": 1784012173.238098,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-auto-gc": {
-    "mtime": 1783952758.4554524,
+    "mtime": 1784012173.2410986,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-commit": {
-    "mtime": 1783952758.4489393,
+    "mtime": 1784012173.2360947,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-merge-commit": {
-    "mtime": 1783952758.4499385,
+    "mtime": 1784012173.2370987,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-push": {
-    "mtime": 1783952758.4544458,
+    "mtime": 1784012173.2410986,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-rebase": {
-    "mtime": 1783952758.4529388,
+    "mtime": 1784012173.2390978,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/prepare-commit-msg": {
-    "mtime": 1783952758.4499385,
+    "mtime": 1784012173.2370987,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
     "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
@@ -100,9 +100,9 @@
     "semantic_hash": "a80566a019b0165061ab7b72e861c92d"
   },
   "apps/api/package.json": {
-    "mtime": 1783947087.0749228,
-    "ast_hash": "b870dbd0ea4281cbaf0068d98afd93f3",
-    "semantic_hash": "b870dbd0ea4281cbaf0068d98afd93f3"
+    "mtime": 1784012173.285263,
+    "ast_hash": "583fca203687a9c3e3fe1c9c8d3fce17",
+    "semantic_hash": ""
   },
   "apps/api/prisma/migrations/20260713131804_init/migration.sql": {
     "mtime": 1783948684.7153661,
@@ -115,8 +115,8 @@
     "semantic_hash": "04edec074c5b8a206ec7996251e81c55"
   },
   "apps/api/src/app.module.ts": {
-    "mtime": 1784011779.2782354,
-    "ast_hash": "d335b1f9693e249aa3f7e3f78d748256",
+    "mtime": 1784013177.4684007,
+    "ast_hash": "04d4d21cd62318c7d738530cfff4cf7a",
     "semantic_hash": ""
   },
   "apps/api/src/common/crypto/encryption.spec.ts": {
@@ -270,9 +270,9 @@
     "semantic_hash": ""
   },
   "apps/api/src/prisma/tenant-guard.extension.ts": {
-    "mtime": 1783948960.5043924,
-    "ast_hash": "91c39c42ffac80e0b157b436a14baf3b",
-    "semantic_hash": "91c39c42ffac80e0b157b436a14baf3b"
+    "mtime": 1784013183.0450952,
+    "ast_hash": "ea88df392fcf29f72c15b016269ccffb",
+    "semantic_hash": ""
   },
   "apps/api/test/auth.e2e-spec.ts": {
     "mtime": 1783947038.6598537,
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "packages/shared/src/enums.ts": {
-    "mtime": 1783934713.3971183,
-    "ast_hash": "fef2324a5a00a5840475e2a4aac12d66",
-    "semantic_hash": "fef2324a5a00a5840475e2a4aac12d66"
+    "mtime": 1784012676.7510152,
+    "ast_hash": "3627cf924b045d4e9626f162938de780",
+    "semantic_hash": ""
   },
   "packages/shared/src/errors.ts": {
     "mtime": 1783934740.6387262,
@@ -520,8 +520,8 @@
     "semantic_hash": "26d1c809dc7995b594c89202350f0d01"
   },
   "packages/shared/src/index.ts": {
-    "mtime": 1784011296.6595652,
-    "ast_hash": "6d8e65acbd978f2ef7ef40f82524ae87",
+    "mtime": 1784012770.6112702,
+    "ast_hash": "3c7374c1a6c0f390d69f0723f5d48151",
     "semantic_hash": ""
   },
   "packages/shared/src/money.spec.ts": {
@@ -722,6 +722,76 @@
   "pnpm-workspace.yaml": {
     "mtime": 1783950699.2654812,
     "ast_hash": "aaec41e9c6667c1883743fa5a7e21a51",
+    "semantic_hash": ""
+  },
+  "apps/api/prisma/migrations/20260714070343_import_pipeline/migration.sql": {
+    "mtime": 1784012623.2905717,
+    "ast_hash": "5daa898ded4d9b4eb0b96b58558e8931",
+    "semantic_hash": ""
+  },
+  "apps/api/src/common/storage/storage.module.ts": {
+    "mtime": 1784012833.3174598,
+    "ast_hash": "73b238ad17cdcd49218500d192fb910f",
+    "semantic_hash": ""
+  },
+  "apps/api/src/common/storage/storage.service.ts": {
+    "mtime": 1784012829.589313,
+    "ast_hash": "5b7efe7f8c9e416c8461e447cee4f976",
+    "semantic_hash": ""
+  },
+  "apps/api/src/modules/imports/imports.controller.ts": {
+    "mtime": 1784013158.085755,
+    "ast_hash": "95c4da82a5f9d76eab1a87d7894e9609",
+    "semantic_hash": ""
+  },
+  "apps/api/src/modules/imports/imports.module.ts": {
+    "mtime": 1784013162.1530607,
+    "ast_hash": "d770d8fcfb17187c6b0eb179a73af907",
+    "semantic_hash": ""
+  },
+  "apps/api/src/modules/imports/imports.repository.ts": {
+    "mtime": 1784013075.492499,
+    "ast_hash": "52f44bfc65ca8df10b2d62b6811a5c1d",
+    "semantic_hash": ""
+  },
+  "apps/api/src/modules/imports/imports.service.ts": {
+    "mtime": 1784013506.6235626,
+    "ast_hash": "395d02dafd71ab6f118db46b4cae78e9",
+    "semantic_hash": ""
+  },
+  "apps/api/src/modules/imports/parsers/excel.parser.ts": {
+    "mtime": 1784012858.9943407,
+    "ast_hash": "d53ee03306e9537ae457cb409fe9fd0d",
+    "semantic_hash": ""
+  },
+  "apps/api/src/modules/imports/parsers/ubl.parser.ts": {
+    "mtime": 1784012929.2266095,
+    "ast_hash": "b62ff618eef4b781c9383c519ab7e8f7",
+    "semantic_hash": ""
+  },
+  "apps/api/test/imports.e2e-spec.ts": {
+    "mtime": 1784013506.8405836,
+    "ast_hash": "b0f80e097d9862443bc383458e5ceffa",
+    "semantic_hash": ""
+  },
+  "packages/shared/src/import-cells.ts": {
+    "mtime": 1784012704.6486669,
+    "ast_hash": "aad23b9a79fd68e628fd69e65209330d",
+    "semantic_hash": ""
+  },
+  "packages/shared/src/import-mapping.ts": {
+    "mtime": 1784012670.3483436,
+    "ast_hash": "7d5fb222cae9878bdd1e58137921dbb4",
+    "semantic_hash": ""
+  },
+  "packages/shared/src/import.spec.ts": {
+    "mtime": 1784013506.9321456,
+    "ast_hash": "255a33381298770fe25a92ae367ee440",
+    "semantic_hash": ""
+  },
+  "packages/shared/src/schemas/imports.ts": {
+    "mtime": 1784012880.5784647,
+    "ast_hash": "a06d24dd5655b2791ba9cc615164f06a",
     "semantic_hash": ""
   }
 }
