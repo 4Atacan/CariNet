@@ -68,12 +68,13 @@ Yeni e2e dosyalari: `buyers`, `transactions`, `invoices`, `imports` (her birinde
 8. Ham SQL (`$queryRaw`) tenant eklentisinin DISINDADIR → `ledger.repository.ts` her sorguda
    `seller_id`'yi baglamdan okuyup ELLE koyar; baglam yoksa sorgu atilmaz.
 
-### CLAUDE.md ile UYUSMAZLIK (§16.4 — bildirildi, onaysiz kural degistirilmedi)
+### CLAUDE.md ile UYUSMAZLIK → **COZULDU (kullanici onayi, 14.07.2026)**
 
-- **§6.4'un SQL'i ham `amount` topluyor.** Seed'deki USD faturasi `amount = 6000 USD, rate = 38.4210`
+- **§6.4'un SQL'i ham `amount` topluyordu.** Seed'deki USD faturasi `amount = 6000 USD, rate = 38.4210`
   olarak duruyor; ham toplama USD ile TRY'yi karistirir ("tek bir kurus yanlis hesaplanmamali" ilkesine
-  aykiri). Bakiye/ekstre `ROUND(amount × exchange_rate, 2)` ile TRY'ye normalize edildi. Bu bir
-  **genellestirme**dir: TRY satirlarda §6.4 ile ayni sonucu verir. → CLAUDE.md §6.4'un SQL'i guncellenmeli mi?
+  aykiri). Bakiye/ekstre `ROUND(amount × exchange_rate, 2)` ile TRY'ye normalize edildi (satir bazli
+  yuvarlama). TRY satirlarda kur 1 oldugu icin eski ifadeye indirgenir.
+  → **CLAUDE.md §6.4 guncellendi (surum 3.1)**; kod zaten bu haldeydi, degisiklik gerekmedi.
 
 ### VARSAYIM (CLAUDE.md §7'ye eklenmesi onerilir)
 

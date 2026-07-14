@@ -1,6 +1,6 @@
 # CLAUDE.md — CariNet · B2B Cari Hesap Platformu (Ana Beyin)
 
-> **Sürüm 3.0 · 13.07.2026 — Tek doğruluk kaynağı.** Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
+> **Sürüm 3.1 · 14.07.2026 — Tek doğruluk kaynağı.** (3.1: §6.4 bakiye SQL'i dövizli satırlar için TRY normalizasyonuyla güncellendi.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
 
 ---
 
@@ -158,12 +158,18 @@ Access ≈15 dk; refresh ≈30 gün rotasyonlu + **reuse tespiti** → aile topt
 
 ### 6.4 Bakiye / yürüyen bakiye (kural #2'nin SQL'i)
 
+**Bakiye TRY cinsindendir.** `transactions.amount` belgenin KENDİ para biriminde tutulur (`currency_code`), kur kayıt anında satıra sabitlenir (`exchange_rate`, §7) → bakiye/ekstre daima TRY karşılığı üzerinden hesaplanır: `ROUND(amount × exchange_rate, 2)`. Yuvarlama **satır bazında** yapılır (kural #1, kuruş farkı oluşmaz). TRY satırlarda kur 1'dir, yani ifade ham `amount` toplamına indirgenir.
+
 ```sql
-SELECT t.*, SUM(CASE WHEN t.type='DEBIT' THEN t.amount ELSE -t.amount END)
-  OVER (PARTITION BY t.buyer_account_id ORDER BY t.document_date, t.id) AS running_balance
+SELECT t.*,
+       ROUND(t.amount * t.exchange_rate, 2) AS amount_try,
+       SUM((CASE WHEN t.type='DEBIT' THEN 1 ELSE -1 END) * ROUND(t.amount * t.exchange_rate, 2))
+         OVER (PARTITION BY t.buyer_account_id ORDER BY t.document_date, t.id) AS running_balance
 FROM transactions t
 WHERE t.seller_id = $1 AND t.buyer_account_id = $2 AND t.is_cancelled = FALSE;
 ```
+
+Yürüyen bakiye TÜM tarihçe üzerinden hesaplanır, tarih filtresi SONRA uygulanır (devir dışarıda kalmasın). Tek uygulama noktası: `apps/api/src/modules/ledger/`. `$queryRaw` tenant eklentisinin dışındadır → `seller_id` her ham sorguda elle konur (kural #3).
 
 Ortalama vade = tutar ağırlıklı. Risk föyü yaşlandırma kovaları: 0-30 / 31-60 / 61-90 / 90+ gün.
 
