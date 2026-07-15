@@ -1,0 +1,19 @@
+# §11.7 — bagimlilik ve GitHub Actions guncellemeleri (Dependabot, ucretsiz).
+# npm: pnpm workspace kok lockfile'i taranir. github-actions: SHA-pinli action'lari gunceller.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # Gurultuyu azalt: minor/patch tek PR'da toplanir; major ayri gelir (kirilma riski).
+      minor-and-patch:
+        update-types: ['minor', 'patch']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

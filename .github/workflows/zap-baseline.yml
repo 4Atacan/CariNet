@@ -1,0 +1,28 @@
+name: ZAP Baseline (DAST — §11.7)
+
+# §11 — ZAP baseline STAGING'e karsi calisir (calisan bir hedef gerekir, statik CI degil).
+# Kullanim: elle tetikle (hedef URL gir) VEYA haftalik cron (repo degiskeni STAGING_URL tanimliysa).
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Taranacak staging URL (or. https://staging.carinet.app)
+        required: true
+  schedule:
+    - cron: '0 3 * * 1' # her Pazartesi 03:00 UTC
+
+jobs:
+  zap:
+    name: ZAP baseline taramasi
+    runs-on: ubuntu-latest
+    # Cron'da yalniz STAGING_URL tanimliysa calis (tanimsizsa sessizce atla, CI'yi kirmaz).
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.STAGING_URL != '' }}
+    steps:
+      - uses: actions/checkout@c915c33a16f01166c17c4e35fe1d4085a2d71adb # v4
+      - name: ZAP Baseline
+        uses: zaproxy/action-baseline@906a3c93ffde4864839d31a93daadcbd2737b4da # v0.12.0
+        with:
+          target: ${{ github.event.inputs.target || vars.STAGING_URL }}
+          # Baseline pasif taramadir; bulgular bilgilendiricidir, PR/deploy'u bloke etmez.
+          fail_action: false
+          cmd_options: '-a'
