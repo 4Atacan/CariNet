@@ -1,8 +1,101 @@
 # PROGRESS.md — CariNet AI Calisma Gunlugu
 
 > Bu dosya oturumlar arasi hafizadir (CLAUDE.md §16.3). Her calisma blogu sonunda guncellenir.
-> **Aktif faz: Faz 4 — Katalog ve Iletisim** → tamamlandi. (Faz 1'in "pilot verisi sifir farkla tasindi"
-> maddesi hala gercek veri bekliyor; kod tarafi bitti.)
+> **Aktif faz: Faz 5 — Sertlestirme ve Yayin** → KOD TARAFI tamamlandi; OPS tarafi (VPS/Cloudflare/
+> Coolify/Sentry/restore provasi) kullaniciyi bekliyor (bkz. docs/DEPLOY.md). Faz 1'in "pilot verisi"
+> maddesi de gercek veri bekliyor.
+
+---
+
+## 2026-07-15 · Faz 5 — Sertlestirme ve Yayin (§11, §13)
+
+Bes bloga bolunerek uygulandi. **Kod tarafi tamam + testli; ops tarafi runbook (docs/DEPLOY.md).**
+
+### Yapilan
+
+**Blok A — Kimlik sertlestirme (§11.1):**
+
+- **2FA enrollment** (§11 icin eksikti — yalniz dogrulama vardi): `/auth/2fa/setup` (aday secret +
+  otpauth QR URL), `/enable` (dogrula → 10 tek seferlik yedek kod), `/disable` (parola + kod).
+  Giriste TOTP **veya** yedek kurtarma kodu (tek kullanimlik, kullanildikca dusulur).
+- **Sizmis parola kontrolu** (HIBP k-anonimlik): SHA-1'in yalniz ilk 5 hanesi servise gider →
+  parola aga cikmaz. UCRETSIZ, anahtarsiz (kural #8). Sifirlama + davet kabulu yollarina baglandi.
+- Sema: `users.totp_pending_secret / totp_enabled_at / backup_codes / anonymized_at`.
+- 8 unit (HIBP prefix/suffix + yedek kod hash) + 8 e2e (setup→giris→yedek kod→kapatma).
+
+**Blok B — Hesap silme + KVKK (§11.6):**
+
+- `DELETE /auth/account`: kimlik **anonimlestirilir** (email/telefon null, ad degisir, oturumlar
+  iptal), finansal kayitlar satici defterinde KALIR (kural #4, yasal saklama). Uyelik + push token silinir.
+- Mobil: hesap-sil ekrani (parola + "HESABIMI SIL" onayi) + gizlilik/KVKK ekrani + ana sayfa linkleri.
+- Panel: `/gizlilik` herkese acik KVKK aydinlatma metni + giris linki.
+- 4 e2e: yanlis parola reddi, acik onay zorunlulugu, anonimlestirme, **finansal kaydin defterde kalmasi**.
+
+**Blok C — Uygulama sertlestirme (§11.2):**
+
+- **pino + REDACTION** (nestjs-pino baglandi — dep vardi, kullanilmiyordu): parola/token/IBAN/kart/2FA
+  loglara "[gizli]" yazilir (kural #10). Test'te sessiz, dev pretty, prod JSON.
+- **Helmet siki CSP** (frame-ancestors none, object-src none) + **prod HSTS** (preload).
+- **Swagger prod'da sabit-zamanli basic auth** arkasinda; kimlik tanimli degilse `/docs` HIC acilmaz (404).
+- **Gercek boot ile dogrulandi**: CSP/HSTS header'lari, prod /docs=404, pino JSON log.
+
+**Blok D — CI / tedarik zinciri (§11.7):**
+
+- GitHub Actions **SHA'ya pinlendi** (git ls-remote ile gercek SHA'lar; tag tasinabilir, SHA degismez).
+- **Trivy fs** job (bagimlilik acikligi + sir + yanlis yapilandirma; HIGH/CRITICAL'de kirar).
+- **ZAP baseline** workflow (DAST): staging'e karsi elle tetik veya haftalik cron (STAGING_URL degiskeni).
+- **Dependabot**: npm (pnpm workspace, minor/patch grupla) + github-actions, haftalik.
+
+**Blok E — Yedek/restore + deploy runbook (§11.4/5/6):**
+
+- `scripts/backup.sh` (pg_dump | age → R2, duz metin diske dusmez, retention) + `scripts/restore.sh`.
+- `docs/DEPLOY.md`: VPS/UFW/fail2ban, Cloudflare WAF+TLS, Sentry x3 wiring, Coolify prod, restore
+  provasi, **§11 release kontrol listesi** (kod tarafi isaretli, ops tarafi kullaniciya).
+
+### Karar
+
+- **2FA setup parola ister; disable parola + kod ister** — calinmis oturum tek basina 2FA kuramaz/kapatamaz.
+  Yedek kodlar telefon kaybinda kilitlenmeyi onler (App Store bunu bekler); sha256 hash'li saklanir,
+  duz metin YALNIZ enable aninda bir kez doner.
+- **HIBP FAIL-OPEN**: servis erisilemezse kullanici ENGELLENMEZ (ucuncu taraf kesintisi kayit/sifirlamayi
+  kirmasin). Guvenlik icin ideal degil ama erisilebilirlik icin dogru taviz (log'a dusulur).
+- **Hesap silme = anonimlestirme, hard delete DEGIL** (kural #4): finansal kayitlar user_id ile durur ama
+  kimlik cozulmez. e2e bunu ayrica kanitlar (silme sonrasi transaction hala orada).
+- **Sentry KODA GOMULMEDI, runbook'ta**: DSN gerektirir + harici servise veri gonderir (kural #8/#10).
+  Kod `SENTRY_DSN`'i tanir; wiring onayli/DSN'li ortamda yapilir. Bu Faz 5'in tek "ops-only" kod maddesi.
+- **Action'lar SHA'ya, master'a degil**: trivy-action master yerine 0.35.0 tag'inin SHA'sina pinlendi;
+  Dependabot github-actions ekosistemi bunlari gunceller.
+- **Yeni e2e testleri afterAll'da temizlenir**: 2FA/silme testleri seller-1'e cari ekliyordu; tenant
+  sayim testi (tam 3 bekliyor) dosya sirasina gore kiriliyordu → temizlik ile sira-bagimsiz.
+
+### Sema degisikligi
+
+Migration `20260715120000_faz5_2fa_account_deletion`: `users` tablosuna 4 alan (totp_pending_secret,
+totp_enabled_at, backup_codes[], anonymized_at). Finansal veriye dokunulmadi.
+
+### VARSAYIM:
+
+- **Faz 5 "bitti" kriteri kod tarafinda saglandi; ops tarafi (release kapisi §11'in altyapi maddeleri)
+  sunucu + harici hesap gerektirdigi icin kullaniciyi bekliyor** — tipki Faz 1'in "pilot verisi" maddesi
+  gibi. docs/DEPLOY.md bu adimlari ve §11 kontrol listesini tasir; her adim kanidiyla PROGRESS.md'ye islenecek.
+- **HIBP + Sentry** e2e'de kapalidir (ag cagrisi hermetik olmali); HIBP saf mantigi (prefix/suffix) unit
+  testli, Sentry DSN'siz no-op.
+
+### Bitti kriteri kontrolu (Faz 5 — kod tarafi)
+
+- [x] 2FA enrollment + revoke-all (revoke-all Faz 0'dan; enrollment Blok A) · giriste TOTP/yedek kod
+- [x] Hesap silme akisi (Apple) + KVKK sayfalari (panel + mobil)
+- [x] §11.2 uygulama sertlestirme: CSP + HSTS + pino redaction + Swagger prod auth (gercek boot dogrulamasi)
+- [x] Trivy + ZAP CI'da · Dependabot · Actions SHA pin
+- [x] Sifreli yedek + restore scriptleri + restore provasi rehberi
+- [ ] **Ops (§11.4/5/8): VPS/Cloudflare/Coolify sertlestirme, Sentry x3 DSN, restore provasi kaniti,
+      prod deploy, yuk hedefi** → docs/DEPLOY.md, KULLANICI ADIMI
+- [x] Kapilar: **94 unit** (74 shared + 20 api) · **147 e2e** (11 dosya) · lint/typecheck/build temiz
+
+### Sonraki adim
+
+Ops adimlari (docs/DEPLOY.md) yurutulup §11 kontrol listesi %100'lenince + aylik restore provasi
+kanitlaninca Faz 5 "bitti". Ardindan pilot satici go-live (Faz 1 pilot verisi geçis sihirbaziyla).
 
 ---
 

@@ -1,6 +1,6 @@
 # CLAUDE.md — CariNet · B2B Cari Hesap Platformu (Ana Beyin)
 
-> **Sürüm 3.3 · 14.07.2026 — Tek doğruluk kaynağı.** (3.3: Faz 4 kapandı → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
+> **Sürüm 3.4 · 15.07.2026 — Tek doğruluk kaynağı.** (3.4: Faz 5 KOD tarafı kapandı → §13'e 2FA enrollment/hesap silme/CSP/pino/HIBP/CI-Trivy-ZAP/yedek işaretlendi, §10'a `/auth/2fa/*` + `DELETE /auth/account`, `users`'a 4 alan [totp_pending_secret, totp_enabled_at, backup_codes, anonymized_at]; ops release kapısı `docs/DEPLOY.md`'de. 3.3: Faz 4 → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
 
 ---
 
@@ -214,7 +214,7 @@ CollectChannel = 'BANK_TRANSFER' | 'CARD_POS';
 | Tablo                        | Kritik alanlar                                                                                                                                                                                | Not                                                                                                       |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | `sellers`                    | name, slug UNIQUE, **seller_no SERIAL UNIQUE**, logo_url, is_active                                                                                                                           | Tenant kökü; slug misafir ödeme URL'inde. `seller_no` YALNIZ referans kodundadır (dış ID'ler cuid — §6.1) |
-| `users`                      | email? UNIQUE, phone? UNIQUE, password_hash, totp_secret?, is_active                                                                                                                          | Küresel kimlik (§6.2)                                                                                     |
+| `users`                      | email? UNIQUE, phone? UNIQUE, password_hash, totp_secret?, totp_pending_secret?, totp_enabled_at?, backup_codes[], anonymized_at?, is_active                                                  | Küresel kimlik (§6.2); 2FA enrollment + hesap silme alanları Faz 5 (§11.1/§11.6)                          |
 | `seller_members`             | user_id, seller_id, role(ADMIN/STAFF)                                                                                                                                                         | Satıcı personeli                                                                                          |
 | `buyer_accounts`             | seller_id, account_code, title, vkn_tckn?, credit_limit, representative_id                                                                                                                    | (seller_id, account_code) UNIQUE; VKN → UBL eşleşme + tekilleştirme                                       |
 | `account_code_history`       | buyer_account_id, old_code, changed_at                                                                                                                                                        | Havale açıklamaları eski kodla gelebilir                                                                  |
@@ -289,7 +289,7 @@ Taban `/v1` · REST+JSON · Swagger `/docs` (prod'da auth arkasında) her zaman 
 
 Hata kodları `packages/shared/errors.ts`: VALIDATION_ERROR · UNAUTHORIZED · TENANT_FORBIDDEN · NOT_FOUND · CREDIT_LIMIT_EXCEEDED · INTENT_EXPIRED · INTENT_NOT_PENDING · ALREADY_CONFIRMED · ROW_ALREADY_MATCHED · POS_NOT_CONFIGURED · POS_SIGNATURE_INVALID · IMPORT_ROW_ERRORS…
 Sayfalama `?page=&limit=` (vars. 20, maks 100) + meta; ekstrede `?from=&to=`. Tarihler ISO 8601 UTC; arayüz Europe/Istanbul. State değiştiren uçlar idempotency gözetir; misafir uçlar Turnstile'lı.
-Uç grupları: `/auth` (login, refresh, logout, forgot, switch-account, sessions, revoke-all) · `/buyers` · `/transactions` · `/invoices` · `/reports` (risk, periodic-balance, average-due, statement-pdf) · `/collections` (intents, intents/:id/confirm·cancel·pay, installments, guest/{sellerSlug}, statement-import → matches → confirm, pos-callback/{provider}) · `/sellers` (me, bank-accounts, pos-config, pos-providers) · `/imports` (wizard, ubl, presets) · `/products` (+ :id/stock, :id/active) · `/campaigns` (+ :id/announce) · `/notifications` (unread-count, read, tokens) · `/requests` (+ :id/reply·close) · `/exchange-rates` (latest, sync) · `/exports` (zarf dışında XLSX) · `/audit`.
+Uç grupları: `/auth` (login, refresh, logout, forgot, switch-account, sessions, revoke-all, **2fa/setup·enable·disable**, **DELETE account**) · `/buyers` · `/transactions` · `/invoices` · `/reports` (risk, periodic-balance, average-due, statement-pdf) · `/collections` (intents, intents/:id/confirm·cancel·pay, installments, guest/{sellerSlug}, statement-import → matches → confirm, pos-callback/{provider}) · `/sellers` (me, bank-accounts, pos-config, pos-providers) · `/imports` (wizard, ubl, presets) · `/products` (+ :id/stock, :id/active) · `/campaigns` (+ :id/announce) · `/notifications` (unread-count, read, tokens) · `/requests` (+ :id/reply·close) · `/exchange-rates` (latest, sync) · `/exports` (zarf dışında XLSX) · `/audit`.
 
 ---
 
@@ -366,11 +366,22 @@ Conventional Commits (`feat(api): …`, `docs: …`) · `main` + `feature/*` · 
 > **Push, DB bildiriminden sonra ve transaction DIŞINDA gönderilir** — geri alınan bir işlem için telefon çalmaz. Push best-effort: başarısız olsa da bildirim merkezi çalışır.
 > **Kur bilgi amaçlıdır** — faturaya yazılan kur kayıt anında satıra sabitlenir (§7), geçmişe dönük kur değişimi bakiyeyi oynatmaz.
 
-### Faz 5 — Sertleştirme ve Yayın (2 hafta)
+### Faz 5 — Sertleştirme ve Yayın (2 hafta) — KOD TARAFI TAMAM (15.07.2026); OPS bekliyor
 
-- [ ] §11'in TÜM maddeleri işaretli (release kapısı) · 2FA zorunlu · revoke-all ucu
-- [ ] VPS+Cloudflare sertleştirme · şifreli yedek→R2 + **restore provası**
-- [ ] Trivy+ZAP CI'da · Sentry ×3 · hesap silme akışı (Apple) · KVKK sayfaları
+**Kod tarafı (bu oturumda, testli — bkz. PROGRESS.md 15.07.2026):**
+
+- [x] **2FA enrollment** (`/auth/2fa/setup·enable·disable` + yedek kodlar) · girişte TOTP/recovery · revoke-all (Faz 0)
+- [x] **Hesap silme / anonimleştirme** (`DELETE /auth/account`, finansal kayıt kalır) + KVKK sayfaları (panel + mobil)
+- [x] **§11.2 sertleştirme**: Helmet sıkı CSP + prod HSTS · **pino redaction** · Swagger prod basic auth (gerçek boot doğrulaması)
+- [x] **Sızmış parola** (HIBP k-anonimlik, fail-open, §11.1)
+- [x] **CI**: Trivy fs + ZAP baseline + Dependabot + Actions SHA pin (§11.7)
+- [x] **Şifreli yedek + restore** scriptleri (pg_dump | age → R2) + restore provası rehberi
+
+**Ops tarafı (release kapısı — sunucu/hesap gerektirir → `docs/DEPLOY.md`, KULLANICI ADIMI):**
+
+- [ ] VPS+Cloudflare sertleştirme (UFW/fail2ban/SSH · WAF/TLS/HSTS/Turnstile) · şifreli yedek→R2 + **restore provası kanıtı**
+- [ ] **Sentry ×3** DSN wiring (kod `SENTRY_DSN`'i tanır; DSN gerektirdiği için koda gömülmedi — kural #8/#10)
+- [ ] 2FA **zorunlu** SELLER_ADMIN/PLATFORM_ADMIN (kod prod'da uygular; adminler kurulumu tamamlamalı)
 - [ ] Coolify prod deploy · Pages'e panel · mağaza paketleri + demo hesap · yük hedefi: 100 eşzamanlı ekstre <500ms
       **✅ Bitti:** güvenlik listesi %100 · restore bir kez kanıtlı · uygulama mağaza incelemesinde · prod izleniyor.
 
