@@ -314,6 +314,16 @@ export default function HomeScreen() {
 
         {active ? null : null}
 
+        <View style={styles.footerLinks}>
+          <Link href="/gizlilik" style={styles.footerLink}>
+            {tr.legal.link}
+          </Link>
+          <Text style={styles.footerSep}>·</Text>
+          <Link href="/hesap-sil" style={styles.footerLink}>
+            {tr.legal.deleteLink}
+          </Link>
+        </View>
+
         <Pressable style={styles.logout} onPress={() => logout.mutate()}>
           <Text style={styles.logoutText}>{tr.home.logout}</Text>
         </Pressable>
@@ -475,7 +485,16 @@ const styles = StyleSheet.create({
   rowMeta: { fontSize: 12, color: '#64748b', marginTop: 2 },
   rowAmount: { fontSize: 14, fontWeight: '600' },
   badge: { color: '#16a34a', fontSize: 16 },
-  logout: { marginTop: 24, alignItems: 'center' },
+  footerLinks: {
+    marginTop: 28,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+  },
+  footerLink: { color: '#64748b', fontSize: 12 },
+  footerSep: { color: '#cbd5e1' },
+  logout: { marginTop: 16, alignItems: 'center' },
   logoutText: { color: '#dc2626', fontSize: 14, fontWeight: '500' },
   link: { color: '#0f172a', fontSize: 13, fontWeight: '600' },
 });

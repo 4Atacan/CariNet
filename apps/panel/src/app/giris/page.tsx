@@ -79,6 +79,13 @@ export default function LoginPage() {
             {isSubmitting ? tr.login.submitting : tr.login.submit}
           </button>
         </form>
+
+        <a
+          href="/gizlilik"
+          className="mt-6 block text-center text-xs text-slate-400 hover:text-slate-600"
+        >
+          Gizlilik ve KVKK
+        </a>
       </div>
     </main>
   );

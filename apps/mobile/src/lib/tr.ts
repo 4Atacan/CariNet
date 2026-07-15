@@ -143,5 +143,22 @@ export const tr = {
     reply: 'Satici yaniti',
     empty: 'Henuz talep acmadiniz.',
   },
+  legal: {
+    title: 'Gizlilik ve KVKK',
+    link: 'Gizlilik ve KVKK',
+    deleteLink: 'Hesabimi sil',
+  },
+  deleteAccount: {
+    title: 'Hesabimi sil',
+    intro:
+      'Hesabinizi silerseniz kimlik bilgileriniz (ad, e-posta, telefon) anonimlestirilir ve tum oturumlariniz kapatilir. Bu islem GERI ALINAMAZ.',
+    financialNote:
+      'Yasal saklama geregi fatura ve hareket kayitlari satici firmanin defterinde kalir; ancak bu kayitlar artik sizin kimliginizle iliskilendirilmez.',
+    passwordLabel: 'Sifreniz',
+    confirmLabel: 'Onaylamak icin "HESABIMI SIL" yazin',
+    confirmPhrase: 'HESABIMI SIL',
+    submit: 'Hesabimi kalici olarak sil',
+    cancel: 'Vazgec',
+  },
   common: { loading: 'Yukleniyor...', error: 'Bir hata olustu.', back: 'Geri' },
 } as const;

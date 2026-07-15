@@ -126,6 +126,10 @@ export const apiPost = <T>(path: string, payload: unknown): Promise<T> =>
 
 export const apiDelete = <T>(path: string): Promise<T> => api<T>(path, { method: 'DELETE' });
 
+/** Govdeli DELETE (ornek: hesap silme parola dogrulamasi ister). */
+export const apiDeleteBody = <T>(path: string, payload: unknown): Promise<T> =>
+  api<T>(path, { method: 'DELETE', body: JSON.stringify(payload) });
+
 /** Giris/refresh oncesi token gerektirmeyen cagri. */
 export const apiPublicPost = <T>(path: string, payload: unknown): Promise<T> =>
   call<T>(path, { method: 'POST', body: JSON.stringify(payload) });
