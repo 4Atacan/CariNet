@@ -64,8 +64,15 @@ describe('Hesap silme / anonimlestirme (e2e §11.6)', () => {
     });
   });
 
+  // Test verisi seed'i kirletmesin (baska dosyalar cari SAYAR) → dosya sirasindan bagimsiz kal.
   afterAll(async () => {
     await app.close();
+    await rawPrisma.transaction.deleteMany({ where: { buyerAccountId: accountId } });
+    await rawPrisma.auditLog.deleteMany({ where: { actorUserId: userId } });
+    await rawPrisma.refreshToken.deleteMany({ where: { userId } });
+    await rawPrisma.accountMembership.deleteMany({ where: { userId } });
+    await rawPrisma.user.deleteMany({ where: { id: userId } });
+    await rawPrisma.buyerAccount.deleteMany({ where: { id: accountId } });
     await rawPrisma.$disconnect();
   });
 

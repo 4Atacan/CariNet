@@ -31,6 +31,10 @@ export const envSchema = z.object({
   TURNSTILE_SECRET: z.string().optional(),
   SENTRY_DSN: z.string().optional(),
 
+  /** §11.2 — prod'da Swagger /docs basic auth kimligi. Ikisi de bossa /docs prod'da HIC acilmaz. */
+  SWAGGER_USER: z.string().optional(),
+  SWAGGER_PASSWORD: z.string().optional(),
+
   PANEL_ORIGIN: z.string().default('http://localhost:3000'),
   /** POS callback URL'i saglayiciya bu adresle verilir (§8). */
   API_PUBLIC_URL: z.string().default('http://localhost:3001'),

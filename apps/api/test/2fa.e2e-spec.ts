@@ -14,6 +14,8 @@ describe('2FA kurulumu ve giris (e2e §11.1)', () => {
   let app: INestApplication;
   let secret: string;
   let backupCodes: string[];
+  let userId: string;
+  let accountId: string;
   const http = () => request(app.getHttpServer());
 
   beforeAll(async () => {
@@ -33,17 +35,25 @@ describe('2FA kurulumu ve giris (e2e §11.1)', () => {
       },
       update: {},
     });
+    accountId = account.id;
     // Ayni SEED_PASSWORD'un argon2 hash'ini kopyalariz (yeni hash uretmeye gerek yok).
     const user = await rawPrisma.user.create({
       data: { email: EMAIL, fullName: '2FA Test', passwordHash: src.passwordHash },
     });
+    userId = user.id;
     await rawPrisma.accountMembership.create({
       data: { userId: user.id, buyerAccountId: account.id },
     });
   });
 
+  // Test verisi seed'i kirletmesin (baska dosyalar cari SAYAR) → dosya sirasindan bagimsiz kal.
   afterAll(async () => {
     await app.close();
+    await rawPrisma.auditLog.deleteMany({ where: { actorUserId: userId } });
+    await rawPrisma.refreshToken.deleteMany({ where: { userId } });
+    await rawPrisma.accountMembership.deleteMany({ where: { userId } });
+    await rawPrisma.user.deleteMany({ where: { id: userId } });
+    await rawPrisma.buyerAccount.deleteMany({ where: { id: accountId } });
     await rawPrisma.$disconnect();
   });
 
