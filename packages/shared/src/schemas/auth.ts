@@ -26,9 +26,55 @@ export const loginSchema = z.object({
     .string()
     .regex(/^\d{6}$/, 'Dogrulama kodu 6 haneli olmali')
     .optional(),
+  /** §11.1 — telefon kaybinda yedek kurtarma kodu (2FA yerine gecer, tek kullanimlik). */
+  recoveryCode: z.string().trim().min(8).max(24).optional(),
   sellerCode: z.string().trim().min(1).max(64).optional(),
 });
 export type LoginInput = z.infer<typeof loginSchema>;
+
+// -------------------------------------------------------------- 2FA kurulumu (§11.1)
+
+/** Kurulumu baslat: aday secret + otpauth URL doner. Oturum + parola dogrulamasi gerekir. */
+export const twoFactorSetupSchema = z.object({
+  password: z.string().min(1, 'Sifre gerekli'),
+});
+export type TwoFactorSetupInput = z.infer<typeof twoFactorSetupSchema>;
+
+/** Kurulumu tamamla: authenticator uygulamasindaki 6 haneli kodla aday secret dogrulanir. */
+export const twoFactorEnableSchema = z.object({
+  totp: z.string().regex(/^\d{6}$/, 'Dogrulama kodu 6 haneli olmali'),
+});
+export type TwoFactorEnableInput = z.infer<typeof twoFactorEnableSchema>;
+
+/** 2FA'yi kapat: hem parola hem gecerli kod istenir (calinmis oturum tek basina kapatamasin). */
+export const twoFactorDisableSchema = z.object({
+  password: z.string().min(1, 'Sifre gerekli'),
+  totp: z.string().regex(/^\d{6}$/, 'Dogrulama kodu 6 haneli olmali'),
+});
+export type TwoFactorDisableInput = z.infer<typeof twoFactorDisableSchema>;
+
+export interface TwoFactorSetupResponse {
+  /** Elle girme icin base32 secret. */
+  secret: string;
+  /** QR icin otpauth:// URI (panel/mobil QR olusturur). */
+  otpauthUrl: string;
+}
+
+export interface TwoFactorEnableResponse {
+  /** Tek seferlik gosterilen yedek kurtarma kodlari (duz metin — sonrasinda yalniz hash saklanir). */
+  backupCodes: string[];
+}
+
+// -------------------------------------------------------------- hesap silme (§6.2 / §11.6 KVKK)
+
+/** Hesabimi sil: parola dogrulamasi + acik onay ("HESABIMI SIL"). Kimlik anonimlestirilir. */
+export const deleteAccountSchema = z.object({
+  password: z.string().min(1, 'Sifre gerekli'),
+  confirm: z.literal('HESABIMI SIL', {
+    errorMap: () => ({ message: 'Silmeyi onaylamak icin "HESABIMI SIL" yazin' }),
+  }),
+});
+export type DeleteAccountInput = z.infer<typeof deleteAccountSchema>;
 
 export const refreshSchema = z.object({
   refreshToken: z.string().min(1).optional(), // mobil govdeyle, panel cookie ile gonderir

@@ -148,6 +148,75 @@ export class AuthRepository {
     return this.prisma.user.update({ where: { id: userId }, data: { passwordHash } });
   }
 
+  // ---------------------------------------------------------------- 2FA kurulumu (§11.1)
+
+  /** Aday secret'i beklemeye alir (enable'da dogrulanip totpSecret'e tasinir). */
+  setPendingTotp(userId: string, pendingSecret: string) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { totpPendingSecret: pendingSecret },
+    });
+  }
+
+  /** Kurulum tamamlandi: aday secret aktif olur, yedek kodlarin hash'i saklanir. */
+  enableTotp(userId: string, secret: string, backupCodeHashes: string[]) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        totpSecret: secret,
+        totpPendingSecret: null,
+        totpEnabledAt: new Date(),
+        backupCodes: backupCodeHashes,
+      },
+    });
+  }
+
+  disableTotp(userId: string) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        totpSecret: null,
+        totpPendingSecret: null,
+        totpEnabledAt: null,
+        backupCodes: [],
+      },
+    });
+  }
+
+  /** Yedek kod kullanilinca kalan hash listesi yazilir (tek kullanimlik). */
+  setBackupCodes(userId: string, hashes: string[]) {
+    return this.prisma.user.update({ where: { id: userId }, data: { backupCodes: hashes } });
+  }
+
+  // ---------------------------------------------------------------- hesap silme (§6.2 / §11.6)
+
+  /** Kimlik anonimlestirilir; finansal kayitlar (transactions, audit) DEFTERDE KALIR (yasal saklama). */
+  anonymizeUser(userId: string, anonymizedFullName: string) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        email: null,
+        phone: null,
+        fullName: anonymizedFullName,
+        totpSecret: null,
+        totpPendingSecret: null,
+        totpEnabledAt: null,
+        backupCodes: [],
+        isActive: false,
+        anonymizedAt: new Date(),
+      },
+    });
+  }
+
+  /** Silmeden once uyelikleri kaldirir (satici defterindeki finansal veri user_id'siz kalmaz — FK yok). */
+  removeMemberships(userId: string) {
+    return TenantContext.runAsSystem(async () => {
+      await this.prisma.accountMembership.deleteMany({ where: { userId } });
+      await this.prisma.sellerMember.deleteMany({ where: { userId } });
+      await this.prisma.pushToken.deleteMany({ where: { userId } });
+    });
+  }
+
   // ---------------------------------------------------------------- davet (§6.2)
 
   createInvite(data: Prisma.InviteUncheckedCreateInput) {

@@ -1,7 +1,6 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { authenticator } from 'otplib';
 import {
   AppError,
   ErrorCode,
@@ -12,17 +11,24 @@ import {
   type LoginInput,
   type LoginResponse,
   type MembershipSummary,
+  type TwoFactorEnableResponse,
+  type TwoFactorSetupResponse,
 } from '@carinet/shared';
 import { type Env } from '../../config/env';
+import { AuditService } from '../../common/audit/audit.service';
 import { MailService } from '../mail/mail.service';
 import { AuthRepository } from './auth.repository';
+import { BreachedPasswordService } from './breached-password.service';
 import { PasswordService } from './password.service';
 import { TokenService, type ClientMeta } from './token.service';
+import { TwoFactorService, hashBackupCode } from './two-factor.service';
 
 const sha256 = (value: string): string => createHash('sha256').update(value).digest('hex');
 
 /** 2FA zorunlu roller (kural #11) — prod'da bu roller 2FA'siz calisamaz. */
 const TWO_FA_ROLES: readonly UserRole[] = [UserRole.SELLER_ADMIN, UserRole.PLATFORM_ADMIN];
+
+type UserRecord = { id: string; totpSecret: string | null; backupCodes: string[] };
 
 @Injectable()
 export class AuthService {
@@ -32,6 +38,9 @@ export class AuthService {
     private readonly repo: AuthRepository,
     private readonly passwords: PasswordService,
     private readonly tokens: TokenService,
+    private readonly twoFactor: TwoFactorService,
+    private readonly breached: BreachedPasswordService,
+    private readonly audit: AuditService,
     private readonly mail: MailService,
     private readonly config: ConfigService<Env, true>,
   ) {}
@@ -54,7 +63,7 @@ export class AuthService {
     const memberships = await this.listMemberships(user.id);
     const active = this.pickMembership(memberships, input.sellerCode, user.isPlatformAdmin);
 
-    this.assertTwoFactor(active?.role ?? UserRole.BUYER_USER, user.totpSecret, input.totp);
+    await this.verifySecondFactor(user, active?.role ?? UserRole.BUYER_USER, input);
 
     const payload = this.toPayload(user.id, active, user.isPlatformAdmin);
     const tokens = await this.tokens.issue(payload, meta);
@@ -75,7 +84,7 @@ export class AuthService {
     const target = memberships.find((m) => m.membershipId === membershipId);
     if (!target) throw new AppError(ErrorCode.MEMBERSHIP_NOT_FOUND);
 
-    this.assertTwoFactorOnSwitch(target.role, user.totpSecret);
+    this.assertTwoFactorRequired(target.role, user.totpSecret);
 
     const payload = this.toPayload(userId, target, user.isPlatformAdmin);
     const tokens = await this.tokens.reissueForContext(payload, meta);
@@ -194,6 +203,9 @@ export class AuthService {
     if (!record || record.usedAt) throw new AppError(ErrorCode.INVITE_INVALID);
     if (record.expiresAt.getTime() < Date.now()) throw new AppError(ErrorCode.INVITE_EXPIRED);
 
+    // §11.1 — yeni sifre sizmis parola listesinde olmamali (fail-open).
+    await this.breached.assertNotBreached(password);
+
     const passwordHash = await this.passwords.hash(password);
     await this.repo.updatePassword(record.userId, passwordHash);
     await this.repo.consumePasswordResetToken(record.id);
@@ -246,6 +258,9 @@ export class AuthService {
         'Bu e-posta zaten kayitli. Mevcut sifrenizle devam edin.',
       );
     }
+
+    // §11.1 — YENI kullanici icin sizmis parola kontrolu (mevcut kullanici zaten sifresiyle giriyor).
+    if (!existing) await this.breached.assertNotBreached(input.password);
 
     const passwordHash = existing
       ? existing.passwordHash
@@ -333,19 +348,102 @@ export class AuthService {
     };
   }
 
-  /** Kural #11 — prod'da SELLER_ADMIN / PLATFORM_ADMIN 2FA'siz giremez. */
-  private assertTwoFactor(role: UserRole, totpSecret: string | null, code?: string): void {
-    if (totpSecret) {
-      if (!code) throw new AppError(ErrorCode.TOTP_REQUIRED);
-      if (!authenticator.verify({ token: code, secret: totpSecret })) {
-        throw new AppError(ErrorCode.TOTP_INVALID);
-      }
-      return;
+  // ---------------------------------------------------------------- 2FA kurulumu (§11.1)
+
+  /** Kurulumu baslat: parola dogrulanir, aday secret + QR URL doner (henuz aktif DEGIL). */
+  async startTwoFactorSetup(userId: string, password: string): Promise<TwoFactorSetupResponse> {
+    const user = await this.repo.findUserById(userId);
+    if (!user) throw new AppError(ErrorCode.NOT_FOUND);
+    if (!(await this.passwords.verify(user.passwordHash, password))) {
+      throw new AppError(ErrorCode.INVALID_CREDENTIALS);
     }
-    this.assertTwoFactorOnSwitch(role, totpSecret);
+    const setup = this.twoFactor.generateSecret(user.email ?? user.phone ?? user.fullName);
+    await this.repo.setPendingTotp(userId, setup.secret);
+    return setup;
   }
 
-  private assertTwoFactorOnSwitch(role: UserRole, totpSecret: string | null): void {
+  /** Kurulumu tamamla: aday secret'i koddan dogrula, aktifle, tek seferlik yedek kodlari doner. */
+  async enableTwoFactor(userId: string, code: string): Promise<TwoFactorEnableResponse> {
+    const user = await this.repo.findUserById(userId);
+    if (!user) throw new AppError(ErrorCode.NOT_FOUND);
+    if (!user.totpPendingSecret) {
+      throw new AppError(ErrorCode.VALIDATION_ERROR, 'Once 2FA kurulumunu baslatin.');
+    }
+    if (!this.twoFactor.verify(code, user.totpPendingSecret)) {
+      throw new AppError(ErrorCode.TOTP_INVALID);
+    }
+    const codes = this.twoFactor.generateBackupCodes();
+    await this.repo.enableTotp(userId, user.totpPendingSecret, codes.hashes);
+    await this.audit.log({ action: '2FA_ENABLED', entity: 'User', entityId: userId });
+    return { backupCodes: codes.plain };
+  }
+
+  /** 2FA'yi kapat — parola VE gecerli kod ister (calinmis oturum tek basina kapatamasin). */
+  async disableTwoFactor(userId: string, password: string, code: string): Promise<{ ok: true }> {
+    const user = await this.repo.findUserById(userId);
+    if (!user) throw new AppError(ErrorCode.NOT_FOUND);
+    if (!(await this.passwords.verify(user.passwordHash, password))) {
+      throw new AppError(ErrorCode.INVALID_CREDENTIALS);
+    }
+    if (!user.totpSecret || !this.twoFactor.verify(code, user.totpSecret)) {
+      throw new AppError(ErrorCode.TOTP_INVALID);
+    }
+    await this.repo.disableTotp(userId);
+    await this.audit.log({ action: '2FA_DISABLED', entity: 'User', entityId: userId });
+    return { ok: true };
+  }
+
+  // ---------------------------------------------------------------- hesap silme (§6.2 / §11.6 KVKK)
+
+  /**
+   * Hesabi sil: parola dogrulanir, kimlik ANONIMLESTIRILIR (finansal kayitlar satici defterinde kalir),
+   * uyelikler + push tokenlari kaldirilir, tum oturumlar iptal edilir. Geri alinamaz.
+   */
+  async deleteAccount(userId: string, password: string): Promise<{ ok: true }> {
+    const user = await this.repo.findUserById(userId);
+    if (!user) throw new AppError(ErrorCode.NOT_FOUND);
+    if (!(await this.passwords.verify(user.passwordHash, password))) {
+      throw new AppError(ErrorCode.INVALID_CREDENTIALS);
+    }
+    await this.repo.removeMemberships(userId);
+    await this.repo.anonymizeUser(userId, `Silinmis Kullanici ${randomBytes(4).toString('hex')}`);
+    await this.tokens.revokeAll(userId);
+    await this.audit.log({ action: 'ACCOUNT_DELETED', entity: 'User', entityId: userId });
+    this.logger.log(`Hesap silindi (anonimlestirildi): user=${userId}`);
+    return { ok: true };
+  }
+
+  // ---------------------------------------------------------------- 2FA dogrulama (giris/switch)
+
+  /** Girişte ikinci faktor: TOTP kodu VEYA yedek kurtarma kodu. Secret yoksa prod zorunlulugunu uygular. */
+  private async verifySecondFactor(
+    user: UserRecord & { totpSecret: string | null },
+    role: UserRole,
+    input: LoginInput,
+  ): Promise<void> {
+    if (user.totpSecret) {
+      if (input.totp && this.twoFactor.verify(input.totp, user.totpSecret)) return;
+      if (input.recoveryCode && (await this.tryConsumeBackupCode(user, input.recoveryCode))) return;
+      if (!input.totp && !input.recoveryCode) throw new AppError(ErrorCode.TOTP_REQUIRED);
+      throw new AppError(ErrorCode.TOTP_INVALID);
+    }
+    this.assertTwoFactorRequired(role, user.totpSecret);
+  }
+
+  /** Yedek kod eslesirse tuketir (tek kullanimlik) ve true doner. */
+  private async tryConsumeBackupCode(user: UserRecord, code: string): Promise<boolean> {
+    const hash = hashBackupCode(code);
+    if (!user.backupCodes.includes(hash)) return false;
+    await this.repo.setBackupCodes(
+      user.id,
+      user.backupCodes.filter((h) => h !== hash),
+    );
+    await this.audit.log({ action: '2FA_BACKUP_CODE_USED', entity: 'User', entityId: user.id });
+    return true;
+  }
+
+  /** Kural #11 — prod'da SELLER_ADMIN / PLATFORM_ADMIN 2FA'siz calisamaz (secret yoksa engelle). */
+  private assertTwoFactorRequired(role: UserRole, totpSecret: string | null): void {
     const isProd = this.config.get('NODE_ENV', { infer: true }) === 'production';
     if (isProd && TWO_FA_ROLES.includes(role) && !totpSecret) {
       throw new AppError(

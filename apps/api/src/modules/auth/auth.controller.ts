@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Throttle } from '@nestjs/throttler';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -11,11 +21,15 @@ import { AuthService } from './auth.service';
 import {
   AcceptInviteDto,
   CreateInviteDto,
+  DeleteAccountDto,
   ForgotPasswordDto,
   LoginDto,
   RefreshDto,
   ResetPasswordDto,
   SwitchAccountDto,
+  TwoFactorDisableDto,
+  TwoFactorEnableDto,
+  TwoFactorSetupDto,
 } from './dto/auth.dto';
 import { type ClientMeta } from './token.service';
 
@@ -119,6 +133,50 @@ export class AuthController {
   ) {
     const result = await this.auth.switchAccount(user.userId, dto.membershipId, this.meta(req));
     this.setCookies(res, result.tokens);
+    return result;
+  }
+
+  // ---------------------------------------------------------------- 2FA kurulumu (§11.1)
+
+  @NoTenant()
+  @Post('2fa/setup')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '2FA kurulumunu baslat → aday secret + QR (otpauth) URL' })
+  twoFactorSetup(@CurrentUser() user: RequestUser, @Body() dto: TwoFactorSetupDto) {
+    return this.auth.startTwoFactorSetup(user.userId, dto.password);
+  }
+
+  @NoTenant()
+  @Post('2fa/enable')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '2FA kurulumunu tamamla → tek seferlik yedek kurtarma kodlari' })
+  twoFactorEnable(@CurrentUser() user: RequestUser, @Body() dto: TwoFactorEnableDto) {
+    return this.auth.enableTwoFactor(user.userId, dto.totp);
+  }
+
+  @NoTenant()
+  @Post('2fa/disable')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '2FA kapat (parola + gecerli kod)' })
+  twoFactorDisable(@CurrentUser() user: RequestUser, @Body() dto: TwoFactorDisableDto) {
+    return this.auth.disableTwoFactor(user.userId, dto.password, dto.totp);
+  }
+
+  // ---------------------------------------------------------------- hesap silme (§11.6 KVKK)
+
+  @NoTenant()
+  @Delete('account')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Hesabi sil — kimlik anonimlestirilir, finansal kayitlar defterde kalir',
+  })
+  async deleteAccount(
+    @CurrentUser() user: RequestUser,
+    @Body() dto: DeleteAccountDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.auth.deleteAccount(user.userId, dto.password);
+    this.clearCookies(res);
     return result;
   }
 
