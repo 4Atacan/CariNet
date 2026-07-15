@@ -36,3 +36,5 @@ allowBuilds:
   core-js: true
   # telemetri paketi — derleme betigi calistirmasin
   '@scarf/scarf': false
+  # sentry-cli ikilisi yalniz deploy'da kaynak-harita yuklemede gerekir; uykuda modda atlanir.
+  '@sentry/cli': false

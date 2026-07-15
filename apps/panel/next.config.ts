@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { withSentryConfig } from '@sentry/nextjs';
 
 const config: NextConfig = {
   reactStrictMode: true,
@@ -18,4 +19,5 @@ const config: NextConfig = {
   },
 };
 
-export default config;
+// §11.8 — Sentry sarmalayici. DSN/authToken yoksa kaynak-harita yuklemesini atlar, build kirilmaz.
+export default withSentryConfig(config, { silent: true });
