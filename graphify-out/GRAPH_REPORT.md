@@ -1,19 +1,19 @@
-# Graph Report - CariNet (2026-07-14)
+# Graph Report - CariNet (2026-07-15)
 
 ## Corpus Check
 
-- 238 files · ~93,065 words
+- 252 files · ~100,396 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
 
-- 2461 nodes · 4348 edges · 228 communities (135 shown, 93 thin omitted)
+- 2468 nodes · 4355 edges · 224 communities (132 shown, 92 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 26 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
 
-- Built from commit: `68d00881`
+- Built from commit: `6ac2a21e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -204,21 +204,17 @@
 - CampaignsService
 - app.module.ts
 - reminders.ts
-- reports.service.ts
 - transactions.ts
 - import-mapping.ts
 - HealthController
-- StorageService
 - due-reminder.task.ts
 - products.controller.ts
-- createPdfMake
 - odeme.tsx
 - JwtAuthGuard
 - expo-router
 - kampanyalar.tsx
 - package.json
 - addresses.ts
-- .expirePending
 - exceljs
 - nestjs-pino
 - @nestjs/platform-express
@@ -263,7 +259,7 @@
 
 - None detected.
 
-## Communities (228 total, 93 thin omitted)
+## Communities (224 total, 92 thin omitted)
 
 ### Community 0 - "types.ts"
 
@@ -272,8 +268,8 @@ Nodes (22): EMPTY_ITEM, InvoiceFormValues, NewInvoiceForm(), safeTotals(), NewTr
 
 ### Community 1 - "BuyersService"
 
-Cohesion: 0.08
-Nodes (25): BuyersController, CreateBuyerDto, ListBuyersQueryDto, SELLER_SIDE, SetActiveDto, StatementQueryDto, ApiOperation, ApiTags (+17 more)
+Cohesion: 0.24
+Nodes (12): BuyersController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Get, Param (+4 more)
 
 ### Community 2 - "ImportsRepository"
 
@@ -282,8 +278,8 @@ Nodes (14): ApiBody, ImportsController, ApiConsumes, ApiOperation, ApiTags, Body
 
 ### Community 3 - "pdf.service.ts"
 
-Cohesion: 0.17
-Nodes (7): ReportsRepository, Inject, Injectable, ReportsService, Injectable, credit(), debit()
+Cohesion: 0.05
+Nodes (37): StatementLine, cell(), createPdfMake(), head(), PdfMake, PdfService, req, StatementPdfInput (+29 more)
 
 ### Community 4 - "ana-sayfa.tsx"
 
@@ -312,18 +308,18 @@ Nodes (43): TransactionType, add(), applyRate(), BalanceMovement, computeBalance
 
 ### Community 9 - "statement.service.ts"
 
-Cohesion: 0.29
-Nodes (6): CELL_READERS, detectDelimiter(), ExcelParser, ParsedSheet, toCellValue(), Injectable
+Cohesion: 0.22
+Nodes (3): BuyersService, toBuyerDto(), Injectable
 
 ### Community 10 - "RepresentativesController"
 
-Cohesion: 0.08
-Nodes (20): CreateRepresentativeDto, RepresentativesController, ApiOperation, ApiTags, Body, Controller, Delete, Get (+12 more)
+Cohesion: 0.13
+Nodes (9): CreateRepresentativeDto, UpdateRepresentativeDto, RepresentativesModule, Module, RepresentativesRepository, Inject, Injectable, RepresentativesService (+1 more)
 
 ### Community 11 - "PrismaService"
 
-Cohesion: 0.10
-Nodes (22): AuditEntry, jsonReplacer(), toJson(), TenantContextMiddleware, Injectable, EMPTY, storage, TenantContext (+14 more)
+Cohesion: 0.08
+Nodes (28): AuditEntry, AuditService, jsonReplacer(), toJson(), Inject, Injectable, TenantContextMiddleware, Injectable (+20 more)
 
 ### Community 12 - "index.ts"
 
@@ -332,8 +328,8 @@ Nodes (10): CurrentUser, RolesGuard, Injectable, TenantGuard, Injectable, Reques
 
 ### Community 13 - "sandbox-pos.adapter.ts"
 
-Cohesion: 0.12
-Nodes (15): readOrderId(), HostedPaymentRequest, HostedPaymentStart, InstallmentOption, PosAdapter, PosCallbackResult, PosCredentials, PosRegistry (+7 more)
+Cohesion: 0.07
+Nodes (35): CollectionsModule, Module, IntentFactory, Injectable, BankTransferProvider, Injectable, CardPaymentStart, CardPosProvider (+27 more)
 
 ### Community 14 - "package.json"
 
@@ -362,8 +358,8 @@ Nodes (19): AddressesController, CreateAddressDto, ListQueryDto, ApiOperation, A
 
 ### Community 19 - "collections.module.ts"
 
-Cohesion: 0.11
-Nodes (21): IntentRow, IntentExpiryTask, Injectable, CreatePendingIntent, IntentFactory, Injectable, BankTransferProvider, Injectable (+13 more)
+Cohesion: 0.20
+Nodes (11): RepresentativesController, ApiOperation, ApiTags, Body, Controller, Delete, Get, Param (+3 more)
 
 ### Community 20 - "package.json"
 
@@ -377,8 +373,8 @@ Nodes (4): AuthRepository, Inject, Injectable, sha256()
 
 ### Community 22 - "TxClient"
 
-Cohesion: 0.08
-Nodes (10): CollectionsRepository, Inject, Injectable, randomSuffix(), decorate(), incomingAmount(), isConfirmed(), StatementService (+2 more)
+Cohesion: 0.06
+Nodes (16): CollectionsRepository, Inject, Injectable, IntentExpiryTask, Injectable, CreatePendingIntent, randomSuffix(), decorate() (+8 more)
 
 ### Community 23 - "exports"
 
@@ -387,13 +383,13 @@ Nodes (26): eslint-config-prettier, @eslint/js, globals, dependencies, eslint-co
 
 ### Community 24 - "InvoicesRepository"
 
-Cohesion: 0.09
-Nodes (15): CancelInvoiceDto, CreateInvoiceDto, ListInvoicesQueryDto, InvoicesRepository, Inject, Injectable, BuyerRef, InvoicesService (+7 more)
+Cohesion: 0.10
+Nodes (12): InvoicesRepository, Inject, Injectable, InvoicesService, toInvoiceDto(), toInvoiceSummary(), toIsoDate(), Inject (+4 more)
 
 ### Community 25 - "TransactionsRepository"
 
 Cohesion: 0.10
-Nodes (18): BuyersModule, Module, InvoicesModule, Module, CancelTransactionDto, CreateTransactionDto, ListTransactionsQueryDto, TransactionsModule (+10 more)
+Nodes (20): CancelTransactionDto, CreateTransactionDto, ListTransactionsQueryDto, TransactionsController, ApiOperation, ApiTags, Body, Controller (+12 more)
 
 ### Community 26 - "auth.ts"
 
@@ -402,8 +398,8 @@ Nodes (23): userRoleSchema, AcceptInviteInput, acceptInviteSchema, Authenticated
 
 ### Community 27 - "app.module.ts"
 
-Cohesion: 0.10
-Nodes (15): AuditModule, Global, Module, AuditService, Inject, Injectable, Inject, BuyerDto (+7 more)
+Cohesion: 0.18
+Nodes (11): CreateBuyerDto, ListBuyersQueryDto, SELLER_SIDE, SetActiveDto, StatementQueryDto, UpdateBuyerDto, BuyerDto, BuyerWithBalance (+3 more)
 
 ### Community 28 - "collections.ts"
 
@@ -448,7 +444,7 @@ Nodes (11): AppModule, Module, loadSchemaObjectFactory(), SchemaObjectFactoryCla
 ### Community 36 - "AuthService"
 
 Cohesion: 0.08
-Nodes (9): Inject, NotificationsRepository, Inject, Injectable, NotificationsService, Injectable, PushService, Injectable (+1 more)
+Nodes (10): Inject, Inject, NotificationsRepository, Inject, Injectable, NotificationsService, Injectable, PushService (+2 more)
 
 ### Community 37 - "dependencies"
 
@@ -482,13 +478,13 @@ Nodes (18): CollectChannel, DocumentType, ImportRowStatus, importRowStatusSchema
 
 ### Community 43 - "InvoicesController"
 
-Cohesion: 0.22
-Nodes (11): InvoicesController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Get, Param (+3 more)
+Cohesion: 0.16
+Nodes (14): CancelInvoiceDto, CreateInvoiceDto, InvoicesController, ListInvoicesQueryDto, ApiOperation, ApiTags, Body, Controller (+6 more)
 
 ### Community 44 - "TransactionsController"
 
-Cohesion: 0.22
-Nodes (11): TransactionsController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Get, Param (+3 more)
+Cohesion: 0.33
+Nodes (6): BuyersModule, Module, InvoicesModule, Module, TransactionsModule, Module
 
 ### Community 45 - "expo"
 
@@ -527,8 +523,8 @@ Nodes (9): adm-zip, dependencies, adm-zip, fast-xml-parser, helmet, pino, fast-x
 
 ### Community 52 - "ubl.parser.ts"
 
-Cohesion: 0.33
-Nodes (10): asArray(), attr(), isNode(), Node, partyIdentifier(), pick(), sumStrings(), text() (+2 more)
+Cohesion: 0.49
+Nodes (8): asArray(), attr(), isNode(), Node, partyIdentifier(), pick(), sumStrings(), text()
 
 ### Community 53 - "scripts"
 
@@ -552,8 +548,8 @@ Nodes (12): accountCodeSchema, BuyerListQuery, buyerListQuerySchema, CreateBuyer
 
 ### Community 57 - "2026-07-13 · Faz 0 — Iskelet ve Temel"
 
-Cohesion: 0.05
-Nodes (37): 2026-07-13 · Faz 0 — Iskelet ve Temel, 2026-07-14 · Faz 1 — Cekirdek MVP, 2026-07-14 · Faz 2 — Finansal Raporlar, 2026-07-14 · Faz 3 — Tahsilat: Iki Kanal (§8), 2026-07-14 · Faz 4 — Katalog ve Iletisim (§13), Bitti kriteri kontrolu (Faz 0), Bitti kriteri kontrolu (Faz 1), Bitti kriteri kontrolu (Faz 2) (+29 more)
+Cohesion: 0.04
+Nodes (44): 2026-07-13 · Faz 0 — Iskelet ve Temel, 2026-07-14 · Faz 1 — Cekirdek MVP, 2026-07-14 · Faz 2 — Finansal Raporlar, 2026-07-14 · Faz 3 — Tahsilat: Iki Kanal (§8), 2026-07-14 · Faz 4 — Katalog ve Iletisim (§13), 2026-07-15 · Faz 5 — Sertlestirme ve Yayin (§11, §13), Bitti kriteri kontrolu (Faz 0), Bitti kriteri kontrolu (Faz 1) (+36 more)
 
 ### Community 58 - "base.js"
 
@@ -577,8 +573,8 @@ Nodes (10): name, private, scripts, build, dev, lint, start, test (+2 more)
 
 ### Community 62 - "import-cells.ts"
 
-Cohesion: 0.11
-Nodes (7): assertFile(), formatIssues(), ImportsService, summarize(), toJson(), Inject, Injectable
+Cohesion: 0.08
+Nodes (21): StorageModule, Global, Module, StorageService, Injectable, assertFile(), formatIssues(), readCutoff() (+13 more)
 
 ### Community 63 - "common.ts"
 
@@ -662,8 +658,8 @@ Nodes (4): GRAPHIFY_CHANGED, GRAPHIFY_REBUILD_LOG, post-commit script, PYTHONHAS
 
 ### Community 80 - "row"
 
-Cohesion: 0.17
-Nodes (5): ImportsRepository, Inject, Injectable, readCutoff(), TxClient
+Cohesion: 0.13
+Nodes (6): ImportsRepository, Inject, Injectable, ImportsService, Injectable, TxClient
 
 ### Community 81 - "post-checkout"
 
@@ -727,8 +723,8 @@ Nodes (8): ExportsController, ApiOperation, ApiTags, Controller, CurrentUser, Ge
 
 ### Community 185 - "collections.controller.ts"
 
-Cohesion: 0.20
-Nodes (9): BulkConfirmDto, CancelIntentDto, ConfirmIntentDto, CreateIntentDto, GuestIntentDto, InstallmentDto, IntentListDto, SELLER (+1 more)
+Cohesion: 0.22
+Nodes (8): BulkConfirmDto, CancelIntentDto, ConfirmIntentDto, CreateIntentDto, GuestIntentDto, InstallmentDto, IntentListDto, SELLER
 
 ### Community 186 - "imports.controller.ts"
 
@@ -737,17 +733,17 @@ Nodes (8): BatchesQueryDto, CancelDto, CommitDto, filePipe, ReportQueryDto, Rows
 
 ### Community 187 - ".import"
 
-Cohesion: 0.18
+Cohesion: 0.17
 Nodes (10): MarkReadDto, NotificationListDto, RegisterTokenDto, NotificationsModule, Module, NotifyInput, ExpoTicket, PushMessage (+2 more)
 
 ### Community 188 - "RequestsService"
 
-Cohesion: 0.17
-Nodes (10): CreateRequestDto, ReplyRequestDto, RequestListDto, SELLER, RequestsModule, Module, RequestRow, RequestsService (+2 more)
+Cohesion: 0.20
+Nodes (8): CreateRequestDto, ReplyRequestDto, RequestListDto, SELLER, RequestRow, RequestsService, toDto(), Injectable
 
 ### Community 189 - "NotificationsController"
 
-Cohesion: 0.21
+Cohesion: 0.18
 Nodes (11): NotificationsController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Delete, Get (+3 more)
 
 ### Community 190 - "RequestsController"
@@ -772,13 +768,13 @@ Nodes (7): ExportDto, ExportsService, FILE_NAMES, money(), styleHeader(), text()
 
 ### Community 194 - "pdf.service.ts"
 
-Cohesion: 0.18
-Nodes (11): StatementLine, cell(), head(), PdfService, StatementPdfInput, TableCell, trDate(), Injectable (+3 more)
+Cohesion: 0.31
+Nodes (3): BuyersRepository, Inject, Injectable
 
 ### Community 195 - ".statementPdf"
 
-Cohesion: 0.32
-Nodes (9): ReportsController, ApiOperation, ApiTags, Controller, CurrentUser, Get, Param, Query (+1 more)
+Cohesion: 0.67
+Nodes (3): AuditModule, Global, Module
 
 ### Community 196 - "api.ts"
 
@@ -787,23 +783,18 @@ Nodes (8): api(), ApiError, apiPublicPost(), call(), tokenStore, withRefresh(), 
 
 ### Community 197 - "CampaignsService"
 
-Cohesion: 0.18
-Nodes (8): AnnounceDto, CampaignListDto, CreateCampaignDto, SELLER, CampaignsService, toDto(), Inject, Injectable
+Cohesion: 0.23
+Nodes (7): AnnounceDto, CampaignListDto, CreateCampaignDto, SELLER, CampaignsService, toDto(), Injectable
 
 ### Community 198 - "app.module.ts"
 
-Cohesion: 0.27
-Nodes (8): CampaignsModule, Module, ExportsModule, Module, ProductsModule, Module, ReportsModule, Module
+Cohesion: 0.22
+Nodes (10): CampaignsModule, Module, ExportsModule, Module, ProductsModule, Module, ReportsModule, Module (+2 more)
 
 ### Community 199 - "reminders.ts"
 
 Cohesion: 0.25
 Nodes (7): daysUntilDue(), OVERDUE_REMINDER_DAYS, REMINDER_KINDS, reminderFor(), ReminderKind, reminderText(), ASOF
-
-### Community 200 - "reports.service.ts"
-
-Cohesion: 0.22
-Nodes (7): LedgerItemRow, groupByAccount(), PeriodPoint, RiskDetail, toLedgerItem(), buildWorkbook(), row()
 
 ### Community 201 - "transactions.ts"
 
@@ -820,11 +811,6 @@ Nodes (8): ImportTarget, autoMap(), ColumnMapping, IMPORT_FIELDS, ImportField, n
 Cohesion: 0.22
 Nodes (7): Public(), HealthController, ApiOperation, ApiTags, Controller, Get, Inject
 
-### Community 204 - "StorageService"
-
-Cohesion: 0.22
-Nodes (5): StorageModule, Global, Module, StorageService, Injectable
-
 ### Community 205 - "due-reminder.task.ts"
 
 Cohesion: 0.28
@@ -834,11 +820,6 @@ Nodes (5): DueReminderTask, toIsoDate(), Cron, Inject, Injectable
 
 Cohesion: 0.29
 Nodes (6): CreateProductDto, ProductListDto, SELLER, SetActiveDto, SetStockDto, UpdateProductDto
-
-### Community 207 - "createPdfMake"
-
-Cohesion: 0.38
-Nodes (3): createPdfMake(), PdfMake, req
 
 ### Community 208 - "odeme.tsx"
 
@@ -867,25 +848,25 @@ Nodes (4): CreateAddressInput, createAddressSchema, UpdateAddressInput, updateAd
 
 ## Knowledge Gaps
 
-- **772 isolated node(s):** `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)`, `3. Depo Yapısı`, `4. Ortam ve Komutlar` (+767 more)
+- **778 isolated node(s):** `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)`, `3. Depo Yapısı`, `4. Ortam ve Komutlar` (+773 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **93 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **92 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `StatementCard()` connect `expo-status-bar` to `expo`, `TxClient`?**
-  _High betweenness centrality (0.084) - this node is a cross-community bridge._
-- **Why does `PrismaService` connect `PrismaService` to `BuyersService`, `pdf.service.ts`, `.log`, `RepresentativesController`, `HealthController`, `PrismaModule`, `row`, `collections.module.ts`, `AuthRepository`, `TxClient`, `InvoicesRepository`, `TransactionsRepository`, `helmet`, `app.module.ts`, `import-cells.ts`?**
-  _High betweenness centrality (0.066) - this node is a cross-community bridge._
-- **Why does `row()` connect `reports.service.ts` to `InvoicesRepository`, `BuyersService`, `collections.ts`, `TxClient`?**
-  _High betweenness centrality (0.061) - this node is a cross-community bridge._
+  _High betweenness centrality (0.082) - this node is a cross-community bridge._
+- **Why does `PrismaService` connect `PrismaService` to `pdf.service.ts`, `pdf.service.ts`, `.log`, `RepresentativesController`, `HealthController`, `PrismaModule`, `row`, `AuthRepository`, `TxClient`, `InvoicesRepository`, `helmet`, `import-cells.ts`?**
+  _High betweenness centrality (0.065) - this node is a cross-community bridge._
+- **Why does `row()` connect `pdf.service.ts` to `InvoicesRepository`, `statement.service.ts`, `collections.ts`, `TxClient`?**
+  _High betweenness centrality (0.062) - this node is a cross-community bridge._
 - **What connects `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)` to the rest of the system?**
-  _772 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `BuyersService` be split into smaller, more focused modules?**
-  _Cohesion score 0.07922077922077922 - nodes in this community are weakly interconnected._
+  _778 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `pdf.service.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.053821800090456805 - nodes in this community are weakly interconnected._
 - **Should `.log` be split into smaller, more focused modules?**
-  _Cohesion score 0.07662337662337662 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07518796992481203 - nodes in this community are weakly interconnected._
 - **Should `CollectionsController` be split into smaller, more focused modules?**
-  _Cohesion score 0.08552188552188553 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08853410740203194 - nodes in this community are weakly interconnected._
