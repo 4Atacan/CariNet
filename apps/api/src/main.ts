@@ -1,3 +1,4 @@
+import './instrument'; // §11.8 — Sentry EN BASTA (boot oncesi hatalar da yakalansin)
 import 'reflect-metadata';
 import { timingSafeEqual } from 'node:crypto';
 import { ConfigService } from '@nestjs/config';

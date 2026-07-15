@@ -8,8 +8,10 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ZodValidationException } from 'nestjs-zod';
+import * as Sentry from '@sentry/node';
 import { type Response } from 'express';
 import { AppError, ERROR_MESSAGES, ErrorCode, type ApiFailure } from '@carinet/shared';
+import { sentryEnabled } from '../../instrument';
 
 /**
  * CLAUDE.md §10 + §11.2 — tek tip hata zarfi; ic detay (stack, SQL, dosya yolu) SIZDIRILMAZ.
@@ -27,6 +29,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
         exception instanceof Error ? exception.message : 'Bilinmeyen hata',
         exception instanceof Error ? exception.stack : undefined,
       );
+      // §11.8 — beklenmeyen 5xx'ler Sentry'ye (DSN yoksa no-op). 4xx is kurali, gonderilmez.
+      if (sentryEnabled) Sentry.captureException(exception);
     }
 
     res.status(status).json(body);
