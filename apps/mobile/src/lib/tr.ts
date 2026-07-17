@@ -60,6 +60,7 @@ export const tr = {
   switcher: {
     title: 'Hesaplarim',
     hint: 'Goruntulemek istediginiz cari hesabi secin.',
+    active: 'Aktif',
   },
   pay: {
     title: 'Odeme yap',
@@ -161,4 +162,19 @@ export const tr = {
     cancel: 'Vazgec',
   },
   common: { loading: 'Yukleniyor...', error: 'Bir hata olustu.', back: 'Geri' },
+  /** Alt sekmeler + baslik. Sekmede yalnizca gunluk 4 is var; bildirim baslikta zil olarak durur. */
+  tabs: {
+    home: 'Ana Sayfa',
+    statement: 'Ekstre',
+    pay: 'Odeme',
+    catalog: 'Vitrin',
+  },
+  header: {
+    notifications: 'Bildirimler',
+    profile: 'Profil',
+    campaigns: 'Kampanyalar',
+    requests: 'Talep ve oneri',
+    privacy: 'Gizlilik ve KVKK',
+    close: 'Kapat',
+  },
 } as const;

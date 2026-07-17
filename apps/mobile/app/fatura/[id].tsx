@@ -6,6 +6,7 @@ import { type MoneyString } from '@carinet/shared';
 import { apiGet } from '@/lib/api';
 import { money, trDate } from '@/lib/format';
 import { tr } from '@/lib/tr';
+import { color } from '@/lib/theme';
 
 interface InvoiceDetail {
   id: string;
@@ -132,15 +133,20 @@ function Total({ label, value, strong }: { label: string; value: string; strong?
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc' },
+  safe: { flex: 1, backgroundColor: color.ink[100] },
+  center: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: color.ink[100],
+  },
   container: { padding: 20, paddingBottom: 40 },
-  back: { color: '#64748b', fontSize: 14 },
+  back: { color: color.ink[600], fontSize: 14 },
   headerRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4, marginBottom: 16 },
-  title: { fontSize: 22, fontWeight: '700', color: '#0f172a' },
+  title: { fontSize: 22, fontWeight: '700', color: color.navy[900] },
   cancelled: {
-    backgroundColor: '#fef2f2',
-    color: '#b91c1c',
+    backgroundColor: color.debitSoft,
+    color: color.debit,
     fontSize: 11,
     fontWeight: '700',
     paddingHorizontal: 6,
@@ -148,47 +154,47 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: color.ink[200],
   },
   metaRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 4 },
-  metaLabel: { fontSize: 13, color: '#64748b' },
-  metaValue: { fontSize: 13, color: '#0f172a', fontWeight: '500' },
-  strong: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
+  metaLabel: { fontSize: 13, color: color.ink[600] },
+  metaValue: { fontSize: 13, color: color.navy[900], fontWeight: '500' },
+  strong: { fontSize: 15, fontWeight: '700', color: color.navy[900] },
   sectionTitle: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#0f172a',
+    color: color.navy[900],
     marginTop: 24,
     marginBottom: 8,
   },
   item: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 10,
     padding: 14,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: color.ink[200],
     marginBottom: 8,
   },
-  itemName: { fontSize: 14, fontWeight: '600', color: '#0f172a' },
-  itemMeta: { fontSize: 12, color: '#64748b', marginTop: 2 },
+  itemName: { fontSize: 14, fontWeight: '600', color: color.navy[900] },
+  itemMeta: { fontSize: 12, color: color.ink[600], marginTop: 2 },
   itemTotal: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#0f172a',
+    color: color.navy[900],
     marginTop: 6,
     textAlign: 'right',
   },
   totals: {
     marginTop: 12,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: color.ink[200],
   },
-  hint: { fontSize: 13, color: '#64748b' },
+  hint: { fontSize: 13, color: color.ink[600] },
 });

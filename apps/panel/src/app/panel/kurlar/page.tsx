@@ -36,25 +36,25 @@ export default function RatesPage() {
         ))}
         {rows.length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-500">{tr.common.empty}</p>
+            <p className="text-sm text-ink-600">{tr.common.empty}</p>
           </Card>
         ) : null}
       </div>
 
       <Card>
         <table className="w-full text-sm">
-          <thead className="border-b border-slate-200 text-left text-xs text-slate-500">
+          <thead className="border-b border-ink-200 text-left text-xs text-ink-600">
             <tr>
               <th className="py-2">{tr.rates.date}</th>
               <th>{tr.rates.currency}</th>
               <th className="text-right">{tr.rates.rate}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-ink-100">
             {(history.data ?? []).map((rate) => (
               <tr key={`${rate.date}-${rate.currencyCode}`}>
                 <td className="py-1.5">{trDate(rate.date)}</td>
-                <td className="font-medium text-slate-900">{rate.currencyCode}</td>
+                <td className="font-medium text-navy-900">{rate.currencyCode}</td>
                 <td className="text-right tabular-nums">
                   {Number(rate.rate).toLocaleString('tr-TR', { minimumFractionDigits: 4 })}
                 </td>

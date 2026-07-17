@@ -58,16 +58,16 @@ function BankAccountsCard({ onError }: { onError: (message: string) => void }) {
 
   return (
     <Card>
-      <p className="mb-3 text-sm font-medium text-slate-900">{tr.settings.bankAccounts}</p>
+      <p className="mb-3 text-sm font-medium text-navy-900">{tr.settings.bankAccounts}</p>
 
-      <ul className="mb-4 divide-y divide-slate-100 text-sm">
+      <ul className="mb-4 divide-y divide-ink-100 text-sm">
         {(accounts.data ?? []).map((account) => (
           <li key={account.id} className="flex items-start justify-between gap-3 py-2">
             <span>
-              <span className="font-medium text-slate-900">{account.bankName}</span>
-              {!account.isActive ? <Badge tone="slate">{tr.buyers.inactive}</Badge> : null}
-              <span className="block font-mono text-xs text-slate-500">{account.iban}</span>
-              <span className="block text-xs text-slate-500">{account.holderName}</span>
+              <span className="font-medium text-navy-900">{account.bankName}</span>
+              {!account.isActive ? <Badge tone="neutral">{tr.buyers.inactive}</Badge> : null}
+              <span className="block font-mono text-xs text-ink-600">{account.iban}</span>
+              <span className="block text-xs text-ink-600">{account.holderName}</span>
             </span>
             {account.isActive ? (
               <Button size="sm" variant="ghost" onClick={() => deactivate.mutate(account.id)}>
@@ -77,7 +77,7 @@ function BankAccountsCard({ onError }: { onError: (message: string) => void }) {
           </li>
         ))}
         {(accounts.data ?? []).length === 0 ? (
-          <li className="py-2 text-slate-500">{tr.common.empty}</li>
+          <li className="py-2 text-ink-600">{tr.common.empty}</li>
         ) : null}
       </ul>
 
@@ -164,24 +164,24 @@ function PosCard({ onError }: { onError: (message: string) => void }) {
 
   return (
     <Card>
-      <p className="mb-1 text-sm font-medium text-slate-900">{tr.settings.pos}</p>
-      <p className="mb-4 text-xs text-slate-500">{tr.settings.posHint}</p>
+      <p className="mb-1 text-sm font-medium text-navy-900">{tr.settings.pos}</p>
+      <p className="mb-4 text-xs text-ink-600">{tr.settings.posHint}</p>
 
       {current ? (
-        <div className="mb-4 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm">
+        <div className="mb-4 rounded-md border border-ink-200 bg-ink-50 p-3 text-sm">
           <div className="flex items-center justify-between">
-            <span className="font-medium text-slate-900">{current.provider}</span>
-            <Badge tone={current.isActive ? 'green' : 'slate'}>
+            <span className="font-medium text-navy-900">{current.provider}</span>
+            <Badge tone={current.isActive ? 'credit' : 'neutral'}>
               {current.isActive ? tr.settings.active : tr.buyers.inactive}
             </Badge>
           </div>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-ink-600">
             {tr.settings.merchantId}: {current.merchantId}
           </p>
-          <p className="font-mono text-xs text-slate-500">
+          <p className="font-mono text-xs text-ink-600">
             {tr.settings.apiKey}: {current.apiKeyMasked}
           </p>
-          <p className="font-mono text-xs text-slate-500">
+          <p className="font-mono text-xs text-ink-600">
             {tr.settings.secret}: {current.secretMasked}
           </p>
         </div>

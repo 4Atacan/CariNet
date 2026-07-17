@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { tr } from '@/lib/tr';
+import { color } from '@/lib/theme';
 
 /**
  * §11.6 (KVKK) — Aydinlatma metni + gizlilik politikasi. Magaza incelemesi bunu gorunur ister.
@@ -58,12 +59,12 @@ const SECTIONS = [
 ] as const;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
+  safe: { flex: 1, backgroundColor: color.ink[100] },
   container: { padding: 20, gap: 14, paddingBottom: 40 },
-  back: { color: '#64748b', fontSize: 14 },
-  title: { fontSize: 22, fontWeight: '700', color: '#0f172a', marginTop: 4 },
+  back: { color: color.ink[600], fontSize: 14 },
+  title: { fontSize: 22, fontWeight: '700', color: color.navy[900], marginTop: 4 },
   block: { gap: 4 },
-  h: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
-  p: { fontSize: 14, color: '#475569', lineHeight: 20 },
-  updated: { fontSize: 12, color: '#94a3b8', marginTop: 8 },
+  h: { fontSize: 15, fontWeight: '700', color: color.navy[900] },
+  p: { fontSize: 14, color: color.ink[700], lineHeight: 20 },
+  updated: { fontSize: 12, color: color.ink[400], marginTop: 8 },
 });

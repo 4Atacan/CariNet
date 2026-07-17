@@ -15,6 +15,7 @@ import { apiDeleteBody } from '@/lib/api';
 import { unregisterPush } from '@/lib/push';
 import { useSession } from '@/store/session';
 import { tr } from '@/lib/tr';
+import { color } from '@/lib/theme';
 
 /**
  * §11.6 (KVKK) — hesap silme. Apple/Google magaza kurali: hesap acabilen uygulama silme de sunmali.
@@ -100,44 +101,44 @@ export default function DeleteAccountScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
+  safe: { flex: 1, backgroundColor: color.ink[100] },
   container: { padding: 20, gap: 10 },
-  back: { color: '#64748b', fontSize: 14 },
-  title: { fontSize: 22, fontWeight: '700', color: '#0f172a', marginTop: 4 },
+  back: { color: color.ink[600], fontSize: 14 },
+  title: { fontSize: 22, fontWeight: '700', color: color.navy[900], marginTop: 4 },
   warnCard: {
-    backgroundColor: '#fef2f2',
+    backgroundColor: color.debitSoft,
     borderRadius: 10,
     padding: 14,
     borderWidth: 1,
-    borderColor: '#fecaca',
+    borderColor: color.debitSoft,
   },
-  warnText: { color: '#b91c1c', fontSize: 14, lineHeight: 20 },
-  note: { color: '#64748b', fontSize: 13, lineHeight: 19 },
+  warnText: { color: color.debit, fontSize: 14, lineHeight: 20 },
+  note: { color: color.ink[600], fontSize: 13, lineHeight: 19 },
   label: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#64748b',
+    color: color.ink[600],
     textTransform: 'uppercase',
     marginTop: 8,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#cbd5e1',
+    borderColor: color.ink[300],
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   deleteButton: {
-    backgroundColor: '#dc2626',
+    backgroundColor: color.debit,
     borderRadius: 10,
     paddingVertical: 14,
     alignItems: 'center',
     marginTop: 16,
   },
   buttonDisabled: { opacity: 0.5 },
-  deleteText: { color: '#fff', fontWeight: '700' },
+  deleteText: { color: color.white, fontWeight: '700' },
   cancel: { alignItems: 'center', marginTop: 12 },
-  cancelText: { color: '#64748b', fontSize: 14 },
-  error: { backgroundColor: '#fef2f2', color: '#b91c1c', padding: 10, borderRadius: 8 },
+  cancelText: { color: color.ink[600], fontSize: 14 },
+  error: { backgroundColor: color.debitSoft, color: color.debit, padding: 10, borderRadius: 8 },
 });

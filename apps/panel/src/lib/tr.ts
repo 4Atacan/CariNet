@@ -13,6 +13,12 @@ export const tr = {
     submitting: 'Giris yapiliyor...',
     forgot: 'Sifremi unuttum',
     genericError: 'Giris yapilamadi. Lutfen bilgilerinizi kontrol edin.',
+    totpHint: '2FA kurulu degilse bos birakin',
+    privacy: 'Gizlilik ve KVKK',
+    // Giris ekranindaki marka alani: urunun ne yaptigini tek cumlede soyler.
+    pitch: 'Cari hesap, ekstre ve tahsilat — tek yerde.',
+    pitchSub:
+      'Alicilariniz bakiyesini aninda gorur, odemesini uygulamadan yapar. Siz faturayi girin, gerisini CariNet yurutsun.',
   },
   nav: {
     dashboard: 'Ozet',
@@ -30,6 +36,11 @@ export const tr = {
     representatives: 'Temsilciler',
     settings: 'Ayarlar',
     logout: 'Cikis yap',
+    // Kenar cubugu gruplari: 14 madde duz liste halinde tarandigi icin gunluk isle
+    // kurulum isi ayni agirlikta gorunuyordu. Gruplar sikligia gore siralanir.
+    groupDaily: 'Gunluk',
+    groupCatalog: 'Katalog',
+    groupSetup: 'Kurulum',
   },
   products: {
     title: 'Urunler ve stoklar',

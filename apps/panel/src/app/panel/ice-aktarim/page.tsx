@@ -91,7 +91,7 @@ export default function ImportsPage() {
                 type="file"
                 accept=".xlsx,.xls,.xml,.zip"
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-1.5 file:text-white"
+                className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-navy-900 file:px-3 file:py-1.5 file:text-white"
               />
             </Field>
           </div>
@@ -123,12 +123,12 @@ export default function ImportsPage() {
             <Stat
               label={tr.imports.validCount}
               value={String(preview.totals.validCount)}
-              tone="text-emerald-600"
+              tone="text-credit"
             />
             <Stat
               label={tr.imports.errorCount}
               value={String(preview.totals.errorCount)}
-              tone={preview.totals.errorCount > 0 ? 'text-red-600' : undefined}
+              tone={preview.totals.errorCount > 0 ? 'text-debit' : undefined}
             />
           </div>
 
@@ -139,7 +139,7 @@ export default function ImportsPage() {
           ) : null}
 
           {preview.mapping ? (
-            <p className="mb-4 text-xs text-slate-500">
+            <p className="mb-4 text-xs text-ink-600">
               {tr.imports.mapping}:{' '}
               {Object.entries(preview.mapping)
                 .filter(([key]) => !key.startsWith('__'))
@@ -149,15 +149,15 @@ export default function ImportsPage() {
           ) : null}
 
           {preview.errors.length > 0 ? (
-            <div className="mb-4 rounded-lg border border-red-200">
-              <p className="border-b border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700">
+            <div className="mb-4 rounded-lg border border-debit/25">
+              <p className="border-b border-debit/25 bg-debit-soft px-3 py-2 text-xs font-semibold text-debit">
                 {tr.imports.errorsTitle}
               </p>
-              <ul className="max-h-48 divide-y divide-red-100 overflow-y-auto text-xs">
+              <ul className="max-h-48 divide-y divide-debit/15 overflow-y-auto text-xs">
                 {preview.errors.map((row) => (
                   <li key={row.rowNo} className="px-3 py-1.5">
-                    <span className="font-mono text-slate-500">#{row.rowNo}</span>{' '}
-                    <span className="text-red-700">{row.error}</span>
+                    <span className="font-mono text-ink-600">#{row.rowNo}</span>{' '}
+                    <span className="text-debit">{row.error}</span>
                   </li>
                 ))}
               </ul>
@@ -169,7 +169,7 @@ export default function ImportsPage() {
               {tr.imports.commit}
             </Button>
             {preview.totals.errorCount > 0 ? (
-              <label className="flex items-center gap-2 text-sm text-slate-600">
+              <label className="flex items-center gap-2 text-sm text-ink-700">
                 <input
                   type="checkbox"
                   checked={skipErrors}
@@ -186,14 +186,14 @@ export default function ImportsPage() {
       ) : null}
 
       <Card>
-        <p className="mb-3 text-sm font-medium text-slate-900">{tr.imports.history}</p>
-        <ul className="divide-y divide-slate-100 text-sm">
+        <p className="mb-3 text-sm font-medium text-navy-900">{tr.imports.history}</p>
+        <ul className="divide-y divide-ink-100 text-sm">
           {(history.data?.data ?? []).map((batch) => (
             <li key={batch.id} className="flex items-center justify-between py-2">
-              <span className="text-slate-700">
-                <span className="text-xs text-slate-500">{trDate(batch.createdAt)}</span>{' '}
+              <span className="text-ink-800">
+                <span className="text-xs text-ink-600">{trDate(batch.createdAt)}</span>{' '}
                 {batch.fileName ?? batch.sourceType}{' '}
-                <Badge tone={batch.status === 'COMMITTED' ? 'green' : 'slate'}>
+                <Badge tone={batch.status === 'COMMITTED' ? 'credit' : 'neutral'}>
                   {batch.status}
                 </Badge>
               </span>
@@ -205,7 +205,7 @@ export default function ImportsPage() {
             </li>
           ))}
           {(history.data?.data ?? []).length === 0 ? (
-            <li className="py-2 text-slate-500">{tr.common.empty}</li>
+            <li className="py-2 text-ink-600">{tr.common.empty}</li>
           ) : null}
         </ul>
       </Card>

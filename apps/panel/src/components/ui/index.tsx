@@ -8,17 +8,22 @@ import { cn } from '@/lib/utils';
 /**
  * shadcn/ui deseni (Radix + cva + Tailwind) — bilesenler projede yasar, paket bagimliligi degildir.
  * Metinler BURADA sabitlenmez; cagiran taraf `tr` sozlugunden gecirir (§12).
+ *
+ * Renkler globals.css'teki marka belirteclerinden gelir (navy/gold/ink + debit/credit/warn).
+ * Tailwind'in varsayilan slate/red/emerald'i KULLANILMAZ — logoyla akraba olmayan bir palet
+ * markayi silip her panele benzeten seydi.
  */
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400',
+  'inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'bg-slate-900 text-white hover:bg-slate-800',
-        outline: 'border border-slate-300 bg-white text-slate-900 hover:bg-slate-50',
-        ghost: 'text-slate-700 hover:bg-slate-100',
-        danger: 'bg-red-600 text-white hover:bg-red-700',
+        default: 'bg-navy-900 text-white hover:bg-navy-800 active:bg-navy-950',
+        outline:
+          'border border-ink-300 bg-white text-navy-900 hover:border-ink-400 hover:bg-ink-50',
+        ghost: 'text-ink-700 hover:bg-ink-100 hover:text-navy-900',
+        danger: 'bg-debit text-white hover:brightness-110 active:brightness-95',
       },
       size: {
         default: 'h-9 px-4 py-2',
@@ -45,30 +50,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = 'Button';
 
+const fieldBase =
+  'h-9 w-full rounded-md border border-ink-300 bg-white text-sm text-navy-900 outline-none transition-colors placeholder:text-ink-400 focus:border-navy-600 focus:ring-2 focus:ring-navy-600/15 disabled:bg-ink-100 disabled:text-ink-500';
+
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
   ({ className, ...props }, ref) => (
-    <input
-      ref={ref}
-      className={cn(
-        'h-9 w-full rounded-md border border-slate-300 bg-white px-3 py-1 text-sm outline-none placeholder:text-slate-400 focus:border-slate-900 disabled:bg-slate-50',
-        className,
-      )}
-      {...props}
-    />
+    <input ref={ref} className={cn(fieldBase, 'px-3 py-1', className)} {...props} />
   ),
 );
 Input.displayName = 'Input';
 
 export const Select = forwardRef<HTMLSelectElement, React.SelectHTMLAttributes<HTMLSelectElement>>(
   ({ className, children, ...props }, ref) => (
-    <select
-      ref={ref}
-      className={cn(
-        'h-9 w-full rounded-md border border-slate-300 bg-white px-2 text-sm outline-none focus:border-slate-900',
-        className,
-      )}
-      {...props}
-    >
+    <select ref={ref} className={cn(fieldBase, 'px-2', className)} {...props}>
       {children}
     </select>
   ),
@@ -88,17 +82,22 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-1 block text-sm font-medium text-navy-900">{label}</span>
       {children}
-      {hint && !error ? <span className="mt-1 block text-xs text-slate-500">{hint}</span> : null}
-      {error ? <span className="mt-1 block text-xs text-red-600">{error}</span> : null}
+      {hint && !error ? <span className="mt-1 block text-xs text-ink-500">{hint}</span> : null}
+      {error ? <span className="mt-1 block text-xs font-medium text-debit">{error}</span> : null}
     </label>
   );
 }
 
 export function Card({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
-    <div className={cn('rounded-xl border border-slate-200 bg-white p-5 shadow-sm', className)}>
+    <div
+      className={cn(
+        'rounded-card border border-ink-200 bg-white p-5 shadow-[0_1px_2px_rgb(21_42_85/0.04)]',
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -107,8 +106,13 @@ export function Card({ className, children }: { className?: string; children: Re
 export function Stat({ label, value, tone }: { label: string; value: string; tone?: string }) {
   return (
     <Card>
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className={cn('mt-1 text-2xl font-semibold tabular-nums', tone ?? 'text-slate-900')}>
+      <p className="text-[0.6875rem] font-semibold tracking-wider text-ink-500 uppercase">
+        {label}
+      </p>
+      <p
+        data-numeric
+        className={cn('mt-1.5 text-2xl font-bold tracking-tight', tone ?? 'text-navy-900')}
+      >
         {value}
       </p>
     </Card>
@@ -117,19 +121,25 @@ export function Stat({ label, value, tone }: { label: string; value: string; ton
 
 export function Badge({
   children,
-  tone = 'slate',
+  tone = 'neutral',
 }: {
   children: React.ReactNode;
-  tone?: 'slate' | 'green' | 'red' | 'amber';
+  tone?: 'neutral' | 'credit' | 'debit' | 'warn' | 'brand';
 }) {
   const tones = {
-    slate: 'bg-slate-100 text-slate-700',
-    green: 'bg-emerald-100 text-emerald-700',
-    red: 'bg-red-100 text-red-700',
-    amber: 'bg-amber-100 text-amber-800',
+    neutral: 'bg-ink-100 text-ink-700 ring-ink-200',
+    credit: 'bg-credit-soft text-credit ring-credit/20',
+    debit: 'bg-debit-soft text-debit ring-debit/20',
+    warn: 'bg-warn-soft text-warn ring-warn/20',
+    brand: 'bg-navy-50 text-navy-800 ring-navy-200',
   } as const;
   return (
-    <span className={cn('rounded-full px-2 py-0.5 text-xs font-medium', tones[tone])}>
+    <span
+      className={cn(
+        'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset',
+        tones[tone],
+      )}
+    >
       {children}
     </span>
   );
@@ -146,8 +156,10 @@ export function Alert({
     <div
       role="alert"
       className={cn(
-        'rounded-md p-3 text-sm',
-        tone === 'error' ? 'bg-red-50 text-red-700' : 'bg-sky-50 text-sky-800',
+        'rounded-md border-l-[3px] p-3 text-sm',
+        tone === 'error'
+          ? 'border-debit bg-debit-soft text-debit'
+          : 'border-navy-600 bg-navy-50 text-navy-800',
       )}
     >
       {children}
@@ -167,8 +179,8 @@ export function PageHeader({
   return (
     <div className="mb-6 flex items-start justify-between gap-4">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
-        {description ? <p className="mt-1 text-sm text-slate-500">{description}</p> : null}
+        <h1 className="text-xl font-bold tracking-tight text-navy-900">{title}</h1>
+        {description ? <p className="mt-1 text-sm text-ink-600">{description}</p> : null}
       </div>
       {action}
     </div>

@@ -94,7 +94,7 @@ export default function WizardPage() {
                 type="file"
                 accept=".xlsx,.xls"
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-1.5 file:text-white"
+                className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-navy-900 file:px-3 file:py-1.5 file:text-white"
               />
             </Field>
           </div>
@@ -122,7 +122,7 @@ export default function WizardPage() {
 
       {report ? (
         <Card>
-          <p className="mb-4 text-sm font-medium text-slate-900">{tr.wizard.report}</p>
+          <p className="mb-4 text-sm font-medium text-navy-900">{tr.wizard.report}</p>
 
           <div className="mb-4 grid gap-4 sm:grid-cols-4">
             <Stat
@@ -137,7 +137,7 @@ export default function WizardPage() {
             <Stat
               label={tr.wizard.difference}
               value={report.difference ? money(report.difference) : '—'}
-              tone={report.matches ? 'text-emerald-600' : 'text-red-600'}
+              tone={report.matches ? 'text-credit' : 'text-debit'}
             />
             <Stat label={tr.wizard.newAccounts} value={String(report.newAccounts)} />
           </div>
@@ -150,9 +150,9 @@ export default function WizardPage() {
             )}
           </div>
 
-          <div className="mb-4 max-h-64 overflow-y-auto rounded-lg border border-slate-200">
+          <div className="mb-4 max-h-64 overflow-y-auto rounded-lg border border-ink-200">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+              <thead className="bg-ink-50 text-xs uppercase text-ink-600">
                 <tr>
                   <th className="px-3 py-2 text-left">{tr.common.accountCode}</th>
                   <th className="px-3 py-2 text-left">{tr.common.status}</th>
@@ -161,18 +161,18 @@ export default function WizardPage() {
               </thead>
               <tbody>
                 {report.lines.map((line) => (
-                  <tr key={line.rowNo} className="border-t border-slate-100">
+                  <tr key={line.rowNo} className="border-t border-ink-100">
                     <td className="px-3 py-1.5 font-mono text-xs">{line.accountCode}</td>
                     <td className="px-3 py-1.5">
                       {line.exists ? (
                         <Badge>{tr.wizard.existingAccounts}</Badge>
                       ) : (
-                        <Badge tone="green">{tr.wizard.newAccounts}</Badge>
+                        <Badge tone="credit">{tr.wizard.newAccounts}</Badge>
                       )}
                     </td>
                     <td
                       className={`px-3 py-1.5 text-right tabular-nums ${
-                        line.type === 'DEBIT' ? 'text-red-600' : 'text-emerald-600'
+                        line.type === 'DEBIT' ? 'text-debit' : 'text-credit'
                       }`}
                     >
                       {money(line.amount)}

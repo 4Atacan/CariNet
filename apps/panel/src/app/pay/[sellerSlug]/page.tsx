@@ -65,8 +65,8 @@ export default function GuestPayPage() {
   return (
     <main className="mx-auto max-w-md p-6">
       <header className="mb-6 text-center">
-        <h1 className="text-xl font-semibold text-slate-900">{seller.data?.name ?? '...'}</h1>
-        <p className="mt-1 text-sm text-slate-500">{tr.guest.title}</p>
+        <h1 className="text-xl font-semibold text-navy-900">{seller.data?.name ?? '...'}</h1>
+        <p className="mt-1 text-sm text-ink-600">{tr.guest.title}</p>
       </header>
 
       {error ? <Alert>{error}</Alert> : null}
@@ -128,8 +128,8 @@ function PaymentInstructions({ result }: { result: GuestIntentResult }) {
   if (result.payment) {
     return (
       <Card>
-        <p className="mb-2 text-sm text-slate-700">{tr.guest.providerHint}</p>
-        <p className="mb-4 text-2xl font-semibold tabular-nums text-slate-900">
+        <p className="mb-2 text-sm text-ink-800">{tr.guest.providerHint}</p>
+        <p className="mb-4 text-2xl font-semibold tabular-nums text-navy-900">
           {money(result.payment.chargeAmount)}
         </p>
         <form method="POST" action={result.payment.hostedUrl}>
@@ -148,11 +148,11 @@ function PaymentInstructions({ result }: { result: GuestIntentResult }) {
 
   return (
     <Card>
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+      <p className="text-xs font-medium uppercase tracking-wide text-ink-600">
         {tr.guest.referenceTitle}
       </p>
       <div className="mt-2 flex items-center gap-2">
-        <code className="flex-1 rounded-md bg-slate-100 px-3 py-2 font-mono text-sm text-slate-900">
+        <code className="flex-1 rounded-md bg-ink-100 px-3 py-2 font-mono text-sm text-navy-900">
           {result.intent.referenceCode}
         </code>
         <Button
@@ -165,13 +165,13 @@ function PaymentInstructions({ result }: { result: GuestIntentResult }) {
           {copied ? tr.common.copied : tr.common.copy}
         </Button>
       </div>
-      <p className="mt-2 text-xs text-slate-500">{tr.guest.referenceHint}</p>
+      <p className="mt-2 text-xs text-ink-600">{tr.guest.referenceHint}</p>
 
       {account ? (
-        <div className="mt-5 border-t border-slate-200 pt-4">
-          <p className="text-sm font-medium text-slate-900">{account.bankName}</p>
+        <div className="mt-5 border-t border-ink-200 pt-4">
+          <p className="text-sm font-medium text-navy-900">{account.bankName}</p>
           <div className="mt-1 flex items-center gap-2">
-            <code className="flex-1 font-mono text-sm text-slate-700">{account.iban}</code>
+            <code className="flex-1 font-mono text-sm text-ink-800">{account.iban}</code>
             <Button
               size="sm"
               variant="ghost"
@@ -180,13 +180,13 @@ function PaymentInstructions({ result }: { result: GuestIntentResult }) {
               {tr.common.copy}
             </Button>
           </div>
-          <p className="text-xs text-slate-500">{account.holderName}</p>
+          <p className="text-xs text-ink-600">{account.holderName}</p>
         </div>
       ) : null}
 
       <div className="mt-4 flex items-center justify-between">
-        <span className="text-sm text-slate-500">{tr.collections.amount}</span>
-        <Badge tone="green">{money(result.intent.amount)}</Badge>
+        <span className="text-sm text-ink-600">{tr.collections.amount}</span>
+        <Badge tone="credit">{money(result.intent.amount)}</Badge>
       </div>
     </Card>
   );

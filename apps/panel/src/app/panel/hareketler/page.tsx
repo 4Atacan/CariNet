@@ -48,7 +48,7 @@ export default function TransactionsPage() {
       header: tr.common.buyer,
       cell: (c) => (
         <span>
-          <span className="font-mono text-xs text-slate-500">
+          <span className="font-mono text-xs text-ink-600">
             {c.row.original.buyerAccount.accountCode}
           </span>{' '}
           {c.row.original.buyerAccount.title}
@@ -58,7 +58,7 @@ export default function TransactionsPage() {
     {
       header: tr.transactions.documentType,
       cell: (c) => (
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-ink-600">
           {c.row.original.documentType}
           {c.row.original.documentNo ? ` · ${c.row.original.documentNo}` : ''}
         </span>
@@ -68,9 +68,9 @@ export default function TransactionsPage() {
       header: tr.transactions.type,
       cell: (c) =>
         c.row.original.type === 'DEBIT' ? (
-          <Badge tone="red">{tr.transactions.debit}</Badge>
+          <Badge tone="debit">{tr.transactions.debit}</Badge>
         ) : (
-          <Badge tone="green">{tr.transactions.credit}</Badge>
+          <Badge tone="credit">{tr.transactions.credit}</Badge>
         ),
     },
     {
@@ -85,8 +85,8 @@ export default function TransactionsPage() {
       header: tr.common.actions,
       cell: (c) => {
         const row = c.row.original;
-        if (row.isCancelled) return <Badge tone="amber">{tr.transactions.cancelled}</Badge>;
-        if (row.invoiceId) return <span className="text-xs text-slate-400">—</span>;
+        if (row.isCancelled) return <Badge tone="warn">{tr.transactions.cancelled}</Badge>;
+        if (row.invoiceId) return <span className="text-xs text-ink-400">—</span>;
         return (
           <Button
             size="sm"

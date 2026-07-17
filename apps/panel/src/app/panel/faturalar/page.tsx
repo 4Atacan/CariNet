@@ -66,7 +66,7 @@ export default function InvoicesPage() {
       header: tr.common.actions,
       cell: (c) =>
         c.row.original.isCancelled ? (
-          <Badge tone="amber">{tr.transactions.cancelled}</Badge>
+          <Badge tone="warn">{tr.transactions.cancelled}</Badge>
         ) : (
           <Button
             size="sm"
@@ -191,9 +191,9 @@ function NewInvoiceForm({ onDone }: { onDone: () => void }) {
           </Field>
         </div>
 
-        <div className="rounded-lg border border-slate-200">
-          <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-3 py-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="rounded-lg border border-ink-200">
+          <div className="flex items-center justify-between border-b border-ink-200 bg-ink-50 px-3 py-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-ink-600">
               {tr.invoices.items}
             </span>
             <Button type="button" size="sm" variant="outline" onClick={() => append(EMPTY_ITEM)}>
@@ -248,24 +248,24 @@ function NewInvoiceForm({ onDone }: { onDone: () => void }) {
               </div>
             ))}
             {errors.items?.message ? (
-              <span className="text-xs text-red-600">{errors.items.message}</span>
+              <span className="text-xs text-debit">{errors.items.message}</span>
             ) : null}
           </div>
 
-          <div className="flex justify-end gap-6 border-t border-slate-200 bg-slate-50 px-4 py-2 text-sm">
-            <span className="text-slate-500">
+          <div className="flex justify-end gap-6 border-t border-ink-200 bg-ink-50 px-4 py-2 text-sm">
+            <span className="text-ink-600">
               {tr.invoices.netTotal}:{' '}
-              <span className="tabular-nums text-slate-900">
+              <span className="tabular-nums text-navy-900">
                 {money(preview.netTotal, currency)}
               </span>
             </span>
-            <span className="text-slate-500">
+            <span className="text-ink-600">
               {tr.invoices.taxTotal}:{' '}
-              <span className="tabular-nums text-slate-900">
+              <span className="tabular-nums text-navy-900">
                 {money(preview.taxTotal, currency)}
               </span>
             </span>
-            <span className="font-medium text-slate-900">
+            <span className="font-medium text-navy-900">
               {tr.invoices.grandTotal}:{' '}
               <span className="tabular-nums">{money(preview.grandTotal, currency)}</span>
             </span>

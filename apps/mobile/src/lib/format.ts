@@ -1,4 +1,5 @@
 import { formatMoney, type MoneyString } from '@carinet/shared';
+import { color } from './theme';
 
 export const money = (value: MoneyString, currency = 'TRY'): string => formatMoney(value, currency);
 
@@ -7,9 +8,9 @@ export const trDate = (iso: string | null | undefined): string =>
     ? new Intl.DateTimeFormat('tr-TR', { timeZone: 'Europe/Istanbul' }).format(new Date(iso))
     : '—';
 
-/** Pozitif bakiye = alici borclu (kirmizi); negatif = alacakli (yesil). */
+/** Pozitif bakiye = alici borclu (debit); negatif = alacakli (credit); sifir = notr. */
 export const balanceColor = (value: MoneyString): string =>
-  value.startsWith('-') ? '#059669' : Number(value) === 0 ? '#64748b' : '#dc2626';
+  value.startsWith('-') ? color.credit : Number(value) === 0 ? color.ink[500] : color.debit;
 
 /** Limit kullanim yuzdesi — yalniz GOSTERIM icin (hesap sunucuda). */
 export const limitUsage = (balance: MoneyString, limit: MoneyString): number => {

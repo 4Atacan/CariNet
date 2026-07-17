@@ -705,13 +705,13 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1784272348.6198964,
-    "ast_hash": "16745da17209af451cbce714098ee608",
+    "mtime": 1784277237.6088593,
+    "ast_hash": "793713ce8fda58ac30f06b8e753b5b62",
     "semantic_hash": ""
   },
   "PROGRESS.md": {
-    "mtime": 1784272320.9493763,
-    "ast_hash": "2b309d59e20e20999351bd493428db81",
+    "mtime": 1784277230.1462214,
+    "ast_hash": "8487b6d1f7e74ee6e2f7af4d7bcad868",
     "semantic_hash": ""
   },
   "docker-compose.yml": {

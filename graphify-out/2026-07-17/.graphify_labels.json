@@ -107,7 +107,6 @@
   "105": "reflect-metadata",
   "106": "rxjs",
   "107": "zod",
-  "108": "dotenv-cli",
   "109": "@nestjs/schematics",
   "110": "@nestjs/testing",
   "111": "prisma",
@@ -241,5 +240,11 @@
   "239": "cookie-parser",
   "240": "@types/multer",
   "241": "@babel/runtime",
-  "242": "next"
+  "242": "next",
+  "243": "2026-07-13 · Faz 0 — Iskelet ve Temel",
+  "244": "2026-07-14 · Faz 1 — Cekirdek MVP",
+  "245": "2026-07-15 · Faz 5 — Sertlestirme ve Yayin (§11, §13)",
+  "246": "2026-07-17 · Faz 5 — Yuk testi + ekstre sorgusu yeniden kuruldu (§6.4, §13 yuk hedefi)",
+  "247": "2026-07-17 · Faz 5 — Sentry ×3 kod tarafi (§11.8)",
+  "248": "@babel/runtime"
 }

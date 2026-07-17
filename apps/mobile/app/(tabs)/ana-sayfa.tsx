@@ -1,19 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { Link, router } from 'expo-router';
+import { Megaphone, MessageSquare } from 'lucide-react-native';
 import { PieChart } from 'react-native-gifted-charts';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  type AuthenticatedUser,
-  type LoginResponse,
-  type MembershipSummary,
-  type MoneyString,
-} from '@carinet/shared';
-import { apiGet, apiPost, tokenStore } from '@/lib/api';
-import { registerForPush, unregisterPush } from '@/lib/push';
+import { type AuthenticatedUser, type MembershipSummary, type MoneyString } from '@carinet/shared';
+import { AppHeader } from '@/components/app-header';
+import { apiGet } from '@/lib/api';
+import { registerForPush } from '@/lib/push';
 import { balanceColor, limitUsage, money, trDate } from '@/lib/format';
-import { useSession } from '@/store/session';
+import { color, numeric, radius, shadow, space } from '@/lib/theme';
 import { tr } from '@/lib/tr';
 
 interface MeResponse extends AuthenticatedUser {
@@ -56,9 +53,6 @@ interface RiskSummary {
 
 /** §13 Faz 1 — Dashboard: cari kodu, bakiye, limit, temsilci, borc/alacak pastasi, son 10 hareket. */
 export default function HomeScreen() {
-  const queryClient = useQueryClient();
-  const clearSession = useSession((s) => s.clear);
-
   const me = useQuery({
     queryKey: ['me'],
     queryFn: () => apiGet<MeResponse>('/auth/me'),
@@ -78,82 +72,55 @@ export default function HomeScreen() {
     retry: false,
   });
 
-  /** Rozet: AKTIF hesabin okunmamis bildirim sayisi (§13 Faz 4). */
-  const unread = useQuery({
-    queryKey: ['unread'],
-    queryFn: () => apiGet<{ unread: number }>('/notifications/unread-count'),
-    retry: false,
-  });
-
   // Push izni + token kaydi. Reddedilirse sessizce gecer; bildirim merkezi yine calisir.
   useEffect(() => {
     void registerForPush();
   }, []);
 
-  const switchAccount = useMutation({
-    mutationFn: (membershipId: string) =>
-      apiPost<LoginResponse>('/auth/switch-account', { membershipId }),
-    onSuccess: async (result) => {
-      await tokenStore.save(result.tokens); // yeni baglam → yeni token cifti (§6.2)
-      // Token AYNI kalir (kullanici+cihaz bazli); rozet/bildirimler yeni hesaba gore tazelenir.
-      await queryClient.invalidateQueries();
-    },
-  });
-
-  const logout = useMutation({
-    mutationFn: async () => {
-      const refreshToken = await tokenStore.getRefresh();
-      await unregisterPush(); // baska hesap bu cihazda bizim bildirimlerimizi almasin
-      await apiPost<{ ok: true }>('/auth/logout', { refreshToken });
-    },
-    onSettled: async () => {
-      await clearSession();
-      queryClient.clear();
-      router.replace('/giris');
-    },
-  });
-
   if (me.isLoading) {
     return (
       <SafeAreaView style={styles.center}>
-        <ActivityIndicator />
+        <ActivityIndicator color={color.navy[600]} />
       </SafeAreaView>
     );
   }
 
+  // Oturum cozulemiyorsa girise don — cikis akisi artik /profil'de.
   if (me.isError || !me.data) {
     return (
       <SafeAreaView style={styles.center}>
-        <Pressable onPress={() => logout.mutate()}>
-          <Text style={styles.link}>{tr.home.logout}</Text>
+        <Pressable onPress={() => router.replace('/giris')}>
+          <Text style={styles.link}>{tr.login.submit}</Text>
         </Pressable>
       </SafeAreaView>
     );
   }
 
-  const active = me.data.memberships.find((m) => m.membershipId === me.data.membershipId);
   const data = dashboard.data;
   const debit = data ? Number(data.balance.totalDebit) : 0;
   const credit = data ? Number(data.balance.totalCredit) : 0;
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.topRow}>
-          <Text style={styles.greeting}>
-            {tr.home.greeting}, {me.data.fullName}
-          </Text>
-
-          {/* Rozet AKTIF hesabin okunmamis bildirimlerini sayar (§6.2). */}
-          <Pressable style={styles.bell} onPress={() => router.push('/bildirimler')}>
-            <Text style={styles.bellIcon}>🔔</Text>
-            {(unread.data?.unread ?? 0) > 0 ? (
-              <View style={styles.bellBadge}>
-                <Text style={styles.bellBadgeText}>{unread.data!.unread}</Text>
-              </View>
-            ) : null}
+    <SafeAreaView style={styles.safe} edges={['bottom']}>
+      {/* Baslik: logo + rozetli zil + profil. Zil ve rozet artik AppHeader'in isi (tek kaynak). */}
+      <AppHeader
+        right={
+          <Pressable
+            onPress={() => router.push('/profil')}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={tr.header.profile}
+            style={styles.avatarBtn}
+          >
+            <Text style={styles.avatarText}>{initials(me.data.fullName)}</Text>
           </Pressable>
-        </View>
+        }
+      />
+
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.greeting}>
+          {tr.home.greeting}, {me.data.fullName}
+        </Text>
 
         {data ? (
           <>
@@ -169,11 +136,15 @@ export default function HomeScreen() {
             </View>
 
             <View style={styles.statRow}>
-              <Stat label={tr.home.debt} value={money(data.balance.totalDebit)} color="#dc2626" />
+              <Stat
+                label={tr.home.debt}
+                value={money(data.balance.totalDebit)}
+                color={color.debit}
+              />
               <Stat
                 label={tr.home.credit}
                 value={money(data.balance.totalCredit)}
-                color="#059669"
+                color={color.credit}
               />
             </View>
 
@@ -189,8 +160,8 @@ export default function HomeScreen() {
               <View style={styles.chartCard}>
                 <PieChart
                   data={[
-                    { value: debit, color: '#dc2626', text: tr.home.debt },
-                    { value: credit, color: '#059669', text: tr.home.credit },
+                    { value: debit, color: color.debit, text: tr.home.debt },
+                    { value: credit, color: color.credit, text: tr.home.credit },
                   ]}
                   donut
                   radius={70}
@@ -200,8 +171,8 @@ export default function HomeScreen() {
                   )}
                 />
                 <View style={styles.legend}>
-                  <Legend color="#dc2626" label={tr.home.debt} />
-                  <Legend color="#059669" label={tr.home.credit} />
+                  <Legend color={color.debit} label={tr.home.debt} />
+                  <Legend color={color.credit} label={tr.home.credit} />
                 </View>
               </View>
             ) : null}
@@ -229,15 +200,14 @@ export default function HomeScreen() {
               <Text style={styles.payButtonText}>{tr.pay.cta}</Text>
             </Pressable>
 
-            {/* §13 Faz 4 — vitrin, kampanya/kurlar, talepler. */}
+            {/* §13 Faz 4. Vitrin BURADA YOK — artik alt sekme; iki yerde durmasi mukerrer olurdu. */}
             <View style={styles.quickRow}>
-              <Pressable style={styles.quickTile} onPress={() => router.push('/vitrin')}>
-                <Text style={styles.quickText}>{tr.catalog.title}</Text>
-              </Pressable>
               <Pressable style={styles.quickTile} onPress={() => router.push('/kampanyalar')}>
+                <Megaphone size={18} color={color.navy[700]} />
                 <Text style={styles.quickText}>{tr.campaigns.title}</Text>
               </Pressable>
               <Pressable style={styles.quickTile} onPress={() => router.push('/talepler')}>
+                <MessageSquare size={18} color={color.navy[700]} />
                 <Text style={styles.quickText}>{tr.requests.title}</Text>
               </Pressable>
             </View>
@@ -274,7 +244,7 @@ export default function HomeScreen() {
                   <Text
                     style={[
                       styles.rowAmount,
-                      { color: t.type === 'DEBIT' ? '#dc2626' : '#059669' },
+                      { color: t.type === 'DEBIT' ? color.debit : color.credit },
                     ]}
                   >
                     {t.type === 'DEBIT' ? '+' : '−'}
@@ -288,45 +258,8 @@ export default function HomeScreen() {
           <ActivityIndicator />
         ) : null}
 
-        <Text style={[styles.sectionTitle, styles.switcherTitle]}>{tr.switcher.title}</Text>
-        <Text style={styles.hint}>{tr.switcher.hint}</Text>
-
-        {me.data.memberships.map((m) => {
-          const isActive = m.membershipId === me.data.membershipId;
-          return (
-            <Pressable
-              key={m.membershipId}
-              style={[styles.row, isActive && styles.rowActive]}
-              disabled={isActive || switchAccount.isPending}
-              onPress={() => switchAccount.mutate(m.membershipId)}
-            >
-              <View>
-                <Text style={styles.rowTitle}>{m.sellerName}</Text>
-                <Text style={styles.rowMeta}>
-                  {m.accountTitle ?? m.role}
-                  {m.accountCode ? ` · ${m.accountCode}` : ''}
-                </Text>
-              </View>
-              {isActive ? <Text style={styles.badge}>●</Text> : null}
-            </Pressable>
-          );
-        })}
-
-        {active ? null : null}
-
-        <View style={styles.footerLinks}>
-          <Link href="/gizlilik" style={styles.footerLink}>
-            {tr.legal.link}
-          </Link>
-          <Text style={styles.footerSep}>·</Text>
-          <Link href="/hesap-sil" style={styles.footerLink}>
-            {tr.legal.deleteLink}
-          </Link>
-        </View>
-
-        <Pressable style={styles.logout} onPress={() => logout.mutate()}>
-          <Text style={styles.logoutText}>{tr.home.logout}</Text>
-        </Pressable>
+        {/* Hesap degistirici, yasal baglantilar ve cikis → /profil (basliktaki avatar).
+            Ana sayfa yalnizca "bakiyeni 3 saniyede gor" isine odaklanir; bunlar seyrek islerdir. */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -362,139 +295,158 @@ function Legend({ color, label }: { color: string; label: string }) {
   );
 }
 
+/** "Ahmet Yilmaz" → "AY" */
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '—';
+  const a = parts[0]![0] ?? '';
+  const b = parts.length > 1 ? (parts[parts.length - 1]![0] ?? '') : '';
+  return (a + b).toLocaleUpperCase('tr-TR');
+}
+
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc' },
-  container: { padding: 20, paddingBottom: 40 },
-  greeting: { fontSize: 22, fontWeight: '700', color: '#0f172a', marginBottom: 16 },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  cardLabel: { color: '#64748b', fontSize: 12, textTransform: 'uppercase', letterSpacing: 1 },
-  balance: { fontSize: 30, fontWeight: '700', marginTop: 4 },
-  cardMeta: { color: '#64748b', fontSize: 13, marginTop: 2 },
-  cardHint: { color: '#94a3b8', fontSize: 12, marginTop: 8 },
-  statRow: { flexDirection: 'row', gap: 12, marginTop: 12 },
-  stat: {
+  safe: { flex: 1, backgroundColor: color.ink[100] },
+  center: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  statLabel: { fontSize: 11, color: '#64748b', textTransform: 'uppercase' },
-  statValue: { fontSize: 16, fontWeight: '600', color: '#0f172a', marginTop: 2 },
-  chartCard: {
-    marginTop: 12,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    alignItems: 'center',
-  },
-  chartCenter: { fontSize: 11, color: '#64748b' },
-  legend: { flexDirection: 'row', gap: 16, marginTop: 12 },
-  legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  legendDot: { width: 8, height: 8, borderRadius: 4 },
-  riskCard: {
-    marginTop: 12,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#fecaca',
-  },
-  riskAmount: { fontSize: 22, fontWeight: '700', color: '#dc2626', marginTop: 4 },
-  riskRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 },
-  bucket: { alignItems: 'center', flex: 1 },
-  bucketLabel: { fontSize: 11, color: '#64748b' },
-  bucketValue: { fontSize: 12, fontWeight: '600', color: '#0f172a', marginTop: 2 },
-  bucketEmpty: { color: '#cbd5e1', fontWeight: '400' },
-  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  bell: { padding: 6 },
-  bellIcon: { fontSize: 22 },
-  bellBadge: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    backgroundColor: '#dc2626',
-    borderRadius: 999,
-    minWidth: 18,
-    height: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 4,
+    backgroundColor: color.ink[100],
   },
-  bellBadgeText: { color: '#fff', fontSize: 11, fontWeight: '700' },
-  quickRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  container: { padding: space.lg, paddingBottom: space.xxl + space.lg },
+  greeting: { fontSize: 15, color: color.ink[600], marginBottom: space.md },
+  link: { color: color.navy[700], fontWeight: '600', fontSize: 13 },
+
+  // Basliktaki profil dugmesi (avatar). Zil AppHeader'in kendi isi.
+  avatarBtn: {
+    width: 30,
+    height: 30,
+    borderRadius: radius.pill,
+    backgroundColor: color.navy[900],
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: { color: color.white, fontSize: 11, fontWeight: '700' },
+
+  // Bakiye karti — ekranin kahramani (kuzey yildizi: 3 saniyede gor).
+  card: {
+    backgroundColor: color.white,
+    borderRadius: radius.md,
+    padding: space.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.ink[200],
+    ...shadow.card,
+  },
+  cardLabel: {
+    color: color.ink[500],
+    fontSize: 11,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  balance: { fontSize: 32, fontWeight: '800', marginTop: space.xs, letterSpacing: -0.5 },
+  cardMeta: { color: color.ink[600], fontSize: 13, marginTop: 2 },
+  cardHint: { color: color.ink[500], fontSize: 12, marginTop: space.sm },
+
+  statRow: { flexDirection: 'row', gap: space.md, marginTop: space.md },
+  stat: {
+    flex: 1,
+    backgroundColor: color.white,
+    borderRadius: radius.sm,
+    padding: space.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.ink[200],
+  },
+  statLabel: { fontSize: 11, color: color.ink[500], textTransform: 'uppercase', fontWeight: '600' },
+  statValue: { fontSize: 16, fontWeight: '700', color: color.navy[900], marginTop: 2 },
+
+  chartCard: {
+    marginTop: space.md,
+    backgroundColor: color.white,
+    borderRadius: radius.md,
+    padding: space.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.ink[200],
+    alignItems: 'center',
+  },
+  chartCenter: { fontSize: 11, color: color.ink[600] },
+  legend: { flexDirection: 'row', gap: space.lg, marginTop: space.md },
+  legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  legendDot: { width: 8, height: 8, borderRadius: 4 },
+
+  // Vadesi gecen borc: soluk kirmizi zemin + serit. Kirmizi CERCEVE degil — kart "hata" gibi durmasin.
+  riskCard: {
+    marginTop: space.md,
+    backgroundColor: color.debitSoft,
+    borderRadius: radius.md,
+    padding: space.lg,
+    borderLeftWidth: 3,
+    borderLeftColor: color.debit,
+  },
+  riskAmount: { fontSize: 22, fontWeight: '800', color: color.debit, marginTop: space.xs },
+  riskRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: space.md },
+  bucket: { alignItems: 'center', flex: 1 },
+  bucketLabel: { fontSize: 11, color: color.ink[600] },
+  bucketValue: { fontSize: 12, fontWeight: '700', color: color.navy[900], marginTop: 2 },
+  bucketEmpty: { color: color.ink[400], fontWeight: '400' },
+
+  quickRow: { flexDirection: 'row', gap: space.sm, marginTop: space.sm },
   quickTile: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    paddingVertical: 12,
+    flexDirection: 'row',
+    gap: space.sm,
+    backgroundColor: color.white,
+    borderRadius: radius.sm,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.ink[200],
+    paddingVertical: space.md,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  quickText: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
+  quickText: { fontSize: 13, fontWeight: '600', color: color.navy[900] },
+
   payButton: {
-    marginTop: 12,
-    backgroundColor: '#0f172a',
-    borderRadius: 12,
-    paddingVertical: 14,
+    marginTop: space.md,
+    backgroundColor: color.navy[900],
+    borderRadius: radius.md,
+    paddingVertical: space.lg - 2,
     alignItems: 'center',
+    ...shadow.card,
   },
-  payButtonText: { color: '#fff', fontWeight: '600', fontSize: 15 },
+  payButtonText: { color: color.white, fontWeight: '700', fontSize: 15 },
+
   repCard: {
-    marginTop: 12,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
+    marginTop: space.md,
+    backgroundColor: color.white,
+    borderRadius: radius.md,
+    padding: space.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.ink[200],
   },
-  repName: { fontSize: 15, fontWeight: '600', color: '#0f172a', marginTop: 4 },
+  repName: { fontSize: 15, fontWeight: '700', color: color.navy[900], marginTop: space.xs },
+
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 24,
-    marginBottom: 8,
+    marginTop: space.xl,
+    marginBottom: space.sm,
   },
-  sectionTitle: { fontSize: 15, fontWeight: '600', color: '#0f172a' },
-  switcherTitle: { marginTop: 28 },
-  hint: { fontSize: 13, color: '#64748b', marginBottom: 12, marginTop: 2 },
+  sectionTitle: { fontSize: 15, fontWeight: '700', color: color.navy[900] },
+  hint: { fontSize: 13, color: color.ink[600], marginBottom: space.md, marginTop: 2 },
+
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    borderRadius: 10,
-    padding: 14,
-    marginBottom: 8,
+    backgroundColor: color.white,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.ink[200],
+    borderRadius: radius.sm,
+    padding: space.md + 2,
+    marginBottom: space.sm,
   },
-  rowLeft: { flex: 1, paddingRight: 12 },
-  rowActive: { borderColor: '#0f172a' },
-  rowTitle: { fontSize: 14, fontWeight: '600', color: '#0f172a' },
-  rowMeta: { fontSize: 12, color: '#64748b', marginTop: 2 },
-  rowAmount: { fontSize: 14, fontWeight: '600' },
-  badge: { color: '#16a34a', fontSize: 16 },
-  footerLinks: {
-    marginTop: 28,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-  },
-  footerLink: { color: '#64748b', fontSize: 12 },
-  footerSep: { color: '#cbd5e1' },
-  logout: { marginTop: 16, alignItems: 'center' },
-  logoutText: { color: '#dc2626', fontSize: 14, fontWeight: '500' },
-  link: { color: '#0f172a', fontSize: 13, fontWeight: '600' },
+  rowLeft: { flex: 1, paddingRight: space.md },
+  rowTitle: { fontSize: 14, fontWeight: '600', color: color.navy[900] },
+  rowMeta: { fontSize: 12, color: color.ink[600], marginTop: 2 },
+  rowAmount: { fontSize: 14, fontWeight: '700', ...numeric },
 });

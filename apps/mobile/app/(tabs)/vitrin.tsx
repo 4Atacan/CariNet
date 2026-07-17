@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { router } from 'expo-router';
 import { useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { type MoneyString } from '@carinet/shared';
 import { apiGetPaged } from '@/lib/api';
 import { money } from '@/lib/format';
 import { tr } from '@/lib/tr';
+import { color } from '@/lib/theme';
+import { AppHeader } from '@/components/app-header';
 
 interface Product {
   id: string;
@@ -30,12 +31,10 @@ export default function CatalogScreen() {
   });
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top']}>
+    <SafeAreaView style={styles.safe} edges={['bottom']}>
+      {/* Sekme ekrani → geri dugmesi yok. */}
+      <AppHeader title={tr.catalog.title} />
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={styles.back}>{tr.common.back}</Text>
-        </Pressable>
-        <Text style={styles.title}>{tr.catalog.title}</Text>
         <TextInput
           style={styles.search}
           placeholder={tr.catalog.search}
@@ -74,21 +73,21 @@ export default function CatalogScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
+  safe: { flex: 1, backgroundColor: color.ink[100] },
   header: { paddingHorizontal: 16, paddingTop: 8, gap: 8 },
-  back: { color: '#64748b', fontSize: 14 },
-  title: { fontSize: 22, fontWeight: '600', color: '#0f172a' },
+  back: { color: color.ink[600], fontSize: 14 },
+  title: { fontSize: 22, fontWeight: '600', color: color.navy[900] },
   search: {
     borderWidth: 1,
-    borderColor: '#cbd5e1',
+    borderColor: color.ink[300],
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   list: { padding: 16, gap: 10 },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 12,
     padding: 14,
     flexDirection: 'row',
@@ -96,10 +95,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cardMain: { flex: 1, gap: 2 },
-  name: { fontSize: 15, fontWeight: '600', color: '#0f172a' },
-  code: { fontSize: 12, color: '#94a3b8' },
-  stock: { fontSize: 12, color: '#059669' },
-  outOfStock: { color: '#dc2626' },
-  price: { fontSize: 16, fontWeight: '700', color: '#0f172a', fontVariant: ['tabular-nums'] },
-  empty: { textAlign: 'center', color: '#94a3b8', marginTop: 40 },
+  name: { fontSize: 15, fontWeight: '600', color: color.navy[900] },
+  code: { fontSize: 12, color: color.ink[400] },
+  stock: { fontSize: 12, color: color.credit },
+  outOfStock: { color: color.debit },
+  price: { fontSize: 16, fontWeight: '700', color: color.navy[900], fontVariant: ['tabular-nums'] },
+  empty: { textAlign: 'center', color: color.ink[400], marginTop: 40 },
 });

@@ -81,9 +81,7 @@ export default function ReportsPage() {
     },
     {
       header: tr.reports.overdue,
-      cell: (c) => (
-        <span className="tabular-nums text-red-600">{money(c.row.original.overdue)}</span>
-      ),
+      cell: (c) => <span className="tabular-nums text-debit">{money(c.row.original.overdue)}</span>,
     },
     { header: '0-30', cell: (c) => <Money value={c.row.original.buckets.D0_30} /> },
     { header: '31-60', cell: (c) => <Money value={c.row.original.buckets.D31_60} /> },
@@ -93,8 +91,8 @@ export default function ReportsPage() {
       header: tr.reports.limitUsage,
       cell: (c) => {
         const percent = c.row.original.limitUsagePercent;
-        if (percent === null) return <span className="text-xs text-slate-400">—</span>;
-        const tone = percent > 100 ? 'red' : percent > 80 ? 'amber' : 'slate';
+        if (percent === null) return <span className="text-xs text-ink-400">—</span>;
+        const tone = percent > 100 ? 'debit' : percent > 80 ? 'warn' : 'neutral';
         return <Badge tone={tone}>%{percent}</Badge>;
       },
     },
@@ -102,12 +100,12 @@ export default function ReportsPage() {
       header: tr.reports.averageDue,
       cell: (c) => {
         const row = c.row.original;
-        if (!row.averageDueDate) return <span className="text-xs text-slate-400">—</span>;
+        if (!row.averageDueDate) return <span className="text-xs text-ink-400">—</span>;
         return (
           <span className="text-xs">
             {trDate(row.averageDueDate)}
             {row.averageOverdueDays !== null && row.averageOverdueDays > 0 ? (
-              <span className="ml-1 text-red-600">(+{row.averageOverdueDays}g)</span>
+              <span className="ml-1 text-debit">(+{row.averageOverdueDays}g)</span>
             ) : null}
           </span>
         );
@@ -143,18 +141,18 @@ export default function ReportsPage() {
         <Stat
           label={tr.reports.totalOverdue}
           value={money(totalOverdue)}
-          tone={Number(totalOverdue) > 0 ? 'text-red-600' : undefined}
+          tone={Number(totalOverdue) > 0 ? 'text-debit' : undefined}
         />
         <Stat
           label={tr.reports.overLimit}
           value={String(overLimit.length)}
-          tone={overLimit.length > 0 ? 'text-red-600' : undefined}
+          tone={overLimit.length > 0 ? 'text-debit' : undefined}
         />
       </div>
 
       <Card className="mb-6">
         <div className="mb-4 flex items-center justify-between gap-4">
-          <p className="text-sm font-medium text-slate-900">{tr.reports.periodic}</p>
+          <p className="text-sm font-medium text-navy-900">{tr.reports.periodic}</p>
           <div className="w-64">
             <Select value={accountId} onChange={(e) => setAccountId(e.target.value)}>
               <option value="">{tr.reports.allAccounts}</option>
@@ -168,7 +166,7 @@ export default function ReportsPage() {
         </div>
 
         {chartData.length === 0 ? (
-          <p className="text-sm text-slate-500">{tr.common.empty}</p>
+          <p className="text-sm text-ink-600">{tr.common.empty}</p>
         ) : (
           <div className="h-72 w-full">
             <ResponsiveContainer>
@@ -195,7 +193,7 @@ export default function ReportsPage() {
         )}
 
         {periodic.data ? (
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-xs text-ink-600">
             {tr.reports.openingBalance}: {money(periodic.data.openingBalance)}
           </p>
         ) : null}
@@ -215,6 +213,6 @@ export default function ReportsPage() {
 }
 
 function Money({ value }: { value: MoneyString }) {
-  if (Number(value) === 0) return <span className="text-xs text-slate-300">—</span>;
+  if (Number(value) === 0) return <span className="text-xs text-ink-300">—</span>;
   return <span className="tabular-nums text-xs">{money(value)}</span>;
 }

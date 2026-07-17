@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { router } from 'expo-router';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { apiGetPaged, apiPost } from '@/lib/api';
 import { trDate } from '@/lib/format';
 import { tr } from '@/lib/tr';
+import { color } from '@/lib/theme';
+import { AppHeader } from '@/components/app-header';
 
 type NotificationType = keyof typeof tr.notifications.types;
 
@@ -41,20 +42,18 @@ export default function NotificationsScreen() {
   const hasUnread = rows.some((n) => !n.readAt);
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top']}>
-      <View style={styles.header}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={styles.back}>{tr.common.back}</Text>
-        </Pressable>
-        <View style={styles.headerRow}>
-          <Text style={styles.title}>{tr.notifications.title}</Text>
-          {hasUnread ? (
-            <Pressable onPress={() => markAll.mutate()}>
+    <SafeAreaView style={styles.safe} edges={['bottom']}>
+      <AppHeader
+        title={tr.notifications.title}
+        back
+        right={
+          hasUnread ? (
+            <Pressable onPress={() => markAll.mutate()} hitSlop={8} accessibilityRole="button">
               <Text style={styles.link}>{tr.notifications.markAll}</Text>
             </Pressable>
-          ) : null}
-        </View>
-      </View>
+          ) : null
+        }
+      />
 
       <FlatList
         data={rows}
@@ -77,19 +76,19 @@ export default function NotificationsScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
+  safe: { flex: 1, backgroundColor: color.ink[100] },
   header: { paddingHorizontal: 16, paddingTop: 8, gap: 4 },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  back: { color: '#64748b', fontSize: 14 },
-  title: { fontSize: 22, fontWeight: '600', color: '#0f172a' },
-  link: { color: '#0f172a', fontSize: 13, textDecorationLine: 'underline' },
+  back: { color: color.ink[600], fontSize: 14 },
+  title: { fontSize: 22, fontWeight: '600', color: color.navy[900] },
+  link: { color: color.navy[900], fontSize: 13, textDecorationLine: 'underline' },
   list: { padding: 16, gap: 10 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, gap: 4 },
-  unread: { borderLeftWidth: 3, borderLeftColor: '#0f172a' },
+  card: { backgroundColor: color.white, borderRadius: 12, padding: 14, gap: 4 },
+  unread: { borderLeftWidth: 3, borderLeftColor: color.navy[900] },
   cardHead: { flexDirection: 'row', justifyContent: 'space-between' },
-  badge: { fontSize: 11, fontWeight: '600', color: '#64748b', textTransform: 'uppercase' },
-  date: { fontSize: 11, color: '#94a3b8' },
-  cardTitle: { fontSize: 15, fontWeight: '600', color: '#0f172a' },
-  cardBody: { fontSize: 14, color: '#475569', lineHeight: 19 },
-  empty: { textAlign: 'center', color: '#94a3b8', marginTop: 40 },
+  badge: { fontSize: 11, fontWeight: '600', color: color.ink[600], textTransform: 'uppercase' },
+  date: { fontSize: 11, color: color.ink[400] },
+  cardTitle: { fontSize: 15, fontWeight: '600', color: color.navy[900] },
+  cardBody: { fontSize: 14, color: color.ink[700], lineHeight: 19 },
+  empty: { textAlign: 'center', color: color.ink[400], marginTop: 40 },
 });

@@ -6,6 +6,7 @@ import { type MoneyString } from '@carinet/shared';
 import { apiGet, apiGetPaged } from '@/lib/api';
 import { trDate } from '@/lib/format';
 import { tr } from '@/lib/tr';
+import { color } from '@/lib/theme';
 
 interface Campaign {
   id: string;
@@ -80,31 +81,31 @@ export default function CampaignsScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
+  safe: { flex: 1, backgroundColor: color.ink[100] },
   list: { padding: 16, gap: 10 },
   headerBlock: { gap: 8, marginBottom: 8 },
-  back: { color: '#64748b', fontSize: 14 },
-  title: { fontSize: 20, fontWeight: '600', color: '#0f172a' },
+  back: { color: color.ink[600], fontSize: 14 },
+  title: { fontSize: 20, fontWeight: '600', color: color.navy[900] },
   spaced: { marginTop: 16 },
   rateRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   rateChip: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 8,
     minWidth: 100,
   },
-  rateCode: { fontSize: 11, fontWeight: '600', color: '#64748b' },
+  rateCode: { fontSize: 11, fontWeight: '600', color: color.ink[600] },
   rateValue: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#0f172a',
+    color: color.navy[900],
     fontVariant: ['tabular-nums'],
   },
-  hint: { fontSize: 11, color: '#94a3b8', lineHeight: 16 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, gap: 4 },
-  cardTitle: { fontSize: 15, fontWeight: '600', color: '#0f172a' },
-  cardBody: { fontSize: 14, color: '#475569', lineHeight: 19 },
-  date: { fontSize: 11, color: '#94a3b8' },
-  empty: { textAlign: 'center', color: '#94a3b8', marginTop: 12 },
+  hint: { fontSize: 11, color: color.ink[400], lineHeight: 16 },
+  card: { backgroundColor: color.white, borderRadius: 12, padding: 14, gap: 4 },
+  cardTitle: { fontSize: 15, fontWeight: '600', color: color.navy[900] },
+  cardBody: { fontSize: 14, color: color.ink[700], lineHeight: 19 },
+  date: { fontSize: 11, color: color.ink[400] },
+  empty: { textAlign: 'center', color: color.ink[400], marginTop: 12 },
 });

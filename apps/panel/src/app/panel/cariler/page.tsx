@@ -40,14 +40,14 @@ export default function BuyersPage() {
       cell: (c) => (
         <span className="flex items-center gap-2">
           {c.row.original.title}
-          {c.row.original.isActive ? null : <Badge tone="amber">{tr.buyers.inactive}</Badge>}
+          {c.row.original.isActive ? null : <Badge tone="warn">{tr.buyers.inactive}</Badge>}
         </span>
       ),
     },
     {
       header: tr.common.representative,
       cell: (c) => (
-        <span className="text-slate-500">
+        <span className="text-ink-600">
           {c.row.original.representative?.fullName ?? tr.common.none}
         </span>
       ),

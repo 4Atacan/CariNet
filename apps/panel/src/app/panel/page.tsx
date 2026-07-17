@@ -47,22 +47,22 @@ export default function PanelHomePage() {
         <Stat
           label={tr.dashboard.overLimit}
           value={String(overLimit.length)}
-          tone={overLimit.length > 0 ? 'text-red-600' : undefined}
+          tone={overLimit.length > 0 ? 'text-debit' : undefined}
         />
       </div>
 
       <Card className="mt-6">
-        <p className="mb-3 text-sm font-medium text-slate-900">{tr.dashboard.buyerAccounts}</p>
+        <p className="mb-3 text-sm font-medium text-navy-900">{tr.dashboard.buyerAccounts}</p>
         {buyers.isLoading ? (
-          <p className="text-sm text-slate-500">{tr.common.loading}</p>
+          <p className="text-sm text-ink-600">{tr.common.loading}</p>
         ) : rows.length === 0 ? (
-          <p className="text-sm text-slate-500">{tr.common.empty}</p>
+          <p className="text-sm text-ink-600">{tr.common.empty}</p>
         ) : (
-          <ul className="divide-y divide-slate-100 text-sm">
+          <ul className="divide-y divide-ink-100 text-sm">
             {rows.slice(0, 8).map((buyer) => (
               <li key={buyer.id} className="flex items-center justify-between py-2">
-                <span className="text-slate-700">
-                  <span className="font-mono text-xs text-slate-500">{buyer.accountCode}</span>{' '}
+                <span className="text-ink-800">
+                  <span className="font-mono text-xs text-ink-600">{buyer.accountCode}</span>{' '}
                   {buyer.title}
                 </span>
                 <span className={`tabular-nums ${balanceTone(buyer.balance.balance)}`}>

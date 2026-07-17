@@ -7,6 +7,65 @@
 
 ---
 
+## 2026-07-17 · Marka kimligi + tasarim sistemi + mobil navigasyon
+
+Kullanici `carinet_logo.PNG` ekledi: "logoyu butun tasarima uyarla, renkleri logodan al, AI yapmis
+gibi durmasin, mobile navbar ekle". Sunucu beklerken yapildi (Faz disi, urun isi).
+
+### Yapilan
+
+**Marka varliklari** — logodan uretildi (`scripts` degil, tek seferlik Pillow): beyaz zemin saydama
+cevrildi, ALFA sinirindan kirpildi. Panel logo/mark + favicon (`src/app/icon.png`), mobil
+icon/adaptive-icon/splash/logo. **Ters (reverse) varyant**: lacivert zeminde lacivert→beyaz, altin ve
+gri KORUNUR.
+
+**Palet** — logonun 3 renginden (#152A55 / #D5A215 / #8A949E) OKLCH'te olcek: ton sabit, aciklik ve
+doygunluk degisir. Panel `@theme` (globals.css), mobil `src/lib/theme.ts` — mobil degerler panelin
+OKLCH'inden HESAPLANARAK uretildi (elle yazilmadi).
+
+**Tipografi** — Plus Jakarta Sans (`next/font`, derlemede indirilip KENDI sunulur → §11.2 CSP'ye
+harici font kaynagi acmak gerekmez). Tabular rakamlar: para kolonlari hizali.
+
+**Panel** — kullanicinin sectigi yon: acik kabuk, lacivert yalniz aktif/buton. Kenar cubugu 14 duz
+madde → **3 grup** (Gunluk/Katalog/Kurulum), aktif maddede altin serit. Giris ekrani: solda lacivert
+marka alani (ters logo + filigran), sagda form. 172 ham palet sinifi → belirtec (0 kaldi).
+
+**Mobil** — `(tabs)` grubu + **4 sekme** (Ana Sayfa · Ekstre · Odeme · Vitrin), `AppHeader` (logo +
+rozetli zil + avatar), yeni `/profil` (hesap degistirici + KVKK + cikis). 169 ham renk → belirtec.
+
+### Karar
+
+- **Notrler `slate` DEGIL `ink`**: logonun grisinden turetilen, lacivert tonlu (H=248) bir olcek.
+  Varsayilan Tailwind slate her kurumsal panelde ayni gorunuyor — "AI yapmis gibi"nin buyuk kismi
+  renk degil, HERKESIN AYNI varsayilanlari kullanmasi.
+- **Altin ASLA durum rengi olmaz** — yalniz marka vurgusu (aktif sekme, odak halkasi, logo). Altin hem
+  "marka" hem "uyari" demek olsaydi kullanici ayirt edemezdi; uyari tonu tondan ayrildi (H 45 vs 85).
+- **Renk esleme BIR KADEME kaydirildi**: slate-500 (kontrast 4.76) → ink-600 (4.64). Dogrudan
+  ink-500'e (3.08) eslemek 53 yerde WCAG AA'yi KIRARDI. `credit` de 4.37'den 4.56'ya cekildi — para
+  govde metnidir, "yesil ama okunmuyor" kabul edilemez.
+- **Bildirim sekmede degil ZILDE** (kullanicinin karari): sekme cubugu gunluk 4 isi tasir, bildirim
+  bir "is" degil uyaridir. Vitrin sekme oldugu icin ana sayfadaki mukerrer kisayolu kaldirildi.
+- **Alt sekme = geri dugmesi YOK**: ekstre/vitrin'deki "‹ Geri" sekme olunca anlamsizlasti, silindi.
+- `lucide-react-native` eklendi — panel zaten lucide kullaniyor, ayni ikon ailesi. `@expo/vector-icons`
+  kokte var ama mobilin BILDIRDIGI bagimlilik degil; ortuk bagimliliga guvenilmedi.
+- `assets.d.ts` eklendi: `import logo from './logo.png'` icin. `expo/types` png tanimlamiyor (denendi,
+  TS2307), `require()` ise ESLint'e takiliyor.
+
+### VARSAYIM:
+
+- **Panel GOZLE dogrulandi** (tarayici: giris, ozet, cari listesi — seed verisiyle). **Mobil gozle
+  DOGRULANMADI**: cihaz/emulator yok. Expo web onizlemesi denendi, `@expo/metro-runtime` SDK 54 ile
+  uyusmadi → eklenen bagimliliklar geri alindi. Mobil yalniz **bundle (3640 modul, hata yok) +
+  typecheck + lint** ile dogrulandi. Ekranlarin GORUNUMU ilk cihaz denemesinde gozden gecirilmeli.
+- Panelin `lg` bolunmus giris duzeni de tarayicida ancak stil enjekte edilerek gorulebildi (Chrome yan
+  paneli goruntu alanini 955px'e dusuruyor, `lg` 1024px). Gercek genis ekranda tekrar bakilmali.
+
+### Sonraki adim
+
+Ops adimlari (sunucu bekliyor). Mobil ekranlarin cihazda gorsel kontrolu.
+
+---
+
 ## 2026-07-17 · Faz 5 — Yuk testi + ekstre sorgusu yeniden kuruldu (§6.4, §13 yuk hedefi)
 
 Sunucu (Adim 1) kapasite bekledigi icin sunucusuz yapilabilen release kapisi maddesi one alindi:
@@ -37,7 +96,9 @@ disi gecmis ve devir bakiyeye dahil kalir (§6.4).
 **`transactions_ledger_covering_idx`** (ham SQL migration; Prisma INCLUDE + kismi indeks ifade edemez):
 `opening` artik **Index Only Scan / Heap Fetches: 0**.
 
-**Regresyon testi** `ledger-pagination.e2e-spec.ts` (+2 test, 148→150).
+**Regresyon testi** `ledger-pagination.e2e-spec.ts` (+2 test). Toplam **147 → 149**: +2 yeni, −1 silinen
+zayif test (asagi). Commit mesajinda "150" yazar — zayif testi silmenin ardindan e2e'yi yeniden
+calistirmadan commit ettim; dogrusu **149**.
 
 ### Karar
 

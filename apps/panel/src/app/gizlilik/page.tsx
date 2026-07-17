@@ -43,19 +43,19 @@ const SECTIONS = [
 export default function PrivacyPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="text-2xl font-bold text-slate-900">Gizlilik ve KVKK Aydinlatma Metni</h1>
-      <p className="mt-2 text-sm text-slate-500">Son guncelleme: 15.07.2026</p>
+      <h1 className="text-2xl font-bold text-navy-900">Gizlilik ve KVKK Aydinlatma Metni</h1>
+      <p className="mt-2 text-sm text-ink-600">Son guncelleme: 15.07.2026</p>
 
       <div className="mt-8 space-y-6">
         {SECTIONS.map((s) => (
           <section key={s.h}>
-            <h2 className="text-base font-semibold text-slate-900">{s.h}</h2>
-            <p className="mt-1 text-sm leading-relaxed text-slate-600">{s.p}</p>
+            <h2 className="text-base font-semibold text-navy-900">{s.h}</h2>
+            <p className="mt-1 text-sm leading-relaxed text-ink-700">{s.p}</p>
           </section>
         ))}
       </div>
 
-      <p className="mt-10 text-xs text-slate-400">
+      <p className="mt-10 text-xs text-ink-400">
         Bu metin genel bir sablondur ve hukuki danismanlik yerine gecmez. Satici firma, kendi tuzel
         kisi bilgileri ve surecleriyle metni netlestirmelidir.
       </p>

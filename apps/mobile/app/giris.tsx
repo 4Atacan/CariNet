@@ -8,6 +8,7 @@ import { loginSchema, type LoginInput, type LoginResponse } from '@carinet/share
 import { ApiError, apiPublicPost, tokenStore } from '@/lib/api';
 import { useSession } from '@/store/session';
 import { tr } from '@/lib/tr';
+import { color } from '@/lib/theme';
 
 export default function LoginScreen() {
   const setSession = useSession((s) => s.setSession);
@@ -102,51 +103,51 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
+  safe: { flex: 1, backgroundColor: color.ink[100] },
   container: { flex: 1, justifyContent: 'center', padding: 24 },
-  brand: { fontSize: 14, fontWeight: '600', color: '#64748b', letterSpacing: 1 },
-  title: { fontSize: 26, fontWeight: '700', color: '#0f172a', marginTop: 4 },
-  subtitle: { fontSize: 14, color: '#64748b', marginTop: 4, marginBottom: 24 },
+  brand: { fontSize: 14, fontWeight: '600', color: color.ink[600], letterSpacing: 1 },
+  title: { fontSize: 26, fontWeight: '700', color: color.navy[900], marginTop: 4 },
+  subtitle: { fontSize: 14, color: color.ink[600], marginTop: 4, marginBottom: 24 },
   field: { marginBottom: 16 },
-  label: { fontSize: 13, fontWeight: '500', color: '#334155', marginBottom: 6 },
+  label: { fontSize: 13, fontWeight: '500', color: color.ink[800], marginBottom: 6 },
   input: {
     borderWidth: 1,
-    borderColor: '#cbd5e1',
+    borderColor: color.ink[300],
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     fontSize: 15,
   },
-  error: { color: '#dc2626', fontSize: 12, marginTop: 4 },
+  error: { color: color.debit, fontSize: 12, marginTop: 4 },
   remember: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 },
   checkbox: {
     width: 18,
     height: 18,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: '#cbd5e1',
+    borderColor: color.ink[300],
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
-  checkboxOn: { backgroundColor: '#0f172a', borderColor: '#0f172a' },
-  checkmark: { color: '#fff', fontSize: 11, fontWeight: '700' },
-  rememberText: { fontSize: 13, color: '#334155' },
+  checkboxOn: { backgroundColor: color.navy[900], borderColor: color.navy[900] },
+  checkmark: { color: color.white, fontSize: 11, fontWeight: '700' },
+  rememberText: { fontSize: 13, color: color.ink[800] },
   serverError: {
-    color: '#b91c1c',
-    backgroundColor: '#fef2f2',
+    color: color.debit,
+    backgroundColor: color.debitSoft,
     padding: 8,
     borderRadius: 6,
     fontSize: 13,
     marginBottom: 12,
   },
   button: {
-    backgroundColor: '#0f172a',
+    backgroundColor: color.navy[900],
     borderRadius: 8,
     paddingVertical: 13,
     alignItems: 'center',
     marginTop: 8,
   },
-  buttonText: { color: '#fff', fontWeight: '600', fontSize: 15 },
+  buttonText: { color: color.white, fontWeight: '600', fontSize: 15 },
 });

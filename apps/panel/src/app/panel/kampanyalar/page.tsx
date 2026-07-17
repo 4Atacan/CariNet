@@ -50,13 +50,13 @@ export default function CampaignsPage() {
     onError: (e) => setError(e instanceof ApiError ? e.message : tr.common.error),
   });
 
-  const statusOf = (c: Campaign): { label: string; tone: 'green' | 'slate' | 'amber' } => {
+  const statusOf = (c: Campaign): { label: string; tone: 'credit' | 'neutral' | 'warn' } => {
     const now = Date.now();
-    if (new Date(c.endsAt).getTime() < now) return { label: tr.campaigns.ended, tone: 'slate' };
+    if (new Date(c.endsAt).getTime() < now) return { label: tr.campaigns.ended, tone: 'neutral' };
     if (new Date(c.startsAt).getTime() > now) {
-      return { label: tr.campaigns.upcoming, tone: 'amber' };
+      return { label: tr.campaigns.upcoming, tone: 'warn' };
     }
-    return { label: tr.campaigns.active, tone: 'green' };
+    return { label: tr.campaigns.active, tone: 'credit' };
   };
 
   return (
@@ -67,7 +67,7 @@ export default function CampaignsPage() {
       {result ? <Alert tone="info">{result}</Alert> : null}
 
       <Card className="mb-6">
-        <p className="mb-3 text-sm font-medium text-slate-900">{tr.campaigns.new}</p>
+        <p className="mb-3 text-sm font-medium text-navy-900">{tr.campaigns.new}</p>
         <div className="grid gap-3">
           <Field label={tr.campaigns.campaignTitle}>
             <Input
@@ -118,11 +118,11 @@ export default function CampaignsPage() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="font-medium text-slate-900">{campaign.title}</p>
+                    <p className="font-medium text-navy-900">{campaign.title}</p>
                     <Badge tone={status.tone}>{status.label}</Badge>
                   </div>
-                  <p className="mt-1 text-sm text-slate-600">{campaign.body}</p>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-sm text-ink-700">{campaign.body}</p>
+                  <p className="mt-1 text-xs text-ink-600">
                     {trDate(campaign.startsAt)} — {trDate(campaign.endsAt)}
                   </p>
                 </div>
@@ -144,7 +144,7 @@ export default function CampaignsPage() {
         })}
         {(campaigns.data?.data ?? []).length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-500">{tr.common.empty}</p>
+            <p className="text-sm text-ink-600">{tr.common.empty}</p>
           </Card>
         ) : null}
       </div>

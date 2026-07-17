@@ -62,7 +62,7 @@ export default function BuyerDetailPage() {
     {
       header: tr.transactions.documentType,
       cell: (c) => (
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-ink-600">
           {c.row.original.documentType}
           {c.row.original.documentNo ? ` · ${c.row.original.documentNo}` : ''}
         </span>
@@ -72,14 +72,14 @@ export default function BuyerDetailPage() {
       header: tr.buyers.debit,
       cell: (c) =>
         c.row.original.type === 'DEBIT' ? (
-          <span className="tabular-nums text-red-600">{money(c.row.original.amountTry)}</span>
+          <span className="tabular-nums text-debit">{money(c.row.original.amountTry)}</span>
         ) : null,
     },
     {
       header: tr.buyers.credit,
       cell: (c) =>
         c.row.original.type === 'CREDIT' ? (
-          <span className="tabular-nums text-emerald-600">{money(c.row.original.amountTry)}</span>
+          <span className="tabular-nums text-credit">{money(c.row.original.amountTry)}</span>
         ) : null,
     },
     {
@@ -142,7 +142,7 @@ export default function BuyerDetailPage() {
 
       {inviteUrl ? (
         <Card className="mb-6">
-          <p className="mb-2 text-sm text-slate-700">{tr.buyers.inviteReady}</p>
+          <p className="mb-2 text-sm text-ink-800">{tr.buyers.inviteReady}</p>
           <div className="flex gap-2">
             <Input readOnly value={inviteUrl} className="font-mono text-xs" />
             <Button variant="outline" onClick={() => navigator.clipboard.writeText(inviteUrl)}>
@@ -167,7 +167,7 @@ export default function BuyerDetailPage() {
 
       {b && !b.isActive ? (
         <div className="mb-4">
-          <Badge tone="amber">{tr.buyers.inactive}</Badge>
+          <Badge tone="warn">{tr.buyers.inactive}</Badge>
         </div>
       ) : null}
 
@@ -235,11 +235,15 @@ function AgingCard({ buyerAccountId }: { buyerAccountId: string }) {
   return (
     <Card>
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-sm font-medium text-slate-900">{tr.reports.aging}</p>
+        <p className="text-sm font-medium text-navy-900">{tr.reports.aging}</p>
         {data.limitUsagePercent !== null ? (
           <Badge
             tone={
-              data.limitUsagePercent > 100 ? 'red' : data.limitUsagePercent > 80 ? 'amber' : 'slate'
+              data.limitUsagePercent > 100
+                ? 'debit'
+                : data.limitUsagePercent > 80
+                  ? 'warn'
+                  : 'neutral'
             }
           >
             {tr.reports.limitUsage}: %{data.limitUsagePercent}
@@ -247,12 +251,12 @@ function AgingCard({ buyerAccountId }: { buyerAccountId: string }) {
         ) : null}
       </div>
 
-      <ul className="divide-y divide-slate-100 text-sm">
+      <ul className="divide-y divide-ink-100 text-sm">
         {buckets.map(([label, value]) => (
           <li key={label} className="flex items-center justify-between py-1.5">
-            <span className="text-slate-600">{label}</span>
+            <span className="text-ink-700">{label}</span>
             <span
-              className={`tabular-nums ${Number(value) > 0 ? 'text-slate-900' : 'text-slate-300'}`}
+              className={`tabular-nums ${Number(value) > 0 ? 'text-navy-900' : 'text-ink-300'}`}
             >
               {money(value)}
             </span>
@@ -260,12 +264,12 @@ function AgingCard({ buyerAccountId }: { buyerAccountId: string }) {
         ))}
       </ul>
 
-      <div className="mt-3 flex items-center justify-between border-t border-slate-200 pt-3 text-sm">
-        <span className="font-medium text-slate-900">{tr.reports.overdue}</span>
-        <span className="tabular-nums font-medium text-red-600">{money(data.overdue)}</span>
+      <div className="mt-3 flex items-center justify-between border-t border-ink-200 pt-3 text-sm">
+        <span className="font-medium text-navy-900">{tr.reports.overdue}</span>
+        <span className="tabular-nums font-medium text-debit">{money(data.overdue)}</span>
       </div>
       {data.averageDueDate ? (
-        <p className="mt-2 text-xs text-slate-500">
+        <p className="mt-2 text-xs text-ink-600">
           {tr.reports.averageDue}: {trDate(data.averageDueDate)}
           {data.averageOverdueDays > 0 ? ` (+${data.averageOverdueDays} gun)` : ''}
         </p>
@@ -301,14 +305,14 @@ function AddressesCard({ buyerAccountId }: { buyerAccountId: string }) {
 
   return (
     <Card>
-      <p className="mb-3 text-sm font-medium text-slate-900">{tr.addresses.title}</p>
+      <p className="mb-3 text-sm font-medium text-navy-900">{tr.addresses.title}</p>
 
-      <ul className="mb-4 divide-y divide-slate-100 text-sm">
+      <ul className="mb-4 divide-y divide-ink-100 text-sm">
         {(addresses.data ?? []).map((address) => (
           <li key={address.id} className="flex items-start justify-between gap-3 py-2">
             <span>
-              <span className="font-medium text-slate-900">{address.label}</span>
-              <span className="block text-xs text-slate-500">
+              <span className="font-medium text-navy-900">{address.label}</span>
+              <span className="block text-xs text-ink-600">
                 {address.fullAddress} · {address.city}
               </span>
             </span>
@@ -318,7 +322,7 @@ function AddressesCard({ buyerAccountId }: { buyerAccountId: string }) {
           </li>
         ))}
         {(addresses.data ?? []).length === 0 ? (
-          <li className="py-2 text-slate-500">{tr.common.empty}</li>
+          <li className="py-2 text-ink-600">{tr.common.empty}</li>
         ) : null}
       </ul>
 

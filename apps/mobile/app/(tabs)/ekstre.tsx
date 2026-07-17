@@ -3,11 +3,14 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Share2 } from 'lucide-react-native';
+import { AppHeader } from '@/components/app-header';
 import { type MoneyString } from '@carinet/shared';
 import { apiGetPaged } from '@/lib/api';
 import { balanceColor, money, trDate } from '@/lib/format';
 import { shareStatementPdf } from '@/lib/pdf';
 import { tr } from '@/lib/tr';
+import { color, radius, space } from '@/lib/theme';
 
 interface StatementLine {
   id: string;
@@ -54,16 +57,15 @@ export default function StatementScreen() {
   const rows = query.data?.pages.flatMap((p) => p.data) ?? [];
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <View style={styles.header}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={styles.back}>‹ {tr.common.back}</Text>
-        </Pressable>
-        <View style={styles.titleRow}>
-          <Text style={styles.title}>{tr.statement.title}</Text>
+    <SafeAreaView style={styles.safe} edges={['bottom']}>
+      {/* Sekme ekrani → "geri" YOK (geri gidilecek yer yok). PDF paylasimi baslikta sag eylem. */}
+      <AppHeader
+        title={tr.statement.title}
+        right={
           <Pressable
             style={styles.pdfButton}
             disabled={sharing}
+            accessibilityRole="button"
             onPress={() => {
               setSharing(true);
               shareStatementPdf('ekstre')
@@ -71,13 +73,15 @@ export default function StatementScreen() {
                 .finally(() => setSharing(false));
             }}
           >
+            <Share2 size={14} color={color.navy[900]} />
             <Text style={styles.pdfButtonText}>
               {sharing ? tr.statement.preparing : tr.statement.sharePdf}
             </Text>
           </Pressable>
-        </View>
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-      </View>
+        }
+      />
+
+      <View style={styles.header}>{error ? <Text style={styles.error}>{error}</Text> : null}</View>
 
       <View style={styles.filters}>
         {RANGES.map((r) => (
@@ -127,7 +131,10 @@ export default function StatementScreen() {
 
             <View style={styles.rowRight}>
               <Text
-                style={[styles.amount, { color: item.type === 'DEBIT' ? '#dc2626' : '#059669' }]}
+                style={[
+                  styles.amount,
+                  { color: item.type === 'DEBIT' ? color.debit : color.credit },
+                ]}
               >
                 {item.type === 'DEBIT' ? '+' : '−'}
                 {money(item.amount, item.currencyCode)}
@@ -152,55 +159,50 @@ function fromDate(days: number): string | null {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8fafc' },
-  header: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 4 },
-  back: { color: '#64748b', fontSize: 14 },
-  titleRow: {
+  safe: { flex: 1, backgroundColor: color.ink[100] },
+  header: { paddingHorizontal: space.lg },
+  pdfButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 4,
+    gap: 5,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.ink[300],
+    borderRadius: radius.sm,
+    paddingHorizontal: space.sm + 2,
+    paddingVertical: 5,
   },
-  title: { fontSize: 22, fontWeight: '700', color: '#0f172a' },
-  pdfButton: {
-    borderWidth: 1,
-    borderColor: '#0f172a',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  pdfButtonText: { fontSize: 12, fontWeight: '600', color: '#0f172a' },
-  error: { color: '#b91c1c', fontSize: 12, marginTop: 6 },
+  pdfButtonText: { fontSize: 12, fontWeight: '600', color: color.navy[900] },
+  error: { color: color.debit, fontSize: 12, marginTop: 6 },
   filters: { flexDirection: 'row', gap: 8, paddingHorizontal: 20, paddingVertical: 12 },
   chip: {
     borderWidth: 1,
-    borderColor: '#e2e8f0',
-    backgroundColor: '#fff',
+    borderColor: color.ink[200],
+    backgroundColor: color.white,
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
-  chipActive: { backgroundColor: '#0f172a', borderColor: '#0f172a' },
-  chipText: { fontSize: 12, color: '#334155' },
-  chipTextActive: { color: '#fff', fontWeight: '600' },
+  chipActive: { backgroundColor: color.navy[900], borderColor: color.navy[900] },
+  chipText: { fontSize: 12, color: color.ink[800] },
+  chipTextActive: { color: color.white, fontWeight: '600' },
   list: { paddingHorizontal: 20, paddingBottom: 32 },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: color.ink[200],
     borderRadius: 10,
     padding: 14,
     marginBottom: 8,
   },
   rowLeft: { flex: 1, paddingRight: 12 },
   rowRight: { alignItems: 'flex-end' },
-  rowTitle: { fontSize: 14, fontWeight: '600', color: '#0f172a' },
-  rowMeta: { fontSize: 12, color: '#64748b', marginTop: 2 },
+  rowTitle: { fontSize: 14, fontWeight: '600', color: color.navy[900] },
+  rowMeta: { fontSize: 12, color: color.ink[600], marginTop: 2 },
   amount: { fontSize: 14, fontWeight: '600' },
   running: { fontSize: 12, marginTop: 2 },
-  hint: { fontSize: 13, color: '#64748b', textAlign: 'center', marginTop: 24 },
+  hint: { fontSize: 13, color: color.ink[600], textAlign: 'center', marginTop: 24 },
   footer: { marginVertical: 16 },
-  footerText: { fontSize: 12, color: '#94a3b8', textAlign: 'center', marginVertical: 16 },
+  footerText: { fontSize: 12, color: color.ink[400], textAlign: 'center', marginVertical: 16 },
 });

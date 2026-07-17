@@ -2,18 +2,18 @@
 
 ## Corpus Check
 
-- 259 files · ~102,863 words
+- 259 files · ~103,231 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
 
-- 2580 nodes · 4525 edges · 250 communities (146 shown, 104 thin omitted)
+- 2583 nodes · 4528 edges · 248 communities (145 shown, 103 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.61)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
 
-- Built from commit: `86cdcf29`
+- Built from commit: `ea19002e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -127,7 +127,6 @@
 - reflect-metadata
 - rxjs
 - zod
-- dotenv-cli
 - @nestjs/schematics
 - @nestjs/testing
 - prisma
@@ -250,7 +249,6 @@
 - 2026-07-17 · Faz 5 — Yuk testi + ekstre sorgusu yeniden kuruldu (§6.4, §13 yuk hedefi)
 - 2026-07-17 · Faz 5 — Sentry ×3 kod tarafi (§11.8)
 - @babel/runtime
-- @carinet/shared
 
 ## God Nodes (most connected - your core abstractions)
 
@@ -282,7 +280,7 @@
 
 - None detected.
 
-## Communities (250 total, 104 thin omitted)
+## Communities (248 total, 103 thin omitted)
 
 ### Community 0 - "types.ts"
 
@@ -291,23 +289,23 @@ Nodes (9): ProductsRepository, Inject, Injectable, ProductDto, ProductsService, 
 
 ### Community 1 - "BuyersService"
 
-Cohesion: 0.19
-Nodes (14): ApiBody, ImportsController, ApiConsumes, ApiOperation, ApiTags, Body, Controller, CurrentUser (+6 more)
+Cohesion: 0.11
+Nodes (23): ApiBody, BatchesQueryDto, CancelDto, CommitDto, filePipe, ImportsController, ReportQueryDto, RowsQueryDto (+15 more)
 
 ### Community 2 - "ImportsRepository"
 
-Cohesion: 0.19
-Nodes (14): SellersController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Delete, Get (+6 more)
+Cohesion: 0.07
+Nodes (26): CollectionsModule, Module, BankAccountDto, PosConfigDto, SellersController, TotpQueryDto, ApiOperation, ApiTags (+18 more)
 
 ### Community 3 - "pdf.service.ts"
 
-Cohesion: 0.07
-Nodes (6): AuthRepository, Inject, Injectable, AuthService, sha256(), Injectable
+Cohesion: 0.14
+Nodes (3): AuthService, sha256(), Injectable
 
 ### Community 4 - "ana-sayfa.tsx"
 
-Cohesion: 0.11
-Nodes (5): ImportsRepository, Injectable, ImportsService, Injectable, TxClient
+Cohesion: 0.10
+Nodes (7): ImportsRepository, Injectable, ImportsService, readCutoff(), Inject, Injectable, TxClient
 
 ### Community 5 - ".log"
 
@@ -346,13 +344,13 @@ Nodes (20): CreateRepresentativeDto, RepresentativesController, ApiOperation, Ap
 
 ### Community 12 - "index.ts"
 
-Cohesion: 0.18
+Cohesion: 0.19
 Nodes (18): AuthController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Delete, Get (+10 more)
 
 ### Community 13 - "sandbox-pos.adapter.ts"
 
-Cohesion: 0.08
-Nodes (25): ExchangeRatesController, RateQueryDto, ApiOperation, ApiTags, Controller, Get, NoTenant, Post (+17 more)
+Cohesion: 0.09
+Nodes (23): ExchangeRatesController, RateQueryDto, ApiOperation, ApiTags, Controller, Get, NoTenant, Post (+15 more)
 
 ### Community 14 - "package.json"
 
@@ -372,12 +370,12 @@ Nodes (12): CancelTransactionDto, CreateTransactionDto, ListTransactionsQueryDto
 ### Community 17 - "Env"
 
 Cohesion: 0.06
-Nodes (32): 0. Kimlik ve Kapsam, 10. API Sözleşmesi, 11. Güvenlik (8 katman — Faz 5'in release kapısı; "öneri" değil GEREKSİNİM), 12. Kodlama Standartları, 13. Geliştirme Fazları (sıralı; "bitti kriteri" sağlanmadan faz kapanmaz), 14. Yapılmayacaklar (açık yasaklar), 15. Definition of Done (her görev), 16. AI Çalışma Protokolü (Claude Code) (+24 more)
+Nodes (35): 0. Kimlik ve Kapsam, 10. API Sözleşmesi, 11. Güvenlik (8 katman — Faz 5'in release kapısı; "öneri" değil GEREKSİNİM), 12. Kodlama Standartları, 13. Geliştirme Fazları (sıralı; "bitti kriteri" sağlanmadan faz kapanmaz), 14. Yapılmayacaklar (açık yasaklar), 15. Definition of Done (her görev), 16. AI Çalışma Protokolü (Claude Code) (+27 more)
 
 ### Community 18 - "AddressesService"
 
-Cohesion: 0.18
-Nodes (12): AddressesController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Delete, Get (+4 more)
+Cohesion: 0.09
+Nodes (20): AddressesController, CreateAddressDto, ListQueryDto, ApiOperation, ApiTags, Body, Controller, CurrentUser (+12 more)
 
 ### Community 19 - "collections.module.ts"
 
@@ -391,13 +389,13 @@ Nodes (7): Inject, Inject, NotificationsRepository, Inject, Injectable, Notifica
 
 ### Community 21 - "AuthRepository"
 
-Cohesion: 0.14
-Nodes (16): CardPaymentStart, orderIdSchema, HostedPaymentRequest, HostedPaymentStart, InstallmentOption, PosAdapter, PosCallbackResult, PosCredentials (+8 more)
+Cohesion: 0.19
+Nodes (12): HostedPaymentRequest, HostedPaymentStart, InstallmentOption, PosAdapter, PosCallbackResult, PosCredentials, callbackSchema, INSTALLMENT_TABLE (+4 more)
 
 ### Community 22 - "TxClient"
 
 Cohesion: 0.11
-Nodes (12): Env, envSchema, validateEnv(), fromCookie(), JwtStrategy, Injectable, ClientMeta, RefreshPayload (+4 more)
+Nodes (11): AuditService, Injectable, StorageService, Injectable, Env, envSchema, IntentRow, MailModule (+3 more)
 
 ### Community 23 - "exports"
 
@@ -406,8 +404,8 @@ Nodes (11): RequestsController, ApiOperation, ApiTags, Body, Controller, Current
 
 ### Community 24 - "InvoicesRepository"
 
-Cohesion: 0.09
-Nodes (23): AuditEntry, jsonReplacer(), toJson(), Inject, Public(), REPRESENTATIVE_SELECT, Inject, HealthController (+15 more)
+Cohesion: 0.08
+Nodes (25): AuditEntry, jsonReplacer(), toJson(), Inject, Public(), REPRESENTATIVE_SELECT, Inject, HealthController (+17 more)
 
 ### Community 25 - "TransactionsRepository"
 
@@ -436,8 +434,8 @@ Nodes (27): CollectChannel, DocumentType, documentTypeSchema, ImportRowStatus, i
 
 ### Community 30 - "globalEnv"
 
-Cohesion: 0.18
-Nodes (11): IntentRow, BankTransferProvider, Injectable, CollectIntentInput, CollectIntentView, CollectionProvider, CollectionResult, ReconcileInput (+3 more)
+Cohesion: 0.15
+Nodes (13): BankTransferProvider, Injectable, CardPaymentStart, orderIdSchema, readOrderId(), CollectIntentInput, CollectIntentView, CollectionProvider (+5 more)
 
 ### Community 31 - "compilerOptions"
 
@@ -451,8 +449,8 @@ Nodes (7): 2026-07-14 · Faz 2 — Finansal Raporlar, Bitti kriteri kontrolu (Fa
 
 ### Community 33 - "TenantContext"
 
-Cohesion: 0.10
-Nodes (9): CurrentUser, JwtAuthGuard, Injectable, RolesGuard, Injectable, TenantGuard, Injectable, RequestUser (+1 more)
+Cohesion: 0.09
+Nodes (12): CurrentUser, JwtAuthGuard, Injectable, RolesGuard, Injectable, TenantGuard, Injectable, RequestUser (+4 more)
 
 ### Community 34 - "compilerOptions"
 
@@ -466,17 +464,17 @@ Nodes (20): ImportTarget, atUtcMidnight(), cellToDate(), cellToMoney(), cellToRa
 
 ### Community 36 - "AuthService"
 
-Cohesion: 0.16
-Nodes (13): loggerOptions(), AuthModule, Module, CampaignsModule, Module, ExportsModule, Module, ProductsModule (+5 more)
+Cohesion: 0.13
+Nodes (16): validateEnv(), loggerOptions(), AuthModule, Module, CampaignsModule, Module, ExchangeRatesModule, Module (+8 more)
 
 ### Community 37 - "dependencies"
 
-Cohesion: 0.10
-Nodes (19): BuyerDto, BuyerWithBalance, BuyerWithRepresentative, toIsoDate(), BalanceRawRow, LedgerRepository, SIGNED_TRY, SIGNED_TRY_PAGE (+11 more)
+Cohesion: 0.12
+Nodes (16): LedgerModule, Module, BalanceRawRow, LedgerRepository, SIGNED_TRY, SIGNED_TRY_PAGE, StatementFilter, StatementRawRow (+8 more)
 
 ### Community 38 - "tsconfig.json"
 
-Cohesion: 0.17
+Cohesion: 0.13
 Nodes (11): TWO_FA_ROLES, UserRecord, BreachedPasswordService, hibpHashParts(), suffixInRange(), Injectable, hashBackupCode(), normalizeBackupCode() (+3 more)
 
 ### Community 39 - "dependencies"
@@ -491,8 +489,8 @@ Nodes (21): importSourceTypeSchema, BuyerAccountRow, buyerAccountRowSchema, Canc
 
 ### Community 41 - "collections.ts"
 
-Cohesion: 0.12
-Nodes (8): TenantContextMiddleware, Injectable, EMPTY, storage, TenantContext, TenantStore, readOrderId(), Cron
+Cohesion: 0.14
+Nodes (7): TenantContextMiddleware, Injectable, EMPTY, storage, TenantContext, TenantStore, Cron
 
 ### Community 42 - "enums.ts"
 
@@ -511,7 +509,7 @@ Nodes (19): compilerOptions, declaration, declarationMap, esModuleInterop, force
 
 ### Community 45 - "expo"
 
-Cohesion: 0.17
+Cohesion: 0.18
 Nodes (3): CollectionsService, toIntentDto(), Injectable
 
 ### Community 46 - "devDependencies"
@@ -562,7 +560,7 @@ Nodes (16): compilerOptions, baseUrl, noUncheckedIndexedAccess, paths, strict, e
 ### Community 55 - "index.ts"
 
 Cohesion: 0.12
-Nodes (17): dependencies, class-variance-authority, @hookform/resolvers, @radix-ui/react-dialog, react, react-hook-form, @sentry/nextjs, @tanstack/react-query (+9 more)
+Nodes (17): dependencies, @carinet/shared, class-variance-authority, @radix-ui/react-dialog, react, react-hook-form, @sentry/nextjs, @tanstack/react-query (+9 more)
 
 ### Community 56 - "buyers.ts"
 
@@ -571,18 +569,18 @@ Nodes (17): devDependencies, @carinet/config, eslint, tailwindcss, @tailwindcss/
 
 ### Community 57 - "2026-07-13 · Faz 0 — Iskelet ve Temel"
 
-Cohesion: 0.13
-Nodes (18): StorageModule, Global, Module, StorageService, Injectable, ImportsModule, Module, Inject (+10 more)
+Cohesion: 0.33
+Nodes (10): asArray(), attr(), isNode(), Node, partyIdentifier(), pick(), sumStrings(), text() (+2 more)
 
 ### Community 58 - "base.js"
 
-Cohesion: 0.21
-Nodes (3): sha256(), TokenService, Injectable
+Cohesion: 0.16
+Nodes (5): ClientMeta, RefreshPayload, sha256(), TokenService, Injectable
 
 ### Community 59 - "tasks"
 
-Cohesion: 0.16
-Nodes (14): CancelInvoiceDto, CreateInvoiceDto, InvoicesController, ListInvoicesQueryDto, ApiOperation, ApiTags, Body, Controller (+6 more)
+Cohesion: 0.22
+Nodes (11): InvoicesController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Get, Param (+3 more)
 
 ### Community 60 - "devDependencies"
 
@@ -606,8 +604,8 @@ Nodes (3): AuditModule, Global, Module
 
 ### Community 64 - "tenant-guard.extension.ts"
 
-Cohesion: 0.10
-Nodes (16): BatchesQueryDto, CancelDto, CommitDto, filePipe, ReportQueryDto, RowsQueryDto, SaveTemplateDto, UploadDto (+8 more)
+Cohesion: 0.22
+Nodes (4): assertFile(), formatIssues(), summarize(), toJson()
 
 ### Community 65 - "transactions.ts"
 
@@ -687,7 +685,7 @@ Nodes (7): AppModule, Module, createTestApp(), decodeJwt(), rawPrisma, SeedIds, 
 ### Community 80 - "row"
 
 Cohesion: 0.11
-Nodes (10): CollectionsModule, Module, BankAccountDto, PosConfigDto, TotpQueryDto, SellersModule, Module, SellersRepository (+2 more)
+Nodes (3): AuthRepository, Inject, Injectable
 
 ### Community 81 - "post-checkout"
 
@@ -726,7 +724,7 @@ Nodes (9): adm-zip, dependencies, adm-zip, @nestjs/passport, pino, @prisma/clien
 
 ### Community 88 - "decimal.js"
 
-Cohesion: 0.19
+Cohesion: 0.21
 Nodes (12): ProductsController, ApiOperation, ApiTags, Body, Controller, CurrentUser, Get, Param (+4 more)
 
 ### Community 89 - "fast-xml-parser"
@@ -766,8 +764,8 @@ Nodes (5): decryptSecret(), encryptSecret(), maskSecret(), KEY, toKey()
 
 ### Community 96 - "@nestjs/schedule"
 
-Cohesion: 0.29
-Nodes (6): CreateBuyerDto, ListBuyersQueryDto, SELLER_SIDE, SetActiveDto, StatementQueryDto, UpdateBuyerDto
+Cohesion: 0.18
+Nodes (11): CreateBuyerDto, ListBuyersQueryDto, SELLER_SIDE, SetActiveDto, StatementQueryDto, UpdateBuyerDto, BuyerDto, BuyerWithBalance (+3 more)
 
 ### Community 97 - "@nestjs/swagger"
 
@@ -819,11 +817,6 @@ Nodes (5): args, body, declined, signature, taksitIndex
 Cohesion: 0.40
 Nodes (4): config, { getDefaultConfig }, path, workspaceRoot
 
-### Community 108 - "dotenv-cli"
-
-Cohesion: 0.16
-Nodes (8): CreateAddressDto, ListQueryDto, UpdateAddressDto, AddressesModule, Module, AddressesService, Inject, Injectable
-
 ### Community 110 - "@nestjs/testing"
 
 Cohesion: 0.40
@@ -861,13 +854,13 @@ Nodes (7): ExportDto, ExportsService, FILE_NAMES, money(), styleHeader(), text()
 
 ### Community 235 - "2026-07-15 · Faz 5 — Sertlestirme ve Yayin (§11, §13)"
 
-Cohesion: 0.24
-Nodes (8): BuyersModule, Module, InvoicesModule, Module, LedgerModule, Module, TransactionsModule, Module
+Cohesion: 0.21
+Nodes (9): BuyersModule, Module, CancelInvoiceDto, CreateInvoiceDto, ListInvoicesQueryDto, InvoicesModule, Module, TransactionsModule (+1 more)
 
 ### Community 236 - "2026-07-14 · Faz 2 — Finansal Raporlar"
 
-Cohesion: 0.27
-Nodes (4): AuditService, Injectable, CardPosProvider, Injectable
+Cohesion: 0.26
+Nodes (4): CardPosProvider, Injectable, PosRegistry, Injectable
 
 ### Community 237 - "2026-07-17 · Faz 5 — Sentry ×3 kod tarafi (§11.8)"
 
@@ -881,8 +874,8 @@ Nodes (8): ExportsController, ApiOperation, ApiTags, Controller, CurrentUser, Ge
 
 ### Community 239 - "cookie-parser"
 
-Cohesion: 0.29
-Nodes (6): CELL_READERS, detectDelimiter(), ExcelParser, ParsedSheet, toCellValue(), Injectable
+Cohesion: 0.16
+Nodes (11): StorageModule, Global, Module, ImportsModule, Module, CELL_READERS, detectDelimiter(), ExcelParser (+3 more)
 
 ### Community 240 - "@types/multer"
 
@@ -926,25 +919,25 @@ Nodes (5): 2026-07-17 · Faz 5 — Sentry ×3 kod tarafi (§11.8), Karar, Sonrak
 
 ## Knowledge Gaps
 
-- **810 isolated node(s):** `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)`, `3. Depo Yapısı`, `4. Ortam ve Komutlar` (+805 more)
+- **812 isolated node(s):** `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)`, `3. Depo Yapısı`, `4. Ortam ve Komutlar` (+807 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **104 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **103 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `StatementCard()` connect `dependencies` to `RepresentativesController`, `scripts`?**
-  _High betweenness centrality (0.086) - this node is a cross-community bridge._
+  _High betweenness centrality (0.075) - this node is a cross-community bridge._
+- **Why does `Env` connect `TxClient` to `TenantContext`, `ImportsRepository`, `pdf.service.ts`, `tsconfig.json`, `metro.config.js`, `AuthRepository`, `base.js`, `globalEnv`?**
+  _High betweenness centrality (0.053) - this node is a cross-community bridge._
 - **Why does `row()` connect `money.ts` to `TransactionsRepository`, `RepresentativesController`, `app.module.ts`, `compilerOptions`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Why does `StatementService` connect `RepresentativesController` to `fast-xml-parser`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
+  _High betweenness centrality (0.052) - this node is a cross-community bridge._
 - **What connects `0. Kimlik ve Kapsam`, `1. Değişmez Kurallar (NON-NEGOTIABLE — 12 madde)`, `2. Teknoloji Yığını (tamamı ücretsiz; sürümler bilinen-iyi alt sınır, kurulumda en güncel kararlıyı kullan)` to the rest of the system?**
-  _810 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `types.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.14666666666666667 - nodes in this community are weakly interconnected._
+  _812 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `BuyersService` be split into smaller, more focused modules?**
+  _Cohesion score 0.10795454545454546 - nodes in this community are weakly interconnected._
+- **Should `ImportsRepository` be split into smaller, more focused modules?**
+  _Cohesion score 0.06810035842293907 - nodes in this community are weakly interconnected._
 - **Should `pdf.service.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07205513784461152 - nodes in this community are weakly interconnected._
-- **Should `ana-sayfa.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.10793650793650794 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._

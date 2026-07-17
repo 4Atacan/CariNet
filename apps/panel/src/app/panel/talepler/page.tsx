@@ -8,11 +8,11 @@ import { tr } from '@/lib/tr';
 import { type RequestStatus, type SupportRequest } from '@/lib/types';
 import { trDate } from '@/lib/utils';
 
-const TONE: Record<RequestStatus, 'amber' | 'green' | 'slate'> = {
-  OPEN: 'amber',
-  IN_PROGRESS: 'amber',
-  RESOLVED: 'green',
-  CLOSED: 'slate',
+const TONE: Record<RequestStatus, 'warn' | 'credit' | 'neutral'> = {
+  OPEN: 'warn',
+  IN_PROGRESS: 'warn',
+  RESOLVED: 'credit',
+  CLOSED: 'neutral',
 };
 
 export default function RequestsPage() {
@@ -69,20 +69,20 @@ export default function RequestsPage() {
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="font-medium text-slate-900">{request.subject}</p>
+                  <p className="font-medium text-navy-900">{request.subject}</p>
                   <Badge tone={TONE[request.status]}>{tr.requests.statuses[request.status]}</Badge>
-                  <Badge tone="slate">{tr.requests.types[request.type]}</Badge>
+                  <Badge tone="neutral">{tr.requests.types[request.type]}</Badge>
                 </div>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-ink-600">
                   {request.buyerAccount?.accountCode} · {request.buyerAccount?.title} ·{' '}
                   {trDate(request.createdAt)}
                 </p>
-                <p className="mt-2 text-sm text-slate-700">{request.body}</p>
+                <p className="mt-2 text-sm text-ink-800">{request.body}</p>
 
                 {request.reply ? (
-                  <div className="mt-3 rounded-md border-l-2 border-emerald-500 bg-emerald-50 p-3">
-                    <p className="text-xs font-medium text-emerald-800">{tr.requests.replied}</p>
-                    <p className="text-sm text-emerald-900">{request.reply}</p>
+                  <div className="mt-3 rounded-md border-l-2 border-credit bg-credit-soft p-3">
+                    <p className="text-xs font-medium text-credit">{tr.requests.replied}</p>
+                    <p className="text-sm text-credit">{request.reply}</p>
                   </div>
                 ) : (
                   <div className="mt-3 flex gap-2">
@@ -112,7 +112,7 @@ export default function RequestsPage() {
         ))}
         {(requests.data?.data ?? []).length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-500">{tr.common.empty}</p>
+            <p className="text-sm text-ink-600">{tr.common.empty}</p>
           </Card>
         ) : null}
       </div>

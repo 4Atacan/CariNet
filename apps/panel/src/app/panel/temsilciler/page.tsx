@@ -80,13 +80,13 @@ export default function RepresentativesPage() {
       </Card>
 
       <Card>
-        <ul className="divide-y divide-slate-100 text-sm">
+        <ul className="divide-y divide-ink-100 text-sm">
           {(reps.data ?? []).map((rep) => (
             <li key={rep.id} className="flex items-center justify-between py-2">
               <span>
-                <span className="font-medium text-slate-900">{rep.fullName}</span>
-                <span className="ml-2 text-slate-500">{rep.phone ?? ''}</span>
-                <span className="ml-2 text-xs text-slate-400">
+                <span className="font-medium text-navy-900">{rep.fullName}</span>
+                <span className="ml-2 text-ink-600">{rep.phone ?? ''}</span>
+                <span className="ml-2 text-xs text-ink-400">
                   {tr.representatives.accountCount}: {rep.buyerAccountCount ?? 0}
                 </span>
               </span>
@@ -96,7 +96,7 @@ export default function RepresentativesPage() {
             </li>
           ))}
           {(reps.data ?? []).length === 0 ? (
-            <li className="py-2 text-slate-500">{tr.common.empty}</li>
+            <li className="py-2 text-ink-600">{tr.common.empty}</li>
           ) : null}
         </ul>
       </Card>

@@ -14,10 +14,6 @@ export const trDate = (iso: string | Date | null | undefined): string => {
   return new Intl.DateTimeFormat('tr-TR', { timeZone: 'Europe/Istanbul' }).format(d);
 };
 
-/** Bakiye rengi: pozitif = alici borclu (kirmizi), negatif = alacakli (yesil). */
+/** Bakiye rengi: pozitif = alici borclu (debit), negatif = alacakli (credit), sifir = notr. */
 export const balanceTone = (value: MoneyString): string =>
-  value.startsWith('-')
-    ? 'text-emerald-600'
-    : Number(value) === 0
-      ? 'text-slate-500'
-      : 'text-red-600';
+  value.startsWith('-') ? 'text-credit' : Number(value) === 0 ? 'text-ink-500' : 'text-debit';

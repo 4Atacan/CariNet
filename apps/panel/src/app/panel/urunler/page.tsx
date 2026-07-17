@@ -67,7 +67,7 @@ export default function ProductsPage() {
       cell: (c) => (
         <span>
           {c.row.original.name}
-          {!c.row.original.isActive ? <Badge tone="slate">{tr.products.inactive}</Badge> : null}
+          {!c.row.original.isActive ? <Badge tone="neutral">{tr.products.inactive}</Badge> : null}
         </span>
       ),
     },
@@ -120,7 +120,7 @@ export default function ProductsPage() {
       {error ? <Alert>{error}</Alert> : null}
 
       <Card className="mb-6">
-        <p className="mb-3 text-sm font-medium text-slate-900">{tr.products.new}</p>
+        <p className="mb-3 text-sm font-medium text-navy-900">{tr.products.new}</p>
         <div className="grid gap-3 sm:grid-cols-6">
           <Field label={tr.products.code}>
             <Input
@@ -201,7 +201,7 @@ function StockCell({ value, onSave }: { value: string; onSave: (quantity: string
     return (
       <button
         type="button"
-        className="tabular-nums text-slate-900 underline-offset-2 hover:underline"
+        className="tabular-nums text-navy-900 underline-offset-2 hover:underline"
         onClick={() => {
           setDraft(value);
           setEditing(true);

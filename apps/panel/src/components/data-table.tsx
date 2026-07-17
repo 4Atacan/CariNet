@@ -31,16 +31,16 @@ export function DataTable<T>({
   const lastPage = Math.max(1, Math.ceil(total / limit));
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white">
+    <div className="rounded-xl border border-ink-200 bg-white">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50">
+          <thead className="border-b border-ink-200 bg-ink-50">
             {table.getHeaderGroups().map((group) => (
               <tr key={group.id}>
                 {group.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-500"
+                    className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-ink-600"
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
@@ -51,13 +51,13 @@ export function DataTable<T>({
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={columns.length} className="px-4 py-8 text-center text-slate-500">
+                <td colSpan={columns.length} className="px-4 py-8 text-center text-ink-600">
                   {tr.common.loading}
                 </td>
               </tr>
             ) : data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="px-4 py-8 text-center text-slate-500">
+                <td colSpan={columns.length} className="px-4 py-8 text-center text-ink-600">
                   {tr.common.empty}
                 </td>
               </tr>
@@ -66,12 +66,12 @@ export function DataTable<T>({
                 <tr
                   key={row.id}
                   onClick={() => onRowClick?.(row.original)}
-                  className={`border-b border-slate-100 last:border-0 ${
-                    onRowClick ? 'cursor-pointer hover:bg-slate-50' : ''
+                  className={`border-b border-ink-100 last:border-0 ${
+                    onRowClick ? 'cursor-pointer hover:bg-ink-50' : ''
                   }`}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-2.5 text-slate-700">
+                    <td key={cell.id} className="px-4 py-2.5 text-ink-800">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
@@ -82,7 +82,7 @@ export function DataTable<T>({
         </table>
       </div>
 
-      <div className="flex items-center justify-between border-t border-slate-200 px-4 py-3 text-xs text-slate-500">
+      <div className="flex items-center justify-between border-t border-ink-200 px-4 py-3 text-xs text-ink-600">
         <span>
           {tr.common.total}: {total}
         </span>

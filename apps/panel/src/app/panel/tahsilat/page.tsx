@@ -63,7 +63,7 @@ export default function CollectionsPage() {
       header: tr.common.buyer,
       cell: (c) => (
         <span>
-          <span className="font-mono text-xs text-slate-500">
+          <span className="font-mono text-xs text-ink-600">
             {c.row.original.buyerAccount?.accountCode ?? '—'}
           </span>
           <span className="block">{c.row.original.buyerAccount?.title ?? '—'}</span>
@@ -75,7 +75,7 @@ export default function CollectionsPage() {
       cell: (c) => (
         <button
           type="button"
-          className="font-mono text-xs text-slate-900 underline-offset-2 hover:underline"
+          className="font-mono text-xs text-navy-900 underline-offset-2 hover:underline"
           onClick={() => void navigator.clipboard.writeText(c.row.original.referenceCode)}
           title={tr.common.copy}
         >
@@ -90,7 +90,7 @@ export default function CollectionsPage() {
     {
       header: tr.collections.channel,
       cell: (c) => (
-        <Badge tone={c.row.original.channel === 'CARD_POS' ? 'slate' : 'green'}>
+        <Badge tone={c.row.original.channel === 'CARD_POS' ? 'brand' : 'credit'}>
           {tr.collections.channels[c.row.original.channel]}
         </Badge>
       ),
@@ -99,7 +99,7 @@ export default function CollectionsPage() {
       header: tr.common.status,
       cell: (c) => {
         const s = c.row.original.status;
-        const tone = s === 'CONFIRMED' ? 'green' : s === 'PENDING' ? 'amber' : 'slate';
+        const tone = s === 'CONFIRMED' ? 'credit' : s === 'PENDING' ? 'warn' : 'neutral';
         return <Badge tone={tone}>{tr.collections.statuses[s]}</Badge>;
       },
     },
@@ -219,10 +219,10 @@ function ConfirmDialog({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy-900/40 p-4">
       <Card className="w-full max-w-md">
-        <p className="mb-1 text-sm font-medium text-slate-900">{tr.collections.confirmTitle}</p>
-        <p className="mb-4 font-mono text-xs text-slate-500">{intent.referenceCode}</p>
+        <p className="mb-1 text-sm font-medium text-navy-900">{tr.collections.confirmTitle}</p>
+        <p className="mb-4 font-mono text-xs text-ink-600">{intent.referenceCode}</p>
 
         <div className="mb-4 grid gap-3">
           <Stat label={tr.collections.amount} value={money(intent.amount)} />
@@ -234,7 +234,7 @@ function ConfirmDialog({
               onChange={(e) => setAmount(e.target.value)}
             />
           </Field>
-          <p className="text-xs text-slate-500">{tr.collections.partialHint}</p>
+          <p className="text-xs text-ink-600">{tr.collections.partialHint}</p>
           <Field label={tr.collections.note}>
             <Input value={note} onChange={(e) => setNote(e.target.value)} />
           </Field>
@@ -315,29 +315,29 @@ function StatementCard({
 
   return (
     <Card className="mb-6">
-      <p className="mb-1 text-sm font-medium text-slate-900">{tr.collections.statement}</p>
-      <p className="mb-4 text-xs text-slate-500">{tr.collections.statementHint}</p>
+      <p className="mb-1 text-sm font-medium text-navy-900">{tr.collections.statement}</p>
+      <p className="mb-4 text-xs text-ink-600">{tr.collections.statementHint}</p>
 
       <div className="flex items-center gap-3">
         <input
           ref={fileRef}
           type="file"
           accept=".csv,.xlsx,.xls"
-          className="text-sm file:mr-3 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-1.5 file:text-sm file:text-white"
+          className="text-sm file:mr-3 file:rounded-md file:border-0 file:bg-navy-900 file:px-3 file:py-1.5 file:text-sm file:text-white"
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) upload.mutate(file);
           }}
         />
         {upload.isPending ? (
-          <span className="text-xs text-slate-500">{tr.imports.uploading}</span>
+          <span className="text-xs text-ink-600">{tr.imports.uploading}</span>
         ) : null}
       </div>
 
       {statement ? (
         <div className="mt-4">
           <table className="w-full text-sm">
-            <thead className="border-b border-slate-200 text-left text-xs text-slate-500">
+            <thead className="border-b border-ink-200 text-left text-xs text-ink-600">
               <tr>
                 <th className="py-2">{tr.common.date}</th>
                 <th>{tr.transactions.description}</th>
@@ -346,35 +346,32 @@ function StatementCard({
                 <th>{tr.common.buyer}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-ink-100">
               {statement.rows.map((row) => {
                 const match = statement.matches.find((m) => m.rowId === row.id);
                 const tone =
                   match?.confidence === 'EXACT'
-                    ? 'green'
+                    ? 'credit'
                     : match?.confidence === 'SUGGESTED'
-                      ? 'amber'
-                      : 'slate';
+                      ? 'warn'
+                      : 'neutral';
 
                 return (
                   <tr key={row.id}>
                     <td className="py-2 text-xs">{trDate(row.txDate)}</td>
-                    <td
-                      className="max-w-xs truncate text-xs text-slate-600"
-                      title={row.description}
-                    >
+                    <td className="max-w-xs truncate text-xs text-ink-700" title={row.description}>
                       {row.description}
                     </td>
                     <td className="text-right tabular-nums">{money(row.amount)}</td>
                     <td>
                       {row.matchedIntentId ? (
-                        <Badge tone="slate">{tr.collections.matched}</Badge>
+                        <Badge tone="neutral">{tr.collections.matched}</Badge>
                       ) : (
                         <span>
                           <Badge tone={tone}>
                             {tr.collections.confidence[match?.confidence ?? 'NONE']}
                           </Badge>
-                          <span className="mt-1 block text-[11px] text-slate-500">
+                          <span className="mt-1 block text-[11px] text-ink-600">
                             {match?.reason}
                           </span>
                         </span>
@@ -382,7 +379,7 @@ function StatementCard({
                     </td>
                     <td>
                       {row.matchedIntentId ? null : match?.intentId ? (
-                        <span className="text-xs text-slate-600">{match.buyerAccountLabel}</span>
+                        <span className="text-xs text-ink-700">{match.buyerAccountLabel}</span>
                       ) : (
                         <Select
                           value={selection[row.id] ?? match?.buyerAccountId ?? ''}
