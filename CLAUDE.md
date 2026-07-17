@@ -1,6 +1,6 @@
 # CLAUDE.md — CariNet · B2B Cari Hesap Platformu (Ana Beyin)
 
-> **Sürüm 3.6 · 17.07.2026 — Tek doğruluk kaynağı.** (3.6: **§6.4 ekstre sorgusu yeniden kuruldu** [page + opening; 20k harekette 900ms→274ms, yük hedefi ölçüldü] + `transactions_ledger_covering_idx`; §14'e **görsel/dosya DB'ye konmaz** yasağı [ek dosyalar R2'ye, ayrı tabloya]. 3.5: §13 Faz 5 → **Sentry ×3 wiring koda alındı** [DSN'e kapılı, DSN'siz no-op]; ops tarafında kalan tek iş DSN üretimi. 3.4: Faz 5 KOD tarafı kapandı → §13'e 2FA enrollment/hesap silme/CSP/pino/HIBP/CI-Trivy-ZAP/yedek işaretlendi, §10'a `/auth/2fa/*` + `DELETE /auth/account`, `users`'a 4 alan [totp_pending_secret, totp_enabled_at, backup_codes, anonymized_at]; ops release kapısı `docs/DEPLOY.md`'de. 3.3: Faz 4 → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
+> **Sürüm 3.7 · 17.07.2026 — Tek doğruluk kaynağı.** (3.7: §13'e **Faz 6 — Backlog** bölümü kuruldu [§16.5 "Backlog" diyordu ama bölüm yoktu]; **B1 = ek dosya/görsel** özelliği [attachments tablosu + R2 + imzalı URL + magic-byte], B2 = ikinci POS adaptörü / RLS / ERP. 3.6: **§6.4 ekstre sorgusu yeniden kuruldu** [page + opening; 20k harekette 900ms→274ms, yük hedefi ölçüldü] + `transactions_ledger_covering_idx`; §14'e **görsel/dosya DB'ye konmaz** yasağı [ek dosyalar R2'ye, ayrı tabloya]. 3.5: §13 Faz 5 → **Sentry ×3 wiring koda alındı** [DSN'e kapılı, DSN'siz no-op]; ops tarafında kalan tek iş DSN üretimi. 3.4: Faz 5 KOD tarafı kapandı → §13'e 2FA enrollment/hesap silme/CSP/pino/HIBP/CI-Trivy-ZAP/yedek işaretlendi, §10'a `/auth/2fa/*` + `DELETE /auth/account`, `users`'a 4 alan [totp_pending_secret, totp_enabled_at, backup_codes, anonymized_at]; ops release kapısı `docs/DEPLOY.md`'de. 3.3: Faz 4 → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
 
 ---
 
@@ -393,8 +393,34 @@ Conventional Commits (`feat(api): …`, `docs: …`) · `main` + `feature/*` · 
 - [ ] VPS+Cloudflare sertleştirme (UFW/fail2ban/SSH · WAF/TLS/HSTS/Turnstile) · şifreli yedek→R2 + **restore provası kanıtı**
 - [ ] **Sentry ×3 DSN üretimi** (hesap + 3 proje → `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` / `EXPO_PUBLIC_SENTRY_DSN`). **Kod wiring tamam** (17.07): üçü de DSN'e kapılı, DSN yoksa tam no-op — DSN'in kendisi koda girmez (kural #10)
 - [ ] 2FA **zorunlu** SELLER_ADMIN/PLATFORM_ADMIN (kod prod'da uygular; adminler kurulumu tamamlamalı)
-- [ ] Coolify prod deploy · Pages'e panel · mağaza paketleri + demo hesap · yük hedefi: 100 eşzamanlı ekstre <500ms
+- [ ] Coolify prod deploy · Pages'e panel · mağaza paketleri + demo hesap · yük hedefi: 100 eşzamanlı ekstre <500ms — **DB katmanı 17.07'de ölçüldü** (§6.4: 20k harekette 274ms); prod'da HTTP ucuyla tekrarlanacak
       **✅ Bitti:** güvenlik listesi %100 · restore bir kez kanıtlı · uygulama mağaza incelemesinde · prod izleniyor.
+
+### Faz 6 — Backlog (v1 sonrası)
+
+§16.5'in "Backlog notu" dediği yer burasıdır. **Sıra ve kapsam pilot geri bildirimiyle netleşir; buradaki hiçbir madde Faz 5 kapanmadan başlamaz.**
+
+#### B1 — Ek dosya / görsel (fatura görüntüsü, dekont, ürün fotoğrafı)
+
+Faz 5'te (17.07) yalnız **tasarım kısıtı** sabitlendi (§14: içerik DB'ye konmaz) ve ekstre bu özelliğe hazır hale getirildi (`transactions_ledger_covering_idx` → satır genişliği ekstre hızını etkilemez, §6.4). Özelliğin kendisi yapılmadı.
+
+**Kapsam:**
+
+- `attachments` tablosu — **tenant tablosu** (`seller_id` zorunlu, kural #3): `id, seller_id, storage_key, mime, size_bytes, sha256, original_name, uploaded_by, created_at, deleted_at?` + sahiplik FK'leri `invoice_id? / transaction_id? / collect_intent_id? / support_request_id?` ve **tam olarak biri dolu** CHECK'i. (Polimorfik `owner_type/owner_id` yerine açık FK: referans bütünlüğü DB'de kalsın.)
+- **İçerik R2/MinIO'da, tabloda yalnız anahtar** (§14). Private bucket; okuma **kısa ömürlü imzalı URL** ile (§11.2). Public URL yok.
+- **Yükleme doğrulaması (§11.2):** uzantı + MIME + **magic-byte** üçü birden · allowlist (jpeg/png/webp/pdf) · görsel ≤5MB, PDF ≤10MB · `sha256` ile mükerrer tespiti.
+- **Silme:** ek dosya finansal kayıt DEĞİLDİR, silinebilir — ama finansal bir kayda bağlıysa `deleted_at` + **audit** (kural #4 ile karışmasın: hareket durur, eki gider). R2 nesnesi saklama süresi sonunda temizlenir.
+- **Yedek:** R2 kendi lifecycle/versioning'iyle korunur; `pg_dump`'a **girmez** (§11.6 — gece yedeği şişmesin).
+- Panel: fatura/hareket ekranında yükle-listele-sil. Mobil: fatura detayında görüntüle (imzalı URL).
+- Test: cross-tenant (A'nın eki B'ye görünmez/indirilemez) · magic-byte reddi · imzalı URL süresi dolunca 403.
+
+**Açık sorular (pilotla netleşecek):** alıcı **dekont** yükleyebilecek mi (§8 Kanal 1'de "açıklamasız dekont" akışını kolaylaştırır) · saklama süresi (KVKK/yasal) · e-Fatura PDF'i zaten entegratörde varken kopyasını tutmak gerekli mi.
+
+#### B2 — Diğer
+
+- **İkinci POS adaptörü** — pilotun sağlayıcısı belli olunca (§8: "adaptörler talep geldikçe eklenir").
+- **PostgreSQL RLS** — §6.1'in "opsiyonel son kemer"i.
+- **ERP entegrasyonu** — v1 dışı (§14); kapı §9'daki import uçları.
 
 ---
 

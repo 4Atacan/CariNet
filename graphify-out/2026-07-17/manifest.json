@@ -610,9 +610,9 @@
     "semantic_hash": "8d9c99675e9c952798456a2a92f9561a"
   },
   "apps/api/src/modules/ledger/ledger.repository.ts": {
-    "mtime": 1784011491.4767375,
-    "ast_hash": "83bf5d99dca5866bad83dd92c2fdd8b4",
-    "semantic_hash": "83bf5d99dca5866bad83dd92c2fdd8b4"
+    "mtime": 1784276739.330115,
+    "ast_hash": "047224dfde78b8695778f1304fbc5a9f",
+    "semantic_hash": "047224dfde78b8695778f1304fbc5a9f"
   },
   "apps/api/src/modules/ledger/ledger.service.ts": {
     "mtime": 1784011511.1578465,
@@ -670,9 +670,9 @@
     "semantic_hash": "cccf170f1afb34c954b872f8e4fa42c3"
   },
   "apps/api/test/transactions.e2e-spec.ts": {
-    "mtime": 1784052972.733078,
-    "ast_hash": "270081def5b2ae2f25a188c30dd24f89",
-    "semantic_hash": "270081def5b2ae2f25a188c30dd24f89"
+    "mtime": 1784276845.12553,
+    "ast_hash": "1458d03a00533a6c82b42f9fbde12be9",
+    "semantic_hash": "1458d03a00533a6c82b42f9fbde12be9"
   },
   "packages/shared/src/invoice.spec.ts": {
     "mtime": 1784011314.0652988,
@@ -1388,5 +1388,15 @@
     "mtime": 1784124826.3581345,
     "ast_hash": "7dca799a52a2a4284ba2a601186fac11",
     "semantic_hash": "7dca799a52a2a4284ba2a601186fac11"
+  },
+  "apps/api/prisma/migrations/20260717090000_ledger_covering_index/migration.sql": {
+    "mtime": 1784275493.5852497,
+    "ast_hash": "0c4a0b823402284daab90d919b7c19ab",
+    "semantic_hash": "0c4a0b823402284daab90d919b7c19ab"
+  },
+  "apps/api/test/ledger-pagination.e2e-spec.ts": {
+    "mtime": 1784276540.8222685,
+    "ast_hash": "8083135e2df5d9175711377a7ee9fcc0",
+    "semantic_hash": "8083135e2df5d9175711377a7ee9fcc0"
   }
 }

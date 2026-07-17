@@ -70,7 +70,9 @@ schema.prisma'ya uyari notu dusuldu: `prisma migrate dev` bu indeksi "fazlalik" 
 ### Sonraki adim
 
 Ops adimlari (sunucu bekliyor). Ek dosya/gorsel OZELLIGININ kendisi (tablo + upload ucu + imzali URL)
-bu blokta YAPILMADI — kapsam disi (§16.5), Faz 6 backlog'u; §14 yalnizca tasarim kisitini sabitliyor.
+bu blokta YAPILMADI — kapsam disi (§16.5); §14 yalnizca tasarim kisitini sabitliyor. Ozellik
+**CLAUDE.md §13 → Faz 6 Backlog B1**'e yazildi (17.07; o bolum bu notla birlikte KURULDU — §16.5
+"Backlog" diyordu ama boyle bir bolum repoda hic yoktu).
 
 ---
 
