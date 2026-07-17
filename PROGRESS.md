@@ -7,6 +7,41 @@
 
 ---
 
+## 2026-07-17 · Faz 5 — Sentry ×3 kod tarafi (§11.8)
+
+15.07'de "koda gomulmedi, runbook'ta" denen madde **kod tarafinda kapatildi** (asagidaki karar notu).
+Ops tarafinda kalan tek is DSN uretmek.
+
+### Yapilan
+
+- **API**: `apps/api/src/instrument.ts` — `main.ts`'in EN BASINDA import edilir (Sentry enstrumantasyonu
+  Nest'ten once yuklenmezse otomatik yakalama calismaz). `all-exceptions.filter.ts` yalniz **5xx**'te
+  `captureException` cagirir — 4xx kullanici hatasidir, gurultu yapmaz.
+- **Panel**: `withSentryConfig` + `sentry.server/edge.config.ts` + `instrumentation-client.ts` +
+  `onRequestError`. `@sentry/cli` build script'i **kapali** (`pnpm-workspace.yaml` allowBuilds:false) —
+  binary yalniz deploy'da source-map yuklemek icin gerekir, CI'da gereksiz.
+- **Mobil**: `_layout.tsx`'te DSN kapili init + `Sentry.wrap(RootLayout)`; `app.json` plugin.
+- Ucunde de **DSN yoksa tam no-op** — hicbir ag cagrisi yok (kural #8: onaysiz ucretli/harici servis yok).
+
+### Karar
+
+- **Sentry artik kodda, ama DSN'e kapili** — 15.07'deki "koda gomulmedi" karari revize edildi.
+  Gerekce: DSN'siz kod zaten hicbir sey gondermiyor, dolayisiyla kural #8/#10 ihlali yok; buna karsilik
+  wiring'i onceden yapmak DSN gelince tek env degiskenine indiriyor. **DSN'in kendisi hala koda girmez**
+  (`.env` + Coolify secrets).
+- `tracesSampleRate: 0.1` — ucretsiz kotayi (5k olay/ay) korur.
+
+### VARSAYIM:
+
+- Panel/mobil DSN'i **public'tir** (`NEXT_PUBLIC_` / `EXPO_PUBLIC_` istemciye gomulur) — bu Sentry'nin
+  tasarimi, sir degil; kotayi kotuye kullanmaya karsi Sentry tarafinda rate limit acilmali.
+
+### Sonraki adim
+
+Ops: Sentry hesabi + 3 proje → DSN'ler → Coolify/EAS env. Sunucu bekliyor (Adim 1 hala kapasitede).
+
+---
+
 ## 2026-07-15 · Faz 5 — Sertlestirme ve Yayin (§11, §13)
 
 Bes bloga bolunerek uygulandi. **Kod tarafi tamam + testli; ops tarafi runbook (docs/DEPLOY.md).**
@@ -63,6 +98,7 @@ Bes bloga bolunerek uygulandi. **Kod tarafi tamam + testli; ops tarafi runbook (
   kimlik cozulmez. e2e bunu ayrica kanitlar (silme sonrasi transaction hala orada).
 - **Sentry KODA GOMULMEDI, runbook'ta**: DSN gerektirir + harici servise veri gonderir (kural #8/#10).
   Kod `SENTRY_DSN`'i tanir; wiring onayli/DSN'li ortamda yapilir. Bu Faz 5'in tek "ops-only" kod maddesi.
+  → **17.07'de REVIZE EDILDI**: wiring koda alindi (DSN'e kapili, DSN'siz no-op). Bkz. 17.07 kaydi.
 - **Action'lar SHA'ya, master'a degil**: trivy-action master yerine 0.35.0 tag'inin SHA'sina pinlendi;
   Dependabot github-actions ekosistemi bunlari gunceller.
 - **Yeni e2e testleri afterAll'da temizlenir**: 2FA/silme testleri seller-1'e cari ekliyordu; tenant
@@ -88,7 +124,8 @@ totp_enabled_at, backup_codes[], anonymized_at). Finansal veriye dokunulmadi.
 - [x] §11.2 uygulama sertlestirme: CSP + HSTS + pino redaction + Swagger prod auth (gercek boot dogrulamasi)
 - [x] Trivy + ZAP CI'da · Dependabot · Actions SHA pin
 - [x] Sifreli yedek + restore scriptleri + restore provasi rehberi
-- [ ] **Ops (§11.4/5/8): VPS/Cloudflare/Coolify sertlestirme, Sentry x3 DSN, restore provasi kaniti,
+- [x] **Sentry ×3 kod wiring** (§11.8) — 17.07, DSN'e kapili (DSN'in kendisi ops)
+- [ ] **Ops (§11.4/5/8): VPS/Cloudflare/Coolify sertlestirme, Sentry DSN uretimi, restore provasi kaniti,
       prod deploy, yuk hedefi** → docs/DEPLOY.md, KULLANICI ADIMI
 - [x] Kapilar: **94 unit** (74 shared + 20 api) · **147 e2e** (11 dosya) · lint/typecheck/build temiz
 

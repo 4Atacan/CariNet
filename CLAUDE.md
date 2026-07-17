@@ -1,6 +1,6 @@
 # CLAUDE.md — CariNet · B2B Cari Hesap Platformu (Ana Beyin)
 
-> **Sürüm 3.4 · 15.07.2026 — Tek doğruluk kaynağı.** (3.4: Faz 5 KOD tarafı kapandı → §13'e 2FA enrollment/hesap silme/CSP/pino/HIBP/CI-Trivy-ZAP/yedek işaretlendi, §10'a `/auth/2fa/*` + `DELETE /auth/account`, `users`'a 4 alan [totp_pending_secret, totp_enabled_at, backup_codes, anonymized_at]; ops release kapısı `docs/DEPLOY.md`'de. 3.3: Faz 4 → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
+> **Sürüm 3.5 · 17.07.2026 — Tek doğruluk kaynağı.** (3.5: §13 Faz 5 → **Sentry ×3 wiring koda alındı** [DSN'e kapılı, DSN'siz no-op]; ops tarafında kalan tek iş DSN üretimi. 3.4: Faz 5 KOD tarafı kapandı → §13'e 2FA enrollment/hesap silme/CSP/pino/HIBP/CI-Trivy-ZAP/yedek işaretlendi, §10'a `/auth/2fa/*` + `DELETE /auth/account`, `users`'a 4 alan [totp_pending_secret, totp_enabled_at, backup_codes, anonymized_at]; ops release kapısı `docs/DEPLOY.md`'de. 3.3: Faz 4 → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
 
 ---
 
@@ -376,11 +376,12 @@ Conventional Commits (`feat(api): …`, `docs: …`) · `main` + `feature/*` · 
 - [x] **Sızmış parola** (HIBP k-anonimlik, fail-open, §11.1)
 - [x] **CI**: Trivy fs + ZAP baseline + Dependabot + Actions SHA pin (§11.7)
 - [x] **Şifreli yedek + restore** scriptleri (pg_dump | age → R2) + restore provası rehberi
+- [x] **Sentry ×3 wiring** (§11.8) — API `instrument.ts` (main'den önce, yalnız 5xx) · panel `withSentryConfig` · mobil `Sentry.wrap`; hepsi DSN'e kapılı
 
 **Ops tarafı (release kapısı — sunucu/hesap gerektirir → `docs/DEPLOY.md`, KULLANICI ADIMI):**
 
 - [ ] VPS+Cloudflare sertleştirme (UFW/fail2ban/SSH · WAF/TLS/HSTS/Turnstile) · şifreli yedek→R2 + **restore provası kanıtı**
-- [ ] **Sentry ×3** DSN wiring (kod `SENTRY_DSN`'i tanır; DSN gerektirdiği için koda gömülmedi — kural #8/#10)
+- [ ] **Sentry ×3 DSN üretimi** (hesap + 3 proje → `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` / `EXPO_PUBLIC_SENTRY_DSN`). **Kod wiring tamam** (17.07): üçü de DSN'e kapılı, DSN yoksa tam no-op — DSN'in kendisi koda girmez (kural #10)
 - [ ] 2FA **zorunlu** SELLER_ADMIN/PLATFORM_ADMIN (kod prod'da uygular; adminler kurulumu tamamlamalı)
 - [ ] Coolify prod deploy · Pages'e panel · mağaza paketleri + demo hesap · yük hedefi: 100 eşzamanlı ekstre <500ms
       **✅ Bitti:** güvenlik listesi %100 · restore bir kez kanıtlı · uygulama mağaza incelemesinde · prod izleniyor.
