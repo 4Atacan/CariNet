@@ -165,6 +165,9 @@ describe('Hareketler (e2e)', () => {
       const same = filtered.body.data.find((r: { id: string }) => r.id === newest.id);
       expect(same.runningBalance).toBe(newest.runningBalance);
     });
+
+    // Sayfalama x yuruyen bakiye: `ledger-pagination.e2e-spec.ts` (seed'de tarihler benzersiz
+    // oldugundan sinir hatasi burada gorunmez — orada kasitli ayni-tarih yigini kurulur).
   });
 
   describe('dogrulama (Zod — kural #7)', () => {

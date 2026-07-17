@@ -1,6 +1,6 @@
 # CLAUDE.md — CariNet · B2B Cari Hesap Platformu (Ana Beyin)
 
-> **Sürüm 3.5 · 17.07.2026 — Tek doğruluk kaynağı.** (3.5: §13 Faz 5 → **Sentry ×3 wiring koda alındı** [DSN'e kapılı, DSN'siz no-op]; ops tarafında kalan tek iş DSN üretimi. 3.4: Faz 5 KOD tarafı kapandı → §13'e 2FA enrollment/hesap silme/CSP/pino/HIBP/CI-Trivy-ZAP/yedek işaretlendi, §10'a `/auth/2fa/*` + `DELETE /auth/account`, `users`'a 4 alan [totp_pending_secret, totp_enabled_at, backup_codes, anonymized_at]; ops release kapısı `docs/DEPLOY.md`'de. 3.3: Faz 4 → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
+> **Sürüm 3.6 · 17.07.2026 — Tek doğruluk kaynağı.** (3.6: **§6.4 ekstre sorgusu yeniden kuruldu** [page + opening; 20k harekette 900ms→274ms, yük hedefi ölçüldü] + `transactions_ledger_covering_idx`; §14'e **görsel/dosya DB'ye konmaz** yasağı [ek dosyalar R2'ye, ayrı tabloya]. 3.5: §13 Faz 5 → **Sentry ×3 wiring koda alındı** [DSN'e kapılı, DSN'siz no-op]; ops tarafında kalan tek iş DSN üretimi. 3.4: Faz 5 KOD tarafı kapandı → §13'e 2FA enrollment/hesap silme/CSP/pino/HIBP/CI-Trivy-ZAP/yedek işaretlendi, §10'a `/auth/2fa/*` + `DELETE /auth/account`, `users`'a 4 alan [totp_pending_secret, totp_enabled_at, backup_codes, anonymized_at]; ops release kapısı `docs/DEPLOY.md`'de. 3.3: Faz 4 → §7'ye `push_tokens` + `support_requests`, §10'a katalog/bildirim/kur/export uçları. 3.2: Faz 3 → `sellers.seller_no`, tahsilat uçları ve hata kodları. 3.1: §6.4 bakiye SQL'i TRY normalizasyonu.) Claude Code her oturumun başında bu dosyayı okur ve buradaki kurallara MUTLAK uyar. Kullanıcı talebi bu dosyayla çelişirse: önce çelişkiyi bildir, onaysız kural çiğneme. Kod tabanının haritası için dosyaları grep'leme — **Graphify grafiğini sorgula** (§5).
 
 ---
 
@@ -176,6 +176,16 @@ WHERE t.seller_id = $1 AND t.buyer_account_id = $2 AND t.is_cancelled = FALSE;
 ```
 
 Yürüyen bakiye TÜM tarihçe üzerinden hesaplanır, tarih filtresi SONRA uygulanır (devir dışarıda kalmasın). Tek uygulama noktası: `apps/api/src/modules/ledger/`. `$queryRaw` tenant eklentisinin dışındadır → `seller_id` her ham sorguda elle konur (kural #3).
+
+**Yukarıdaki SQL anlamı tanımlar, uygulamayı değil.** Birebir uygulanırsa (window tüm tarihçede, LIMIT sonra) her istek carinin bütün hareketlerini sıralar → maliyet geçmişle doğrusal büyür. Ölçüldü (17.07, 100 eşzamanlı): 5k hareket 190ms · 10k 419ms · **20k 900ms → 500ms hedefi kırılıyor.** Bu yüzden `ledger.repository.ts` aynı sonucu iki parçada üretir:
+
+1. `page` — istenen sayfa, indeksten, LIMIT kadar satır (tarih filtresi BURAYA uygulanır).
+2. `opening` — sayfanın **en eski satırından önceki** her şeyin toplamı; tek SUM, sıralama yok, tarih filtresi YOK (devir ve filtre dışı geçmiş bakiyeye dahil olmalı).
+
+`running_balance = opening + sayfa içindeki kümülatif toplam`. Window artık yalnız LIMIT kadar satır görür → 20k'da 900ms **→ 274ms**.
+
+- **Sınır, en eski satırın `(document_date, id)` DEMETİ'dir.** Ayrı `MIN(document_date)`/`MIN(id)` farklı satırlardan gelip sınırı kaydırır → bakiye sessizce yanlış çıkar. Yalnız aynı güne birden çok hareket düşüp sayfa sınırını böldüğünde görünür; regresyon testi `ledger-pagination.e2e-spec.ts` (kasıtlı aynı-tarih yığını + elle verilmiş id'ler; mutasyonla doğrulandı — hatalı kurguda düşüyor).
+- **`transactions_ledger_covering_idx`** (INCLUDE'lu kısmi indeks, migration'da — Prisma ifade edemez): `opening` **Index Only Scan / Heap Fetches: 0** ile çalışır. Sonuç: satır ne kadar genişlerse genişlesin ekstre hızı etkilenmez. **Bu indeks silinirse ekstre yavaşlar** (§14).
 
 Ortalama vade = tutar ağırlıklı. Risk föyü yaşlandırma kovaları: 0-30 / 31-60 / 61-90 / 90+ gün.
 
@@ -390,7 +400,11 @@ Conventional Commits (`feat(api): …`, `docs: …`) · `main` + `feature/*` · 
 
 ## 14. Yapılmayacaklar (açık yasaklar)
 
-❌ Parada float/number · ❌ `balance` kolonu · ❌ `seller_id` filtresiz sorgu · ❌ finansal kayıtta hard delete · ❌ kart verisi işlemek/loglamak/formunu barındırmak · ❌ platform hesabında para toplamak (facilitator) · ❌ onaysız ücretli servis (AI eşleyici ve `--mode deep` dahil) · ❌ ERP gerçek-zaman entegrasyonuna başlamak (v1 dışı; kapı §9'daki import uçları) · ❌ `localStorage`'da token · ❌ Swagger güncellenmeden endpoint değişikliği · ❌ kullanılmayan soyutlama (YAGNI) · ❌ testi geçirmek için testi zayıflatmak · ❌ kullanıcı↔cari ilişkisini 1-1 kurmak (§6.2).
+❌ Parada float/number · ❌ `balance` kolonu · ❌ `seller_id` filtresiz sorgu · ❌ finansal kayıtta hard delete · ❌ kart verisi işlemek/loglamak/formunu barındırmak · ❌ platform hesabında para toplamak (facilitator) · ❌ onaysız ücretli servis (AI eşleyici ve `--mode deep` dahil) · ❌ ERP gerçek-zaman entegrasyonuna başlamak (v1 dışı; kapı §9'daki import uçları) · ❌ `localStorage`'da token · ❌ Swagger güncellenmeden endpoint değişikliği · ❌ kullanılmayan soyutlama (YAGNI) · ❌ testi geçirmek için testi zayıflatmak · ❌ kullanıcı↔cari ilişkisini 1-1 kurmak (§6.2) · ❌ **dosya/görsel içeriğini (`bytea`) veritabanında tutmak** (aşağı) · ❌ **`transactions_ledger_covering_idx`'i düşürmek** (§6.4 — ekstre hızının temeli; Prisma "fazlalık" sanıp DROP önerebilir).
+
+**Görsel/ek dosyalar (fatura görüntüsü, dekont, ürün fotoğrafı) — DB'ye değil R2/MinIO'ya.** Tabloda yalnız anahtar/URL + meta durur; içerik private bucket'ta, erişim imzalı URL ile (§11.2). Ek dosyalar `transactions`'a kolon olarak DEĞİL, ayrı bir tabloya bağlanır (1:N; finansal kayıt silinmez ama ek dosya silinebilir — kural #4 karışmasın).
+
+> Not (17.07 ölçümü): gerekçe performans DEĞİL — Postgres TOAST büyük `bytea`'yı satır dışına taşıdığı için tarama beklendiği kadar yavaşlamıyor (16.7ms → 20.4ms). Gerçek gerekçeler: **gece şifreli yedek** (§11.6) her gece tüm görselleri yeniden dump'lar → yedek/restore süresi ve R2 maliyeti patlar; imzalı URL modeli (§11.2) zaten nesne deposu ister; ve WAL/replikasyon şişer.
 
 ---
 

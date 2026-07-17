@@ -10,6 +10,8 @@ import { PRISMA, type PrismaService } from '../../prisma/prisma.module';
  * Asagidaki ifade TRY satirlarda (rate = 1) §6.4 ile birebir ayni sonucu verir; dovizde dogruyu verir.
  */
 const SIGNED_TRY = Prisma.sql`(CASE WHEN t.type = 'DEBIT' THEN 1 ELSE -1 END) * ROUND(t.amount * t.exchange_rate, 2)`;
+/** Ayni ifade, sayfa (`page`) takma adi icin. */
+const SIGNED_TRY_PAGE = Prisma.sql`(CASE WHEN p.type = 'DEBIT' THEN 1 ELSE -1 END) * ROUND(p.amount * p.exchange_rate, 2)`;
 
 /** Ham SQL ciktisi (snake_case). */
 export interface StatementRawRow {
@@ -57,30 +59,61 @@ export class LedgerRepository {
     return sellerId;
   }
 
-  /** Yuruyen bakiye TUM tarihce uzerinden hesaplanir, tarih filtresi SONRA uygulanir. */
+  /**
+   * Yuruyen bakiye TUM tarihce uzerinden hesaplanir, tarih filtresi SONRA uygulanir (§6.4).
+   *
+   * Naif kurgu (window'u tum tarihce uzerinde calistirip sonra LIMIT'lemek) §6.4 ile birebir ayni
+   * sonucu verir ama her istekte carinin butun hareketlerini SIRALAR → maliyet gecmisle dogrusal
+   * buyur. Olculdu (100 eszamanli): 20k hareketli caride 900 ms — 500 ms hedefinin uzerinde.
+   *
+   * Bunun yerine ayni sonuc iki parcada uretilir:
+   *   1. `page`    — istenen sayfa, indeksten, LIMIT kadar satir.
+   *   2. `opening` — sayfanin EN ESKI satirindan onceki her seyin toplami; tek SUM, siralama yok,
+   *                  Index Only Scan (heap'e dokunmaz).
+   * Satirin yuruyen bakiyesi = opening + sayfa ICINDEKI kumulatif toplam. Window artik yalnizca
+   * LIMIT kadar satir gorur. Olcum: 900 ms → 274 ms.
+   *
+   * `opening` tarih filtresi ALMAZ — bu kasitlidir: filtre disinda kalan gecmis (ve devir) bakiyeye
+   * dahil olmali (§6.4). Filtre yalnizca `page`'e uygulanir.
+   */
   async statement(buyerAccountId: string, filter: StatementFilter): Promise<StatementRawRow[]> {
     const sellerId = this.requireSellerId();
     const from = toDateParam(filter.from);
     const to = toDateParam(filter.to);
 
     return this.prisma.$queryRaw<StatementRawRow[]>(Prisma.sql`
-      WITH ledger AS (
+      WITH page AS (
         SELECT t.id, t.type, t.document_type, t.document_no, t.document_date, t.due_date,
-               t.amount, t.currency_code, t.exchange_rate, t.description, t.invoice_id,
-               ROUND(t.amount * t.exchange_rate, 2) AS amount_try,
-               SUM(${SIGNED_TRY}) OVER (
-                 PARTITION BY t.buyer_account_id ORDER BY t.document_date, t.id
-               ) AS running_balance
+               t.amount, t.currency_code, t.exchange_rate, t.description, t.invoice_id
         FROM transactions t
         WHERE t.seller_id = ${sellerId}
           AND t.buyer_account_id = ${buyerAccountId}
           AND t.is_cancelled = FALSE
+          AND (${from}::date IS NULL OR t.document_date >= ${from}::date)
+          AND (${to}::date IS NULL OR t.document_date <= ${to}::date)
+        ORDER BY t.document_date DESC, t.id DESC
+        LIMIT ${filter.take} OFFSET ${filter.skip}
+      ),
+      -- Sayfanin en eski satiri. DEMET siralamasi sart: ayri MIN(document_date)/MIN(id) farkli
+      -- satirlardan gelip siniri kaydirabilir.
+      edge AS (
+        SELECT p.document_date AS d, p.id AS i FROM page p ORDER BY p.document_date, p.id LIMIT 1
+      ),
+      opening AS (
+        SELECT COALESCE(SUM(${SIGNED_TRY}), 0) AS bal
+        FROM transactions t, edge e
+        WHERE t.seller_id = ${sellerId}
+          AND t.buyer_account_id = ${buyerAccountId}
+          AND t.is_cancelled = FALSE
+          AND (t.document_date, t.id) < (e.d, e.i)
       )
-      SELECT * FROM ledger
-      WHERE (${from}::date IS NULL OR document_date >= ${from}::date)
-        AND (${to}::date IS NULL OR document_date <= ${to}::date)
-      ORDER BY document_date DESC, id DESC
-      LIMIT ${filter.take} OFFSET ${filter.skip}
+      SELECT p.id, p.type, p.document_type, p.document_no, p.document_date, p.due_date,
+             p.amount, p.currency_code, p.exchange_rate, p.description, p.invoice_id,
+             ROUND(p.amount * p.exchange_rate, 2) AS amount_try,
+             (SELECT bal FROM opening)
+               + SUM(${SIGNED_TRY_PAGE}) OVER (ORDER BY p.document_date, p.id) AS running_balance
+      FROM page p
+      ORDER BY p.document_date DESC, p.id DESC
     `);
   }
 

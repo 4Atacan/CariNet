@@ -7,6 +7,73 @@
 
 ---
 
+## 2026-07-17 · Faz 5 — Yuk testi + ekstre sorgusu yeniden kuruldu (§6.4, §13 yuk hedefi)
+
+Sunucu (Adim 1) kapasite bekledigi icin sunucusuz yapilabilen release kapisi maddesi one alindi:
+**"100 eszamanli ekstre <500ms"**. Ayri `carinet_loadtest` veritabaninda olculdu (seed'e ve testlere
+dokunulmadi): 405.060 hareket / 402 cari / 97 MB.
+
+### Yapilan
+
+**Olcum (pgbench, 100 eszamanli):** maliyet TABLO buyuklugune degil, CARININ KENDI gecmisine bagli
+(indeks dogru calisiyor: Bitmap Index Scan; tablo 5k→405k olurken sure sabit kaldi). Ama cari
+gecmisiyle DOGRUSAL buyuyor:
+
+| cari gecmisi | eski kurgu | yeni kurgu |
+| ------------ | ---------- | ---------- |
+| 1.000        | 52 ms      | —          |
+| 5.000        | 190 ms     | 82 ms      |
+| 10.000       | 419 ms     | 178 ms     |
+| 20.000       | **900 ms** | **274 ms** |
+
+→ Eski kurgu ~10k hareket civarinda hedefi kiriyordu. 5 yilda gunde 11 hareket eden aktif bir
+toptanci musterisi oraya varir; uzak bir senaryo degil.
+
+**Cozum** (`ledger.repository.ts`, tek dokunma noktasi — §6.4): window'u tum tarihcede calistirmak
+yerine `page` (indeksten, LIMIT kadar) + `opening` (sayfa oncesi tek SUM, siralama yok). Window artik
+yalnizca LIMIT kadar satir goruyor. **Anlam degismedi**: `opening` tarih filtresi ALMAZ, yani filtre
+disi gecmis ve devir bakiyeye dahil kalir (§6.4).
+
+**`transactions_ledger_covering_idx`** (ham SQL migration; Prisma INCLUDE + kismi indeks ifade edemez):
+`opening` artik **Index Only Scan / Heap Fetches: 0**.
+
+**Regresyon testi** `ledger-pagination.e2e-spec.ts` (+2 test, 148→150).
+
+### Karar
+
+- **§6.4'un SQL'i "anlam", uygulama degil** — CLAUDE.md'ye bu ayrim yazildi. Kanonik SQL hala dogru
+  tanimi veriyor; repository ayni sonucu daha ucuz uretiyor ve testlerle esitligi kanitli.
+- **Gorsel/dosya DB'ye KONMAZ** (§14'e yasak olarak eklendi) — ama gerekce performans DEGIL:
+  olctum, Postgres TOAST buyuk bytea'yi satir disina tasidigi icin tarama 16.7→20.4ms, yani
+  varsayimim yanlisti. Gercek gerekce: gece sifreli yedek (§11.6) her gece tum gorselleri yeniden
+  dump'lar → yedek/restore suresi + R2 maliyeti patlar; imzali URL modeli (§11.2) zaten nesne deposu
+  ister. Ayrica covering index sayesinde satir genisligi ekstreyi zaten etkilemiyor.
+- **Zayif test silindi**: once `transactions.e2e-spec.ts`'e sayfalama testi yazdim, MUTASYONLA
+  denedim (demet minimumu → ayri MIN'ler) ve **test hatayi yakalamadi** → degersizdi. Sebep: seed'de
+  tarihler benzersiz + cuid'ler ekleme sirasina gore artiyor, hata gorunmuyor. Yerine ayri dosyada
+  KASITLI ayni-tarih yigini + ELLE verilmis id'ler ('tp-aaa-_' < 'tp-tied-_') kuruldu; mutasyonda
+  `expected '300.00' to be '3100.00'` ile dusuyor. Test once kirmizi oldugu gorulmeden yesil sayilmadi.
+
+### Sema degisikligi
+
+Migration `20260717090000_ledger_covering_index` — yalnizca indeks; veri/kolon degismedi.
+schema.prisma'ya uyari notu dusuldu: `prisma migrate dev` bu indeksi "fazlalik" sanip DROP onerebilir.
+
+### VARSAYIM:
+
+- Olcum **yalniz DB katmani** ve bu gelistirme makinesinde (15 konteyner acik) yapildi. Gercek hedef
+  HTTP ucu: ustune Prisma, JSON serilestirme, auth ve ag biniyor. Oracle ARM'da rakamlar farkli
+  cikar → **prod'da tekrar olculmeli** (docs/DEPLOY.md yuk hedefi maddesi).
+- 100 eszamanli ekstre pilot icin gercekci degil (100 alicinin ayni anda ekstre acmasi demek);
+  hedef release kapisi oldugu icin olculdu.
+
+### Sonraki adim
+
+Ops adimlari (sunucu bekliyor). Ek dosya/gorsel OZELLIGININ kendisi (tablo + upload ucu + imzali URL)
+bu blokta YAPILMADI — kapsam disi (§16.5), Faz 6 backlog'u; §14 yalnizca tasarim kisitini sabitliyor.
+
+---
+
 ## 2026-07-17 · Faz 5 — Sentry ×3 kod tarafi (§11.8)
 
 15.07'de "koda gomulmedi, runbook'ta" denen madde **kod tarafinda kapatildi** (asagidaki karar notu).

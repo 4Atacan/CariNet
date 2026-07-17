@@ -338,6 +338,11 @@ model Transaction {
   @@index([sellerId, dueDate])
   @@index([importBatchId])
   @@map("transactions")
+
+  /// DIKKAT — `transactions_ledger_covering_idx` YALNIZ migration'da yasar (INCLUDE + kismi indeks;
+  /// Prisma ikisini de ifade edemez, bkz. 20260717090000_ledger_covering_index).
+  /// Ekstre performansinin temeli odur (§6.4). `prisma migrate dev` sema ile veritabanini
+  /// karsilastirdiginda onu "fazlalik" sanip DROP onerebilir — KABUL ETME, migration'i elle koru.
 }
 
 model Invoice {
