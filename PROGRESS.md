@@ -7,6 +7,109 @@
 
 ---
 
+## 2026-07-18 (aksam) · PROD YAYINDA — Faz 5 ops adimlari 1-5 ve 7 (yedek)
+
+Kullanici Oracle'i beklemek yerine baska sunucu ariyordu; Turhost teklifi (2 vCPU/4GB icin
+$40/ay) ve ortagin sunucusu (root ortakta) degerlendirildi. Sonunda **Oracle'da gozden kacan
+x86 secenegi** bulundu ve HER SEY UCRETSIZ kaldi.
+
+### 1) Sunucular — ARM degil x86 (Adim 1)
+
+Haftalardir `VM.Standard.A1.Flex` (ARM) pesindeydik; uc availability domain'de de kapasite yok
+(81 deneme). Oracle Haziran 2026'da Always Free ARM kotasini 4 OCPU/24GB → 2 OCPU/12GB indirmis,
+havuz daraldi. **`VM.Standard.E2.1.Micro` (x86 AMD, 1 OCPU / 1 GB) hic denenmemisti** — ilk
+denemede acildi. Always Free bundan IKI adet veriyor:
+
+|          | carinet-db   | carinet-app         |
+| -------- | ------------ | ------------------- |
+| Genel IP | 92.5.134.129 | 89.168.125.160      |
+| Ozel IP  | 10.0.1.151   | 10.0.1.72           |
+| Rol      | Postgres     | API + panel + Caddy |
+
+Ubuntu 24.04.4 x86_64 · 2 cekirdek · 954 MB · 48 GB. **VARSAYIM:** 954 MB dar; panel
+DERLEMESI sunucuda yapilamaz (GitHub Actions'ta yapiliyor). Olculen kullanim 529/954 MB.
+
+### 2) Sertlestirme (Adim 2)
+
+Iki makinede: 2G swap (swappiness=10) · fail2ban (`backend=systemd` — bu satir olmadan jail
+sessizce hic tetiklenmez) · UFW (db: 22 + 5432 yalniz 10.0.1.0/24 · app: 22/80/443) ·
+`netfilter-persistent` masked (tek kaynak UFW) · sshd root ve sifre girisi KAPALI ·
+unattended-upgrades. **Iki makine de yeniden baslatilip dogrulandi.**
+
+Uzaktan firewall degistirirken **zamanli geri alma** kullanildi: 300 sn icinde onay gelmezse
+kurallar kendiliginden geri aliniyor; yeni bir SSH oturumuyla erisim dogrulandiktan sonra onay
+verildi.
+
+### 3) Docker + Postgres (Adim 3) — UC SESSIZ TUZAK
+
+- **Docker UFW'yi atlar.** `-p 5432:5432` yazilsaydi UFW "reddet" derken DB internete acik
+  olurdu. Port ozel IP'ye baglandi: `10.0.1.151:5432`.
+- **UFW FORWARD'i DROP yapiyor** + Oracle imajindan kalma bir REJECT kurali ufw zincirlerinden
+  ONCE duruyordu. Docker trafigi INPUT'tan degil FORWARD'dan gecer → izin `ufw after.rules`
+  icine DOCKER-USER blogu olarak KALICI yazildi.
+- **Oracle Security List VCN ici 5432'yi engelliyordu.** Sunucuda her sey dogruyken paket
+  sayaclari SIFIRDI. Buluta ayri ingress kurali eklendi.
+
+Postgres 954 MB'a gore ayarli (shared_buffers=192MB, max_connections=50). Sifre sunucuda
+uretildi, hicbir asamada ekrana basilmadi, `.env` 600.
+
+### 4) Depo + imajlar (Adim 5)
+
+Depoda uzak sunucu YOKTU (30 commit yalniz diskte) ve Dockerfile da yoktu. Kullanici onayiyla
+**private** GitHub deposu acildi (gonderim oncesi tum gecmis gitleaks ile tarandi; tek bulgu bir
+birim testindeki sahte deger — yanlis alarm). Imajlar GitHub Actions'ta derlenip ghcr'ye
+gonderiliyor, sunucu `read:packages` yetkili dar bir token ile cekiyor.
+
+**API imaji iki kez 33'er dakika SESSIZCE asildi.** Yerelde tekrar uretilerek bulundu:
+`COPY . .` sonrasi pnpm workspace'i tutarsiz gorup (deps katmani yalniz api/shared/config
+manifestlerini kopyaliyordu) KENDILIGINDEN kurulum baslatiyor; o kurulum da
+`pnpm-workspace.yaml`'daki `fetchTimeout: 600000 x fetchRetries: 5` yuzunden BASKA
+platformlarin istege bagli ikililerinde (`@turbo/darwin-64`, `@swc/core-linux-arm...`)
+asiliyordu. Iki duzeltme: (a) tum manifestler deps katmaninda kopyalanir → kurulum hic
+tetiklenmez; (b) `supportedArchitectures` linux/x64'e kisitlanir, `COPY`'den SONRA da tekrar
+uygulanir (COPY dosyayi orijinal haliyle geri yaziyordu). Kurulum 33+ dk → 1 dk 43 sn.
+
+**Ders:** CI'ya gondermeden once yerelde dogrula. Bu turda kendi uc hatam (cok satirli `RUN`,
+YAML'de cift anahtar, `grep`'e verilen tamponlanmis cikti) fazladan tur yaktirdi.
+
+### 5) Yayin (Adim 4-5)
+
+`https://89.168.125.160.sslip.io` — Caddy + Let's Encrypt (16.10.2026'ya kadar). Panel ve API
+**ayni kokende**: Caddy `/v1`'i API'ye, kalanini panele yonlendirir → httpOnly cookie (kural #9)
+capraz-koken sorunu yok, CORS gerekmiyor. Coolify KULLANILMADI (tek basina ~1 GB yer).
+
+Dogrulandi: `/v1/health` 200 · `/giris` 200 · yetkisiz `/v1/buyers` **401** · HSTS/X-Frame/
+nosniff/Referrer-Policy yerinde · tum Prisma migrasyonlari uygulandi.
+
+### 6) Yedek + restore provasi (Adim 7) — MEKANIZMA TAMAM
+
+`pg_dump | age` → sifreli; **duz metin diske hic yazilmaz**. Gece 03:15 UTC cron, 30 gun
+retention, ikinci makineye kopya. **Restore provasi GECTI**: ayri bir DB'ye geri yuklendi,
+30 tablo + `transactions_ledger_covering_idx` + 6 migrasyon dogrulandi.
+
+**`cron` paketi kurulu DEGILDI** — zamanlanmis gorev dosyasi duruyordu ama calistiracak servis
+yoktu, sessizce hic calismayacakti. Kuruldu ve gecici bir test kaydiyla gercekten tetiklendigi
+kanitlandi.
+
+**KALAN IKI EKSIK (§11.6 tam kapanmadi):**
+
+1. **age OZEL ANAHTARI hala yalnizca db sunucusunda.** Sunucu kaybolursa yedeklerin hicbiri
+   cozulemez. Kullanici parola yoneticisine almali — `MASTER_ENCRYPTION_KEY` ile ayni onemde.
+2. **Gercek dis konum yok.** Kopya ayni saglayicinin ikinci makinesinde; Oracle hesabi kapanirsa
+   ikisi de gider. R2 icin Cloudflare hesabi bekleniyor.
+
+### Maliyet
+
+**0 TL.** Iki ucretsiz Oracle sunucusu + GitHub Actions ucretsiz katman + Let's Encrypt.
+Kullanicinin "satis yapmadan yatirim baglamak istemiyorum" kisiti karsilandi.
+
+### Sonraki adim
+
+Adim 6 (Sentry DSN) · R2 dis konum · **prod veritabani BOS** — giris icin once satici ve
+yonetici hesabi olusturulmali (seed verisi test amacli, prod'a konmaz).
+
+---
+
 ## 2026-07-18 · Sekme donmasi (gercek hata bulundu) + logo kalitesi + mobil giris ekrani
 
 Kullanici: "sekmeler arasi dolasirken cok donuyor · giris ekraninda logo cok kotu duruyor ·
