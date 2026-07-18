@@ -1,6 +1,6 @@
 /** §12 — UI metinleri sozlukte. */
 export const tr = {
-  app: { name: 'CariNet' },
+  app: { name: 'CariNet', tagline: 'B2B cari hesap platformu' },
   login: {
     title: 'Giris Yap',
     subtitle: 'Cari hesabinizi goruntuleyin',
@@ -10,6 +10,11 @@ export const tr = {
     submit: 'Giris yap',
     submitting: 'Giris yapiliyor...',
     error: 'Giris yapilamadi.',
+    // Marka alani metni. Panelinki SATICIYA seslenir ("Alicilariniz..."); mobil uygulamayi
+    // ALICI kullanir, o yuzden ayni cumle buraya kopyalanmaz.
+    pitch: 'Bakiyeniz ve ekstreniz cebinizde.',
+    pitchSub: 'Borcunuzu aninda gorun, faturayi inceleyin, odemenizi uygulamadan yapin.',
+    privacy: 'Gizlilik ve KVKK',
   },
   home: {
     greeting: 'Merhaba',

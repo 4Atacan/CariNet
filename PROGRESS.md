@@ -7,6 +7,74 @@
 
 ---
 
+## 2026-07-18 · Sekme donmasi (gercek hata bulundu) + logo kalitesi + mobil giris ekrani
+
+Kullanici: "sekmeler arasi dolasirken cok donuyor · giris ekraninda logo cok kotu duruyor ·
+mobilden girerkende webteki gibi giris ekrani olustur". Oracle retry beklerken yapildi.
+
+### 1) Sekme gecisleri — IKI AYRI SORUN cikti
+
+**(a) Gercek hata: paylasilan `queryKey`, iki farkli sekil.** `['buyers','all']` anahtarini DORT
+sayfa kullaniyor; faturalar/hareketler/tahsilat `apiGetPaged` ile `{data,meta}` yaziyor, **raporlar
+`apiGet` ile duz dizi** yaziyordu. Onbellek paylasildigi icin hangi sayfa once acildiysa o kazaniyor:
+Faturalar → Raporlar gecisinde Raporlar `{data,meta}` bulup `.map` cagiriyor → **sayfa cokuyor**
+(`.map is not a function`). Ters yonde sessizce bosaliyor. Tek sayfa acikken GORUNMEZ; yalnizca
+sekme gezerken cikar — bu yuzden bugune kadar fark edilmemis. Raporlar `apiGetPaged`'e cevrildi.
+Tum panel tarandi: baska sekil catismasi yok (0). Kural CLAUDE.md §12'ye yazildi.
+
+**(b) Donmanin kendisi dev sunucusu — urun hatasi DEGIL.** Olculdu (ayni anda, ayni makinede):
+
+| Rota     | Uretim (`next start`) | Dev (`next dev`) |
+| -------- | --------------------- | ---------------- |
+| cariler  | **9ms**               | 7.175s           |
+| tahsilat | **8ms**               | 1.525s           |
+| urunler  | **8ms**               | 1.390s           |
+| raporlar | **7ms**               | 0.427s           |
+
+Tarayicida uzun gorev (longtask) olcumu 59/140/69ms — yani ana is parcacigi **donmuyor**, beklenen
+sey sunucu. Next dev her rotayi ilk ziyarette derliyor (ikinci ziyaret 0.15-0.34s). Uretim
+derlemesinde sorun yok. **VARSAYIM:** kullanicinin sikayeti dev ortaminda; prod'da tekrar sorulmali.
+
+### 2) Logo kalitesi — ters logo bozukmus
+
+Ters varyant esikle boyanmisti: ic pikseller beyaza donmus, **anti-aliasing kenarlari lacivert
+kalmis** → harfler dolu beyaz degil, **ici bos cerceve** gibi goruniyordu (lacivert zeminde cok
+belirgin). Tum marka PNG'leri kaynaktan yeniden uretildi: her piksel _(beyaz zemin + marka rengi)_
+karisimi olarak cozulup **kapsam (alpha) ile renk AYRI** yaziliyor; ters varyantta yalniz renk
+degisiyor, kenar yumusakligi korunuyor. Kaynagin beyazi tam 255 degil (~12/255 gurultu) → alpha
+tabani kesilmezse zemin hayalet sis kaliyor, icerik siniri tum goruntu cikiyordu; taban kesildi.
+`carinet-logo@2x.png` silindi (kaynakta o cozunurluk yok, sahte upscale). Logolara `unoptimized`
+eklendi (WebP yeniden kodlamasi kenarlari yumusatiyordu).
+
+### 3) Giris ekranlari
+
+**Panel:** marka alani `hidden lg:flex` idi → **1024px altinda tamamen kayboluyordu**; 972px'lik
+siradan bir dizustu ekraninda giris ekrani markasiz, ortada kucuk bir logo ile goruluyordu (kullanicinin
+"kotu duruyor" dedigi sey buydu). Esik 900px'e cekildi ve dar ekranda marka **ust banda** donusuyor —
+hicbir genislikte kaybolmuyor. Logo `self-start` aldi (sutun-flex'te cocuk capraz eksende gerilir,
+`w-auto` engellemez → logo bandin tamamina yayiliyordu; ilk denemede tam olarak bu oldu).
+
+**Mobil:** duz "CariNet" yazisi yerine panelle ayni dil — lacivert marka bandi + ters logo + altin sac
+cizgisi + pitch, altinda beyaz form (`KeyboardAvoidingView` + `ScrollView`). Pitch metni **alici
+bakisiyla** yazildi; panelinki saticiya sesleniyor ("Alicilariniz..."), kopyalanmadi.
+
+### Dogrulama
+
+- Panel tarayicida gozle dogrulandi: giris (dar + genis), cokme dizisi Faturalar→Raporlar artik
+  calisiyor (cari secici 4 secenek dolu).
+- `pnpm --filter panel typecheck|lint`, `pnpm --filter mobile typecheck|lint` temiz.
+- API'de degisiklik yok → e2e paketi bu blokta calistirilmadi.
+- **VARSAYIM (devam):** mobil giris ekrani hala GOZLE DOGRULANMADI. Expo web onizlemesi
+  `react-native-web` istiyor; sirf onizleme icin mobil bagimlilik agacina paket eklenmedi
+  (17.07'de eklenip geri alinmisti). Ilk cihaz calistirmasinda bakilmali.
+
+### Sonraki adim
+
+Oracle ARM kapasitesi (uc AD'de de dolu). Docker Desktop kapaliydi → retry konteyneri hic
+calismiyormus; `--restart unless-stopped` ile yeniden kuruldu.
+
+---
+
 ## 2026-07-17 · Marka kimligi + tasarim sistemi + mobil navigasyon
 
 Kullanici `carinet_logo.PNG` ekledi: "logoyu butun tasarima uyarla, renkleri logodan al, AI yapmis

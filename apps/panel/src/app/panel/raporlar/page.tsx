@@ -16,7 +16,7 @@ import {
 import { sum, type MoneyString } from '@carinet/shared';
 import { DataTable } from '@/components/data-table';
 import { Badge, Button, Card, PageHeader, Select, Stat } from '@/components/ui';
-import { apiGet, qs } from '@/lib/api';
+import { apiGet, apiGetPaged, qs } from '@/lib/api';
 import { downloadExcel } from '@/lib/export';
 import { tr } from '@/lib/tr';
 import { type BuyerWithBalance } from '@/lib/types';
@@ -49,9 +49,12 @@ export default function ReportsPage() {
     queryFn: () => apiGet<RiskRow[]>('/reports/risk'),
   });
 
+  // ['buyers','all'] anahtarini faturalar/hareketler/tahsilat da kullanir ve HEPSI apiGetPaged
+  // ile {data,meta} yazar. Burasi apiGet ile duz dizi yaziyordu: ayni anahtar, iki farkli sekil.
+  // Faturalar'dan gelindiginde onbellekte {data,meta} bulunup .map cagriliyor → sayfa cokuyordu.
   const buyers = useQuery({
     queryKey: ['buyers', 'all'],
-    queryFn: () => apiGet<BuyerWithBalance[]>('/buyers?limit=100'),
+    queryFn: () => apiGetPaged<BuyerWithBalance>('/buyers?limit=100'),
   });
 
   const periodic = useQuery({
@@ -156,7 +159,7 @@ export default function ReportsPage() {
           <div className="w-64">
             <Select value={accountId} onChange={(e) => setAccountId(e.target.value)}>
               <option value="">{tr.reports.allAccounts}</option>
-              {(buyers.data ?? []).map((b) => (
+              {(buyers.data?.data ?? []).map((b) => (
                 <option key={b.id} value={b.id}>
                   {b.accountCode} · {b.title}
                 </option>

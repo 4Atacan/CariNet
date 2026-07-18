@@ -87,9 +87,10 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
           <Image
             src="/brand/carinet-logo.png"
             alt={tr.app.name}
-            width={383}
-            height={96}
+            width={933}
+            height={234}
             priority
+            unoptimized
             className="h-6 w-auto"
           />
         </div>
