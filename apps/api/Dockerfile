@@ -21,9 +21,13 @@ RUN pnpm install --frozen-lockfile
 # --- derleme -----------------------------------------------------------------
 FROM deps AS build
 COPY . .
-RUN pnpm --filter @carinet/shared build \
- && pnpm --filter api exec prisma generate \
- && pnpm --filter api build
+# Adimlar AYRI: tek RUN'da birlestirildiginde hangisinin astigi gorunmuyordu
+# (ilk denemede 33 dk sifir cikti). Ayri katman = ayri log + ayri onbellek.
+RUN pnpm --filter @carinet/shared build
+# Prisma motorlarini indirirken sessizce bekleyebiliyor → gorunur log + ust sinir.
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+RUN timeout 600 pnpm --filter api exec prisma generate
+RUN timeout 900 pnpm --filter api build
 
 # --- calisma -----------------------------------------------------------------
 FROM base AS runner
