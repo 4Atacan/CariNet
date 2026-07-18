@@ -8,7 +8,11 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+# TUM workspace manifestleri kopyalanir (mobil .dockerignore'da). Eksik birakilirsa
+# `COPY . .` sonrasi pnpm workspace'i tutarsiz gorup KENDILIGINDEN kurulum baslatiyor;
+# ilk denemelerde asilan sey buydu.
 COPY apps/panel/package.json      apps/panel/
+COPY apps/api/package.json        apps/api/
 COPY packages/shared/package.json packages/shared/
 COPY packages/config/package.json packages/config/
 # --- Docker'a ozel kurulum ayarlari -------------------------------------------
@@ -25,6 +29,10 @@ RUN pnpm install --frozen-lockfile
 
 FROM deps AS build
 COPY . .
+# COPY . . az once pnpm-workspace.yaml'i ORIJINAL haliyle geri yazdi ve mimari
+# kisitini sildi; sonraki pnpm komutu tum workspace'i yeniden kurmaya kalkip
+# yine baska platformlarin ikililerinde asiliyordu. Kisiti kopyadan SONRA tekrar uygula.
+RUN printf '\nsupportedArchitectures:\n  os: [linux]\n  cpu: [x64]\n  libc: [glibc]\n' >> pnpm-workspace.yaml
 # API adresi derleme aninda gomulur (NEXT_PUBLIC_*), calisma aninda degistirilemez.
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
