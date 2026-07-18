@@ -16,6 +16,16 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/api/package.json        apps/api/
 COPY packages/shared/package.json packages/shared/
 COPY packages/config/package.json packages/config/
+# --- Docker'a ozel kurulum ayarlari -------------------------------------------
+# pnpm-workspace.yaml'daki fetchTimeout=600000 x fetchRetries=5 Expo'nun buyuk
+# tarball'lari icin konmus. Imaj icinde ters teper: pnpm, BASKA platformlarin
+# istege bagli ikililerini (@turbo/darwin-64, @swc/core-linux-arm...) indirmeye
+# calisip her birinde 10 dakikaya kadar asiliyor — ilk denemede 33 dk sessiz bekleme.
+# Kurulumu bu imajin mimarisine kisitla; o paketler artik hic istenmez.
+# YALNIZ supportedArchitectures eklenir — fetchTimeout/fetchRetries dosyada ZATEN var,
+# ikinci kez yazilinca YAML "duplicated mapping key" verip kurulumu kiriyor.
+# Yerel gelistirme etkilenmez; degisiklik yalnizca imaj icindeki kopyaya yazilir.
+RUN printf '\nsupportedArchitectures:\n  os: [linux]\n  cpu: [x64]\n  libc: [glibc]\n' >> pnpm-workspace.yaml
 RUN pnpm install --frozen-lockfile
 
 # --- derleme -----------------------------------------------------------------
