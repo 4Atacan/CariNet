@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@c915c33a16f01166c17c4e35fe1d4085a2d71adb # v4
       - name: ZAP Baseline
-        uses: zaproxy/action-baseline@906a3c93ffde4864839d31a93daadcbd2737b4da # v0.12.0
+        uses: zaproxy/action-baseline@66042c8e7e24680119199a017e5b0e8603bf4dae # v0.12.0
         with:
           target: ${{ github.event.inputs.target || vars.STAGING_URL }}
           # Baseline pasif taramadir; bulgular bilgilendiricidir, PR/deploy'u bloke etmez.
