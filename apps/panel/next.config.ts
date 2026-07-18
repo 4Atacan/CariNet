@@ -4,6 +4,9 @@ import { withSentryConfig } from '@sentry/nextjs';
 const config: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@carinet/shared'],
+  // Uretim sunucusu 954 MB RAM. Standalone cikti, calismak icin gereken node_modules'u
+  // kendi icine kopyalar → tam node_modules tasimaya gerek kalmaz, ayak izi ~200 MB'a duser.
+  output: 'standalone',
   // §11.2 — siki guvenlik basliklari (CSP Faz 5'te sertlestirilir).
   async headers() {
     return [

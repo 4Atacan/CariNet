@@ -1,0 +1,46 @@
+# CariNet API — NestJS + Prisma.
+# Alpine DEGIL Debian slim: argon2 (kural #11 parola hashi) ve Prisma motoru musl'da
+# ek ugras cikariyor; glibc tabanli imaj bu sinifi tamamen ortadan kaldiriyor.
+FROM node:22-bookworm-slim AS base
+ENV PNPM_HOME=/pnpm PATH=$PNPM_HOME:$PATH
+RUN corepack enable && apt-get update -qq \
+ && apt-get install -y -qq --no-install-recommends openssl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+# --- bagimliliklar -----------------------------------------------------------
+# Once yalniz manifestler kopyalanir: kaynak degistiginde bu katman yeniden
+# calismaz, kurulum onbellekten gelir.
+FROM base AS deps
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY apps/api/package.json        apps/api/
+COPY packages/shared/package.json packages/shared/
+COPY packages/config/package.json packages/config/
+RUN pnpm install --frozen-lockfile
+
+# --- derleme -----------------------------------------------------------------
+FROM deps AS build
+COPY . .
+RUN pnpm --filter @carinet/shared build \
+ && pnpm --filter api exec prisma generate \
+ && pnpm --filter api build
+
+# --- calisma -----------------------------------------------------------------
+FROM base AS runner
+ENV NODE_ENV=production
+# node_modules budanmadan tasiniyor. pnpm workspace + hoisted linker'da uretim
+# budamasi Prisma'nin uretilmis istemcisini (node_modules/.prisma) koparabiliyor;
+# 48 GB diskte birkac yuz MB'lik fazlalik, sessizce bozulan bir imajdan iyidir.
+COPY --from=build /app/node_modules          ./node_modules
+COPY --from=build /app/packages/shared/dist  ./packages/shared/dist
+COPY --from=build /app/packages/shared/package.json ./packages/shared/
+COPY --from=build /app/apps/api/dist         ./apps/api/dist
+COPY --from=build /app/apps/api/prisma       ./apps/api/prisma
+COPY --from=build /app/apps/api/node_modules ./apps/api/node_modules
+COPY --from=build /app/apps/api/package.json ./apps/api/
+
+# §11.4 — konteyner root olarak calismaz.
+USER node
+WORKDIR /app/apps/api
+EXPOSE 3001
+CMD ["node", "dist/main.js"]

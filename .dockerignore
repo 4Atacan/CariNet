@@ -1,0 +1,15 @@
+node_modules
+**/node_modules
+**/dist
+**/.next
+**/.expo
+**/coverage
+graphify-out
+docs/graph
+.git
+.github
+*.log
+.env
+.env.*
+!.env.example
+apps/mobile
