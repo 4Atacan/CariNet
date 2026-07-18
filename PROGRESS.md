@@ -68,6 +68,16 @@ bakisiyla** yazildi; panelinki saticiya sesleniyor ("Alicilariniz..."), kopyalan
   `react-native-web` istiyor; sirf onizleme icin mobil bagimlilik agacina paket eklenmedi
   (17.07'de eklenip geri alinmisti). Ilk cihaz calistirmasinda bakilmali.
 
+### Hata: dev sunucusu ayaktayken uretim derlemesi alindi
+
+Uretim/dev karsilastirmasini yaparken `rm -rf .next && next build` calistirildi — **ama panel dev
+sunucusu o sirada ayaktaydi.** `next dev` ve `next build` AYNI `.next` klasorunu kullanir; derlenmis
+CSS altindan cekilince site ciplak HTML'e dustu ve kullanici "tasarim komple gitmis" diye bildirdi.
+Kodla ilgisi yoktu. Cozum: her iki sunucuyu durdur → `.next` sil → dev'i sifirdan baslat.
+
+**Kural: dev sunucusu ayaktayken ayni uygulamada `build` calistirma.** Uretim olcumu gerekiyorsa once
+dev'i durdur, olc, sonra dev'i temiz baslat.
+
 ### Sonraki adim
 
 Oracle ARM kapasitesi (uc AD'de de dolu). Docker Desktop kapaliydi → retry konteyneri hic
