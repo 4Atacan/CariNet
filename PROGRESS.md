@@ -7,6 +7,49 @@
 
 ---
 
+## 2026-07-19 · Ilk yonetici hesabi + UC ONBOARDING EKSIGI bulundu
+
+### Yapilan
+
+**Ilk satici + SELLER_ADMIN prod'da acildi** (`CariNet Test`, slug `test`, sellerNo 1).
+Tohumlama betigi tek transaction icinde satici + kullanici + uyelik yaziyor; parola argon2id,
+TOTP anahtari HAZIR uretiliyor, 8 yedek kurtarma kodu sha256'li saklaniyor. Sirlar stdout'a
+basilmadi — sunucuda 600 izinli dosyaya yazildi, kullanici parola yoneticisine alip sildi.
+
+**Giris uctan uca dogrulandi** (sunucu icinde, sirlar disari cikmadan):
+
+| Senaryo        | Sonuc                                      |
+| -------------- | ------------------------------------------ |
+| 2FA'siz giris  | 401 `TOTP_REQUIRED` — kural #11 calisiyor  |
+| Dogru TOTP ile | 200, rol=SELLER_ADMIN, satici=CariNet Test |
+| Yanlis parola  | 401 `INVALID_CREDENTIALS`                  |
+
+Parola degistirildi (19.07 11:30 UTC); 3 eski oturum iptal, kimlik dosyasi shred edildi.
+
+### UC EKSIK (pilot oncesi kapanmali — §13 Faz 5'e yazildi)
+
+**1. Onboarding kilidi — tavuk/yumurta.** Prod'da yeni SELLER_ADMIN **kendi basina giris
+yapamaz**: `verifySecondFactor` 2FA'siz girisi engelliyor (kural #11, dogru davranis), ama
+`/auth/2fa/setup` ucu `@CurrentUser()` ile GIRIS YAPMIS olmayi istiyor. Ilk hesap 2FA'si hazir
+sekilde tohumlanarak asildi, ama **her yeni satici icin bu el isi tekrarlanamaz.** Kalici cozum:
+davet/ilk-giris akisi — tek kullanimlik token ile parola belirleme + 2FA kurulumu.
+
+**2. Parola degistirme ucu YOK.** Kodda hic yok (`ayarlar` sayfasindaki parola alanlari POS
+anahtarlari icin). Bu blokta sunucu betigiyle degistirildi; urun davranisi olamaz.
+
+**3. "Sifremi unuttum" prod'da calismiyor.** Uc var, posta gonderimi yok: SMTP varsayilani
+Mailpit (yerel gelistirme araci), `RESEND_API_KEY` tanimsiz. Bir satici parolasini unutursa
+caresiz kalir — ustelik 2FA zorunlu oldugu icin baska kapi da yok. Cozum ucretsiz: Resend (§2).
+
+**VARSAYIM:** Uc madde de kod isi; sunucu/hesap gerektirmiyor (Resend haric). Pilot musteri
+gelmeden once yapilmali, yoksa her satici icin SSH ile elle mudahale gerekir.
+
+### Sonraki adim
+
+Yedek dis konumu (R2 → Cloudflare hesabi) · Sentry DSN · yukaridaki uc onboarding eksigi.
+
+---
+
 ## 2026-07-18 (aksam) · PROD YAYINDA — Faz 5 ops adimlari 1-5 ve 7 (yedek)
 
 Kullanici Oracle'i beklemek yerine baska sunucu ariyordu; Turhost teklifi (2 vCPU/4GB icin
