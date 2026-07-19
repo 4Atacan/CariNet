@@ -7,6 +7,86 @@
 
 ---
 
+## 2026-07-19 (aksam) · Onboarding kilidi ACILDI + bir GUVENLIK ACIGI + font yerellestirildi
+
+Kullanici "1'den basla" dedi (uc onboarding eksiginin ilki). Sirasiyla: davet akisi yazildi,
+platform admini olusturulurken bir kural #11 acigi bulundu, panel derlemesini asan sey teshis
+edildi.
+
+### 1) Satici yoneticisi daveti (onboarding kilidi)
+
+**Kilit:** prod'da SELLER_ADMIN 2FA'siz giremez (kural #11) ama `/auth/2fa/setup` giris yapmis
+olmayi ister → yeni yonetici asla iceri giremez. Ilk hesap elle tohumlanarak asilmisti; her
+satici icin tekrarlanamazdi.
+
+**Cozum — kritik tasarim karari:** aday TOTP anahtari DAVET SATIRINDA bekler, kullanici kaydi
+ancak kod dogrulandiktan SONRA acilir. Boylece 2FA'siz bir SELLER_ADMIN **hicbir an var olmaz** —
+sonradan 2FA kurdurmaktan daha guclu bir garanti.
+
+- Sema: `Invite.buyerAccountId` nullable + `role` + `totpPendingSecret`; **DB'de CHECK** ile
+  "ikisinden tam olarak biri dolu" zorlanir (Prisma ifade edemez). Alici ucu satici davetini
+  reddeder — turler karisamaz.
+- Uclar: `POST /auth/seller-invites` (PLATFORM_ADMIN) · `seller-invite/start` · `.../complete`
+  (ikisi public + throttle'li) · **`POST /auth/change-password`** (hic yoktu).
+- Panel: `/davet/[token]` — parola belirle → anahtar → kod → yedek kodlar.
+- Test: `seller-invite.e2e-spec.ts` 9 test (tek kullanimlik, sure dolmasi, yanlis kod hesabi
+  ACMAZ, tur karismaz, parola degistirme).
+
+### 2) GUVENLIK ACIGI: uyeliksiz PLATFORM_ADMIN 2FA'siz girebiliyordu
+
+Platform admini olusturmadan once fark edildi. `login`, 2FA zorunlulugunu **uyelik** rolunden
+cozuyordu: `active?.role ?? BUYER_USER`. Platform admininin uyeligi OLMAZ → rol BUYER_USER'a
+duser → `TWO_FA_ROLES` eslesmez → **kontrol hic calismaz**. Yani TOTP'si olmayan bir platform
+admini prod'da yalniz parolayla girebilirdi. `toPayload` ayni durumu zaten dogru cozuyordu;
+iki yer ayni soruya farkli cevap veriyordu. Kontrol artik ayni mantigi kullaniyor.
+
+**Test tarafinda kendi hatam:** ilk yazdigim e2e testi duzeltme GERI ALINDIGINDA DA gecti —
+hicbir sey kanitlamiyordu. Sebep: test kullanicisinin zaten TOTP'si vardi, 401 "bu kullanici kod
+vermeli" dalindan geliyordu; ustelik kural dali yalniz `NODE_ENV=production`'da calisiyor.
+Izole birim testine tasindi (`two-factor-enforcement.spec.ts`) ve **mutasyonla dogrulandi**.
+E2e dosyasinin basina neyi test ETMEDIGI yazildi — sahte guven vermesin.
+
+**Ders:** "test gecti" ile "test calisiyor" ayni sey degil. Guvenlik testleri mutasyonla
+dogrulanmali.
+
+### 3) Panel derlemesini asan sey: `next/font/google`
+
+Panel derlemesi CI'da iki kez 30 dk zaman asimina dustu, SIFIR cikti ile. Adimlar ayrilinca yeri
+gorundu: `shared` 48 sn'de bitiyor, `next build` 28 dk sessiz bekliyor. Sebep: `next/font/google`
+fontu **derleme aninda** Google'dan indiriyor; ag takilinca build sessizce bekliyor.
+
+Font depoya alindi (`apps/panel/public/fonts`, OFL-1.1 + lisans dosyasi). `next/font/local`
+DEGIL duz `@font-face`: latin ve latin-ext alt kumeleri AYRIK ve her biri kendi `unicode-range`'i
+ile tanimlanmali; `next/font/local` bunu dosya basina ifade edemiyor. Turkce ikisine yayilir
+(`ı` latin'de, `ğ ş İ Ğ Ş` latin-ext'te) — biri atlansa bazi harfler yedek fonta duserdi.
+
+Yerel derleme: asiliyordu → **31 saniye**. CI: iki basarisiz → **basarili**.
+
+### 4) Prod durumu
+
+- `carinetnoktacom@gmail.com` **saf platform adminine** cevrildi (satici uyeligi kaldirildi,
+  `is_platform_admin=true`, 2FA duruyor). Neden uyelik kaldirildi: `pickMembership` uyelik varsa
+  HER ZAMAN uyelik rolunu verir → uyelik dururken PLATFORM_ADMIN rolu jetona hic yansimaz.
+  Seed'deki platform admini de uyeliksiz — tasarim bu.
+- Degisiklik oncesi **yedek alindi** (`carinet-20260719T145002Z`), acik oturumlar dusuruldu.
+- Migration prod'a uygulandi; yeni API + panel imajlari dagitildi.
+- `CariNet Test` icin **davet uretildi** (48 saat, `/opt/carinet/davet.txt`, 600).
+- Dogrulandi: font dosyalari 200 · `/davet/<token>` 200 · `/giris` 200 · `/v1/health` 200.
+
+Testler: birim 22, **e2e 161** (onceki 149).
+
+### Kalan eksikler
+
+1. **Davet uretme ARAYUZU yok** — uc hazir, panelde ekran yok; davet elle uretildi.
+2. **Parola degistirme ARAYUZU yok** — uc ve testleri hazir, ekran yok.
+3. **"Sifremi unuttum" prod'da calismiyor** — posta gonderimi yapilandirilmamis (Resend).
+4. **QR kodu yok** — kurulum anahtari elle giriliyor. QR kutuphanesi kurulumu bu makinede
+   surekli basarisiz (`archiver-utils`, OneDrive/pnpm cakismasi); beyan edilmemis dolayli
+   bagimliliga yaslanmak ilk lockfile degisiminde kirilirdi.
+5. Yedegin **gercek dis konumu** ve **Sentry DSN** hala bekliyor.
+
+---
+
 ## 2026-07-19 · Ilk yonetici hesabi + UC ONBOARDING EKSIGI bulundu
 
 ### Yapilan
