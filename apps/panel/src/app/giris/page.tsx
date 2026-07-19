@@ -22,9 +22,12 @@ export default function LoginPage() {
   const onSubmit = handleSubmit(async (values) => {
     setServerError(null);
     try {
-      await apiPost<LoginResponse>('/auth/login', values);
+      const res = await apiPost<LoginResponse>('/auth/login', values);
       // Tokenlar httpOnly cookie olarak dondu (kural #9) — JS'te saklamiyoruz.
-      router.push('/panel');
+      // Platform admininin satici uyeligi YOKTUR (§6.2) → /panel onun icin bos bir kabuk
+      // olurdu; kendi yonetim alanina gonderilir.
+      const isSeller = res.memberships.some((m) => m.kind === 'SELLER');
+      router.push(res.user.role === 'PLATFORM_ADMIN' && !isSeller ? '/yonetim' : '/panel');
       router.refresh();
     } catch (error) {
       setServerError(error instanceof ApiError ? error.message : tr.login.genericError);

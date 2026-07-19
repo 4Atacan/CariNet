@@ -22,6 +22,7 @@ import { BuyersModule } from './modules/buyers/buyers.module';
 import { CampaignsModule } from './modules/campaigns/campaigns.module';
 import { CollectionsModule } from './modules/collections/collections.module';
 import { ExchangeRatesModule } from './modules/exchange-rates/exchange-rates.module';
+import { PlatformModule } from './modules/platform/platform.module';
 import { ExportsModule } from './modules/exports/exports.module';
 import { ImportsModule } from './modules/imports/imports.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
@@ -65,6 +66,7 @@ import { HealthController } from './modules/health/health.controller';
     ExchangeRatesModule,
     RequestsModule,
     ExportsModule,
+    PlatformModule,
   ],
   controllers: [HealthController],
   providers: [

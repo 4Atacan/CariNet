@@ -6,6 +6,7 @@ import {
   BarChart3,
   Coins,
   FileText,
+  KeyRound,
   LayoutDashboard,
   LogOut,
   MessageSquare,
@@ -157,6 +158,15 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             </span>
             <p className="truncate text-xs font-medium text-ink-700">{me.data?.fullName ?? '—'}</p>
           </div>
+          {/* Hesap ayarlari /panel DISINDA: platform admini de kullanir, o ise tenant
+              baglami tasimaz (§6.2). */}
+          <Link
+            href="/hesap"
+            className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-ink-100 hover:text-navy-900"
+          >
+            <KeyRound size={16} className="shrink-0" />
+            {tr.password.title}
+          </Link>
           <button
             onClick={() => logout.mutate()}
             className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-debit-soft hover:text-debit"

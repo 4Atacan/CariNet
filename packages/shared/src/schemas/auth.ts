@@ -146,6 +146,23 @@ export const completeSellerInviteSchema = z.object({
 });
 export type CompleteSellerInviteInput = z.infer<typeof completeSellerInviteSchema>;
 
+/** Platform yonetimi (PLATFORM_ADMIN) — satici kokunu olusturur. */
+export const createSellerSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  /** Misafir odeme adresinde gorunur (§8: pay/{sellerSlug}) → kisa, kucuk harf, tireli. */
+  slug: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(2)
+    .max(40)
+    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'Yalniz kucuk harf, rakam ve tire kullanin'),
+});
+export type CreateSellerInput = z.infer<typeof createSellerSchema>;
+
+export const setSellerActiveSchema = z.object({ isActive: z.boolean() });
+export type SetSellerActiveInput = z.infer<typeof setSellerActiveSchema>;
+
 /** Oturum acikken parola degistirme (§11.1) — mevcut parola zorunlu. */
 export const changePasswordSchema = z.object({
   currentPassword: z.string().min(1),
