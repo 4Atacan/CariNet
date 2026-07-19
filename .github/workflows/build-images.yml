@@ -64,5 +64,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ steps.owner.outputs.lc }}/carinet-${{ matrix.app }}:latest
             ${{ env.REGISTRY }}/${{ steps.owner.outputs.lc }}/carinet-${{ matrix.app }}:${{ github.sha }}
+          # mode=max tum ara katmanlari disa aktariyordu; imajlar buyuk (api ~2.2 GB) ve
+          # bu aktarim koszucuda takilip derlemeyi 30 dk zaman asimina dusurdu — ayni derleme
+          # yerelde sorunsuz bitiyor. mode=min yalniz son katmani yazar.
           cache-from: type=gha,scope=${{ matrix.app }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.app }}
+          cache-to: type=gha,mode=min,scope=${{ matrix.app }}
