@@ -37,7 +37,12 @@ RUN printf '\nsupportedArchitectures:\n  os: [linux]\n  cpu: [x64]\n  libc: [gli
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN pnpm --filter @carinet/shared build && pnpm --filter panel build
+# Adimlar AYRI: birlestirildiginde hangisinin astigi gorunmuyordu (panel derlemesi iki kez
+# 28 dk sifir cikti verdi). Ayri katman = ayri log + ayri onbellek.
+RUN pnpm --filter @carinet/shared build
+# next/font/google fontu DERLEME ANINDA indirir; agda takilirsa build sessizce bekler.
+# Ust sinir koyuldu ki asilma, yerini belli eden bir hataya donussun.
+RUN timeout 900 pnpm --filter panel build
 
 FROM base AS runner
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
