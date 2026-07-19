@@ -7,6 +7,67 @@
 
 ---
 
+## 2026-07-20 · Eksik arayuzler + platform modulu + CI/dagitim gerilemesi
+
+Kullanici "eksik arayuzleri yaz" dedi. Davet akisi vardi ama TETIKLEYECEK bir sey yoktu:
+davet uretmek PLATFORM_ADMIN ister, ustelik satici OLUSTURMA ucu de yoktu — ilk davet
+dogrudan veritabanina yazilmisti.
+
+### 1) Platform modulu (yeni)
+
+`GET/POST /v1/platform/sellers` · `PATCH .../active` · `GET .../invites`.
+
+**Kural #3 siniri — bilincli tasarim:** `platform.repository.ts` tenant filtresinin BILEREK
+atlandigi TEK yer (`runAsSystem`), cunku platform admininin uyeligi yoktur. Tam da bu yuzden
+kapsam SATICI KOKU ile sinirli: liste / olustur / aktiflik / bekleyen davetler. Tenant ICI
+veriye (cari, hareket, fatura) buradan erisim YOK — o kapi acilsa izolasyon tek bir rolun
+arkasinda erirdi. Repository'nin basina bu gerekce yazildi.
+
+Testlerde asil onemli olanlar OLUMSUZ olanlar: satici admini ve alici → **403**, oturumsuz →
+**401**, satici admini davet **uretemez**. e2e 161 → **170**.
+
+### 2) Arayuzler
+
+- **`/yonetim`** — platform admini alani: satici listesi (uye/cari sayilariyla), yeni satici,
+  tek tikla yonetici daveti (baglanti bir kez gosterilir), aktif/pasif.
+- **`/hesap`** — parola degistirme; her oturum sahibi icin.
+- Giris artik role gore yonlendiriyor: platform admini `/yonetim`, satici `/panel`.
+
+**Neden `/panel` altinda degiller:** o duzen tenant baglami bekler, platform admininin uyeligi
+yoktur (§6.2). `/panel`'e konsaydi platform admini bos bir kabuk gorurdu.
+
+### 3) CI'da dagitim GERILEDI — durum acikca kaydedilsin
+
+Imaj derlemesi CI'da uc kez ust uste 30 dk zaman asimina dustu. Onemli bir teshis hatasi
+yaptim ve duzelttim: BuildKit cikti tamponluyor, **son gorunen satir takilan adim degil BITEN
+adim.** "prisma generate'te asili" diye okumustum; yerelde ayni adim **3,2 saniyede** bitti.
+
+Ayni derleme yerelde sorunsuz tamamlaniyor (api 2.25 GB, panel 518 MB). Bu yuzden imajlar
+YERELDE derlenip `docker save | ssh docker load` ile sunucuya gonderildi ve compose yerel
+imajlara cevrildi (`carinet-api:local`, `carinet-panel:local`).
+
+**Bu bir GERILEMEDIR:** dagitim artik elle. `cache-to` `mode=max` → `mode=min` yapildi (api
+imaji ~2.2 GB; tum ara katmanlarin disa aktarimi en guclu supheli), sonucu bekleniyor.
+CI duzelirse compose ghcr'ye geri alinmali.
+
+### Dogrulandi (prod)
+
+`/giris` 200 · `/yonetim` 200 · `/hesap` 200 · `/v1/platform/sellers` oturumsuz **401** ·
+`/v1/health` 200 · bellek 558/954 MB (395 MB musait).
+
+### Kalanlar — hepsi KULLANICI hesabi gerektiriyor
+
+1. **Sentry ×3 DSN** (§11.8) — kod wiring 17.07'de tamam, DSN'siz no-op.
+2. **Yedegin gercek dis konumu** (R2) — kopya su an ayni saglayicinin ikinci makinesinde;
+   Oracle hesabi kapanirsa ikisi de gider.
+3. **"Sifremi unuttum"** — posta gonderimi yok (Resend); 2FA zorunlu oldugu icin parolasini
+   unutan satici icin baska kapi da yok.
+
+Ayrica kod tarafinda kalan: **2FA kurulumunda QR yok** (kurulum anahtari elle giriliyor;
+QR kutuphanesi kurulumu bu makinede `archiver-utils` uzerinde surekli basarisiz).
+
+---
+
 ## 2026-07-19 (aksam) · Onboarding kilidi ACILDI + bir GUVENLIK ACIGI + font yerellestirildi
 
 Kullanici "1'den basla" dedi (uc onboarding eksiginin ilki). Sirasiyla: davet akisi yazildi,
