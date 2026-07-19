@@ -64,7 +64,13 @@ export class AuthService {
     const memberships = await this.listMemberships(user.id);
     const active = this.pickMembership(memberships, input.sellerCode, user.isPlatformAdmin);
 
-    await this.verifySecondFactor(user, active?.role ?? UserRole.BUYER_USER, input);
+    // Etkin rol, toPayload ile AYNI mantikla cozulur. Onceki hali `active?.role ?? BUYER_USER`
+    // idi: uyeligi olmayan bir PLATFORM_ADMIN'de `active` bos oldugu icin rol BUYER_USER'a
+    // dusuyor, TWO_FA_ROLES eslesmiyor ve 2FA kontrolu HIC calismiyordu — platform admini
+    // prod'da yalniz parolayla girebiliyordu (kural #11 ihlali).
+    const effectiveRole =
+      active?.role ?? (user.isPlatformAdmin ? UserRole.PLATFORM_ADMIN : UserRole.BUYER_USER);
+    await this.verifySecondFactor(user, effectiveRole, input);
 
     const payload = this.toPayload(user.id, active, user.isPlatformAdmin);
     const tokens = await this.tokens.issue(payload, meta);
