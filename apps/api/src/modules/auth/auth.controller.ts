@@ -20,12 +20,16 @@ import { type Env } from '../../config/env';
 import { AuthService } from './auth.service';
 import {
   AcceptInviteDto,
+  ChangePasswordDto,
+  CompleteSellerInviteDto,
   CreateInviteDto,
+  CreateSellerInviteDto,
   DeleteAccountDto,
   ForgotPasswordDto,
   LoginDto,
   RefreshDto,
   ResetPasswordDto,
+  StartSellerInviteDto,
   SwitchAccountDto,
   TwoFactorDisableDto,
   TwoFactorEnableDto,
@@ -209,6 +213,48 @@ export class AuthController {
       dto.expiresInHours,
       user.userId,
     );
+  }
+
+  // ------------------------------------------------ satici daveti (onboarding kilidi, kural #11)
+
+  @Roles(UserRole.PLATFORM_ADMIN)
+  @NoTenant()
+  @Post('seller-invites')
+  @ApiOperation({ summary: 'Satici personeli daveti uret (kabulde 2FA kurulumu zorunlu)' })
+  createSellerInvite(@CurrentUser() user: RequestUser, @Body() dto: CreateSellerInviteDto) {
+    return this.auth.createSellerInvite(dto.sellerId, dto.role, dto.expiresInHours, user.userId);
+  }
+
+  @Public()
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post('seller-invite/start')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Satici daveti 1/2: parola belirle → 2FA anahtari (hesap ACILMAZ)' })
+  startSellerInvite(@Body() dto: StartSellerInviteDto) {
+    return this.auth.startSellerInvite(dto.token, dto.password);
+  }
+
+  @Public()
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post('seller-invite/complete')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Satici daveti 2/2: kodu dogrula → hesabi ac ve giris yap' })
+  async completeSellerInvite(
+    @Body() dto: CompleteSellerInviteDto,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.auth.completeSellerInvite(dto.token, dto, this.meta(req));
+    this.setCookies(res, result.tokens);
+    return result;
+  }
+
+  @Post('change-password')
+  @HttpCode(HttpStatus.OK)
+  @NoTenant()
+  @ApiOperation({ summary: 'Parola degistir (mevcut parola zorunlu; tum oturumlar duser)' })
+  changePassword(@CurrentUser() user: RequestUser, @Body() dto: ChangePasswordDto) {
+    return this.auth.changePassword(user.userId, dto.currentPassword, dto.newPassword);
   }
 
   @Public()

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { type Prisma } from '@prisma/client';
+import { type Prisma, type SellerMemberRole } from '@prisma/client';
 import { PRISMA, type PrismaService } from '../../prisma/prisma.module';
 import { TenantContext } from '../../common/tenant/tenant-context';
 
@@ -261,6 +261,68 @@ export class AuthRepository {
         });
 
         await tx.invite.update({ where: { id: params.inviteId }, data: { usedAt: new Date() } });
+
+        return { user, membership };
+      }),
+    );
+  }
+
+  /** Satici daveti 1. adim: aday TOTP anahtarini davet satirinda beklet (kullanici HENUZ yok). */
+  setInvitePendingTotp(inviteId: string, secret: string) {
+    return this.system(() =>
+      this.prisma.invite.update({
+        where: { id: inviteId },
+        data: { totpPendingSecret: secret },
+      }),
+    );
+  }
+
+  /**
+   * Satici yoneticisi davetinin kabulu — TEK transaction.
+   * Kullanici, 2FA'si AKTIF olarak dogar; boylece 2FA'siz bir SELLER_ADMIN hicbir an var olmaz
+   * (kural #11). E-posta zaten kayitliysa yeni kullanici acilmaz, uyelik eklenir (§6.2).
+   */
+  acceptSellerInvite(params: {
+    inviteId: string;
+    sellerId: string;
+    role: SellerMemberRole;
+    totpSecret: string;
+    backupCodes: string[];
+    user: { id?: string; email: string; fullName: string; passwordHash: string };
+  }) {
+    return this.system(async () =>
+      this.prisma.$transaction(async (tx) => {
+        const user = params.user.id
+          ? await tx.user.update({
+              where: { id: params.user.id },
+              // Mevcut kullanicinin 2FA'si varsa DOKUNMA; yoksa bu davetle kur.
+              data: {
+                totpSecret: params.totpSecret,
+                totpEnabledAt: new Date(),
+                backupCodes: params.backupCodes,
+              },
+            })
+          : await tx.user.create({
+              data: {
+                email: params.user.email,
+                fullName: params.user.fullName,
+                passwordHash: params.user.passwordHash,
+                totpSecret: params.totpSecret,
+                totpEnabledAt: new Date(),
+                backupCodes: params.backupCodes,
+              },
+            });
+
+        const membership = await tx.sellerMember.upsert({
+          where: { userId_sellerId: { userId: user.id, sellerId: params.sellerId } },
+          create: { userId: user.id, sellerId: params.sellerId, role: params.role },
+          update: { role: params.role },
+        });
+
+        await tx.invite.update({
+          where: { id: params.inviteId },
+          data: { usedAt: new Date(), totpPendingSecret: null },
+        });
 
         return { user, membership };
       }),

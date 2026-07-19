@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { type SellerMemberRole } from '@prisma/client';
 import {
   AppError,
   ErrorCode,
@@ -243,9 +244,137 @@ export class AuthService {
     return { url: `/j/${seller.slug}/${token}`, token, expiresAt: expiresAt.toISOString() };
   }
 
+  /**
+   * Satici personeli daveti (§6.2). Alici davetinden ayri bir uctur cunku hedefi cari degil,
+   * SATICININ KENDISI; kabul akisi da 2FA kurulumunu icerir (kural #11).
+   */
+  async createSellerInvite(
+    sellerId: string,
+    role: SellerMemberRole,
+    expiresInHours: number,
+    actorUserId: string,
+  ) {
+    const seller = await this.repo.findSellerById(sellerId);
+    if (!seller) throw new AppError(ErrorCode.NOT_FOUND);
+
+    const token = randomBytes(32).toString('base64url');
+    const expiresAt = new Date(Date.now() + expiresInHours * 60 * 60 * 1000);
+
+    await this.repo.createInvite({
+      sellerId,
+      role,
+      tokenHash: sha256(token),
+      expiresAt,
+      createdById: actorUserId,
+    });
+    await this.audit.log({
+      action: 'SELLER_INVITE_CREATED',
+      entity: 'Seller',
+      entityId: sellerId,
+      after: { role },
+    });
+
+    return { url: `/davet/${token}`, token, expiresAt: expiresAt.toISOString() };
+  }
+
+  /** Davet gecerli mi + satici tarafi mi — iki adimda da ayni kontrol. */
+  private async requireSellerInvite(token: string) {
+    const invite = await this.repo.findInviteByHash(sha256(token));
+    if (!invite || !invite.role || invite.usedAt) throw new AppError(ErrorCode.INVITE_INVALID);
+    if (invite.expiresAt.getTime() < Date.now()) throw new AppError(ErrorCode.INVITE_EXPIRED);
+    return invite;
+  }
+
+  /**
+   * Satici daveti — 1. ADIM: parola belirlenir, aday TOTP anahtari uretilip DAVET SATIRINDA
+   * bekletilir. Kullanici kaydi HENUZ acilmaz: kod dogrulanmadan hesap olusursa 2FA'siz bir
+   * SELLER_ADMIN ortaya cikardi ve kural #11 ihlal edilirdi.
+   */
+  async startSellerInvite(token: string, password: string) {
+    const invite = await this.requireSellerInvite(token);
+    // §11.1 — sizmis parola kontrolu (fail-open; servis erisilemezse akis durmaz).
+    await this.breached.assertNotBreached(password);
+
+    const setup = this.twoFactor.generateSecret(`${invite.seller.slug}`);
+    await this.repo.setInvitePendingTotp(invite.id, setup.secret);
+
+    return {
+      sellerName: invite.seller.name,
+      role: invite.role,
+      otpauthUrl: setup.otpauthUrl,
+      secret: setup.secret,
+    };
+  }
+
+  /**
+   * Satici daveti — 2. ADIM: kod dogrulanir ve hesap TEK transaction'da acilir.
+   * Parola burada TEKRAR alinir: 1. adimla ayni oturum olmayabilir (kullanici sekmeyi
+   * yenileyebilir), ve hash yalnizca bu noktada yazilir.
+   */
+  async completeSellerInvite(
+    token: string,
+    input: { email: string; fullName: string; password: string; totp: string },
+    meta: ClientMeta,
+  ): Promise<LoginResponse> {
+    const invite = await this.requireSellerInvite(token);
+    if (!invite.totpPendingSecret) {
+      throw new AppError(ErrorCode.VALIDATION_ERROR, 'Once 2FA kurulumunu baslatin.');
+    }
+    if (!this.twoFactor.verify(input.totp, invite.totpPendingSecret)) {
+      throw new AppError(ErrorCode.TOTP_INVALID);
+    }
+
+    // Kuresel kimlik (§6.2): e-posta kayitliysa yeni kullanici acilmaz, parolasi dogrulanir.
+    const existing = await this.repo.findUserByEmail(input.email);
+    if (existing && !(await this.passwords.verify(existing.passwordHash, input.password))) {
+      throw new AppError(
+        ErrorCode.INVALID_CREDENTIALS,
+        'Bu e-posta zaten kayitli. Mevcut sifrenizle devam edin.',
+      );
+    }
+    if (!existing) await this.breached.assertNotBreached(input.password);
+
+    const codes = this.twoFactor.generateBackupCodes();
+    const { user } = await this.repo.acceptSellerInvite({
+      inviteId: invite.id,
+      sellerId: invite.sellerId,
+      role: invite.role!,
+      totpSecret: invite.totpPendingSecret,
+      backupCodes: codes.hashes,
+      user: {
+        id: existing?.id,
+        email: input.email,
+        fullName: input.fullName,
+        passwordHash: existing ? existing.passwordHash : await this.passwords.hash(input.password),
+      },
+    });
+
+    await this.audit.log({
+      action: 'SELLER_INVITE_ACCEPTED',
+      entity: 'User',
+      entityId: user.id,
+      after: { sellerId: invite.sellerId, role: invite.role },
+    });
+
+    const memberships = await this.listMemberships(user.id);
+    const active = memberships.find((m) => m.sellerId === invite.sellerId);
+    const payload = this.toPayload(user.id, active, user.isPlatformAdmin);
+    const tokens = await this.tokens.issue(payload, meta);
+
+    // Yedek kodlar YALNIZ burada, bir kez donulur — sonrasinda yalniz hash'leri saklanir.
+    return { tokens, user: this.toAuthUser(user, payload), memberships, backupCodes: codes.plain };
+  }
+
   async acceptInvite(input: AcceptInviteInput, meta: ClientMeta): Promise<LoginResponse> {
     const invite = await this.repo.findInviteByHash(sha256(input.token));
-    if (!invite || invite.seller.slug !== input.sellerSlug || invite.usedAt) {
+    // buyerAccountId artik nullable (ayni tablo satici davetini de tasiyor) → bu uc YALNIZ
+    // alici davetini kabul eder; satici daveti /auth/seller-invite/* uzerinden ilerler.
+    if (
+      !invite ||
+      !invite.buyerAccountId ||
+      invite.seller.slug !== input.sellerSlug ||
+      invite.usedAt
+    ) {
       throw new AppError(ErrorCode.INVITE_INVALID);
     }
     if (invite.expiresAt.getTime() < Date.now()) throw new AppError(ErrorCode.INVITE_EXPIRED);
@@ -360,6 +489,25 @@ export class AuthService {
     const setup = this.twoFactor.generateSecret(user.email ?? user.phone ?? user.fullName);
     await this.repo.setPendingTotp(userId, setup.secret);
     return setup;
+  }
+
+  /**
+   * Oturum acikken parola degistirme (§11.1). Mevcut parola sorulur: calinmis bir oturum
+   * tek basina parolayi degistirip hesabi ele geciremesin.
+   * Basarinca TUM refresh aileleri iptal edilir — eski oturumlar dusmeli (§6.3).
+   */
+  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+    const user = await this.repo.findUserById(userId);
+    if (!user) throw new AppError(ErrorCode.NOT_FOUND);
+    if (!(await this.passwords.verify(user.passwordHash, currentPassword))) {
+      throw new AppError(ErrorCode.INVALID_CREDENTIALS);
+    }
+    await this.breached.assertNotBreached(newPassword);
+
+    await this.repo.updatePassword(user.id, await this.passwords.hash(newPassword));
+    await this.tokens.revokeAll(user.id);
+    await this.audit.log({ action: 'PASSWORD_CHANGED', entity: 'User', entityId: user.id });
+    return { ok: true as const };
   }
 
   /** Kurulumu tamamla: aday secret'i koddan dogrula, aktifle, tek seferlik yedek kodlari doner. */

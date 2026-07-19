@@ -20,6 +20,43 @@ export const tr = {
     pitchSub:
       'Alicilariniz bakiyesini aninda gorur, odemesini uygulamadan yapar. Siz faturayi girin, gerisini CariNet yurutsun.',
   },
+  /** Satici yoneticisi daveti — kabul akisi 2FA kurulumunu icerir (kural #11). */
+  invite: {
+    title: 'Hesabinizi olusturun',
+    step1: 'Adim 1/2 — parolanizi belirleyin',
+    step2: 'Adim 2/2 — iki adimli dogrulamayi kurun',
+    fullName: 'Ad soyad',
+    email: 'E-posta',
+    password: 'Parola',
+    passwordAgain: 'Parola (tekrar)',
+    passwordHint: 'En az 12 karakter',
+    mismatch: 'Parolalar eslesmiyor.',
+    next: 'Devam et',
+    scanTitle: 'Kimlik dogrulayici uygulamanizla okutun',
+    scanHelp:
+      'Google Authenticator, Microsoft Authenticator veya Authy kullanabilirsiniz: uygulamada + > "Kurulum anahtarini gir" deyip asagidaki anahtari yazin, tur olarak "Zamana dayali" secin.',
+    manualKey: 'Kurulum anahtari (uygulamaya elle girin)',
+    openApp: 'Telefondan aciyorsaniz: uygulamada dogrudan ac',
+    totp: 'Uygulamadaki 6 haneli kod',
+    finish: 'Hesabi olustur ve giris yap',
+    working: 'Olusturuluyor...',
+    backupTitle: 'Yedek kurtarma kodlariniz',
+    backupHelp:
+      'Telefonunuzu kaybederseniz iceri girmenin TEK yolu bunlar. Her biri bir kez kullanilir — simdi kaydedin, bir daha gosterilmez.',
+    backupAck: 'Kodlari kaydettim, panele gec',
+    twoFaWhy:
+      'Bu rol icin iki adimli dogrulama zorunludur; hesabiniz ancak kurulum tamamlaninca olusur.',
+    invalid: 'Davet baglantisi gecersiz veya kullanilmis.',
+    expired: 'Davet baglantisinin suresi dolmus. Yeni bir davet isteyin.',
+  },
+  password: {
+    title: 'Parola degistir',
+    current: 'Mevcut parola',
+    next: 'Yeni parola',
+    nextAgain: 'Yeni parola (tekrar)',
+    submit: 'Parolayi degistir',
+    done: 'Parola degistirildi. Guvenlik geregi tum oturumlar kapatildi, tekrar giris yapin.',
+  },
   nav: {
     dashboard: 'Ozet',
     buyers: 'Cari hesaplar',

@@ -118,6 +118,41 @@ export const createInviteSchema = z.object({
 });
 export type CreateInviteInput = z.infer<typeof createInviteSchema>;
 
+/**
+ * Satici personeli daveti (§6.2 + kural #11). Alici davetinden AYRI: hedefi cari degil
+ * saticinin kendisi ve kabul akisi 2FA kurulumunu zorunlu olarak icerir.
+ */
+export const createSellerInviteSchema = z.object({
+  sellerId: z.string().min(1),
+  role: z.enum(['ADMIN', 'STAFF']).default('ADMIN'),
+  expiresInHours: z.coerce.number().int().min(1).max(168).default(48),
+});
+export type CreateSellerInviteInput = z.infer<typeof createSellerInviteSchema>;
+
+/** 1. adim: parola belirle → aday TOTP anahtari doner (hesap HENUZ acilmaz). */
+export const startSellerInviteSchema = z.object({
+  token: z.string().min(1),
+  password: passwordSchema,
+});
+export type StartSellerInviteInput = z.infer<typeof startSellerInviteSchema>;
+
+/** 2. adim: kod dogrulanir ve hesap acilir. */
+export const completeSellerInviteSchema = z.object({
+  token: z.string().min(1),
+  fullName: z.string().trim().min(2).max(120),
+  email: emailSchema,
+  password: passwordSchema,
+  totp: z.string().regex(/^[0-9]{6}$/, '6 haneli dogrulama kodu girin'),
+});
+export type CompleteSellerInviteInput = z.infer<typeof completeSellerInviteSchema>;
+
+/** Oturum acikken parola degistirme (§11.1) — mevcut parola zorunlu. */
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: passwordSchema,
+});
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
+
 /** JWT payload (§6.3) */
 export const jwtPayloadSchema = z.object({
   sub: z.string(), // userId
@@ -164,4 +199,17 @@ export interface LoginResponse {
   tokens: AuthTokens;
   user: AuthenticatedUser;
   memberships: MembershipSummary[];
+  /**
+   * YALNIZ satici daveti kabulunde dolar (§11.1). Yedek kurtarma kodlari bir kez donulur;
+   * sonrasinda sunucuda yalniz sha256 hash'leri kalir, tekrar gosterilemez.
+   */
+  backupCodes?: string[];
+}
+
+/** Satici daveti — 1. adim yaniti: QR icin otpauth URL + elle giris icin anahtar. */
+export interface SellerInviteStartResponse {
+  sellerName: string;
+  role: 'ADMIN' | 'STAFF';
+  otpauthUrl: string;
+  secret: string;
 }

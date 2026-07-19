@@ -273,18 +273,28 @@ model AccountMembership {
 }
 
 /// Davet/QR akisi: /j/{sellerSlug}/{token}
+/// Iki tur davet tasir:
+///  - ALICI daveti  → buyerAccountId dolu, role bos (§6.2)
+///  - SATICI YONETICISI daveti → role dolu, buyerAccountId bos
+/// Ikisinden TAM OLARAK biri dolu olmali (migration'da CHECK ile zorlanir).
 model Invite {
   id             String    @id @default(cuid())
   sellerId       String    @map("seller_id")
-  buyerAccountId String    @map("buyer_account_id")
+  buyerAccountId String?   @map("buyer_account_id")
+  /// Satici tarafi daveti ise atanacak rol; alici davetinde NULL.
+  role           SellerMemberRole?
   tokenHash      String    @unique @map("token_hash")
+  /// Satici daveti iki adimlidir: 1) parola belirle → aday TOTP anahtari BURADA bekler,
+  /// 2) kod dogrulaninca hesap acilir. Kullanici kaydi ancak 2. adimda olusur, boylece
+  /// 2FA'siz bir SELLER_ADMIN hicbir an var olmaz (kural #11 mimariden gelir).
+  totpPendingSecret String? @map("totp_pending_secret")
   expiresAt      DateTime  @map("expires_at")
   usedAt         DateTime? @map("used_at")
   createdById    String?   @map("created_by")
   createdAt      DateTime  @default(now()) @map("created_at")
 
-  seller       Seller       @relation(fields: [sellerId], references: [id], onDelete: Cascade)
-  buyerAccount BuyerAccount @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
+  seller       Seller        @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyerAccount BuyerAccount? @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
 
   @@index([sellerId])
   @@index([buyerAccountId])
