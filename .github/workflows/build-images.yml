@@ -61,6 +61,7 @@ jobs:
           # icin /v1 yeterli (Caddy /v1'i API'ye yonlendirir) → CORS ve SameSite derdi yok.
           build-args: |
             NEXT_PUBLIC_API_URL=/v1
+            NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
           tags: |
             ${{ env.REGISTRY }}/${{ steps.owner.outputs.lc }}/carinet-${{ matrix.app }}:latest
             ${{ env.REGISTRY }}/${{ steps.owner.outputs.lc }}/carinet-${{ matrix.app }}:${{ github.sha }}

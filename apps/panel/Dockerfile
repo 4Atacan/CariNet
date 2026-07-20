@@ -36,6 +36,11 @@ RUN printf '\nsupportedArchitectures:\n  os: [linux]\n  cpu: [x64]\n  libc: [gli
 # API adresi derleme aninda gomulur (NEXT_PUBLIC_*), calisma aninda degistirilemez.
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+# Sentry DSN de NEXT_PUBLIC_* — derleme aninda gomulur. ARG tanimlanmazsa --build-arg
+# SESSIZCE yok sayilir ve Sentry hic devreye girmez; "kurdum" denip bos kalinan hal budur.
+# DSN sir DEGIL: tarayiciya giden pakette zaten yer alir, yalniz hata GONDERMEYE yarar.
+ARG NEXT_PUBLIC_SENTRY_DSN
+ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 ENV NEXT_TELEMETRY_DISABLED=1
 # Adimlar AYRI: birlestirildiginde hangisinin astigi gorunmuyordu (panel derlemesi iki kez
 # 28 dk sifir cikti verdi). Ayri katman = ayri log + ayri onbellek.

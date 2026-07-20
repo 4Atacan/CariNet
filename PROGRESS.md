@@ -7,6 +7,50 @@
 
 ---
 
+## 2026-07-20 (aksam) · SENTRY BAGLANDI — Faz 5 ops maddeleri kapandi
+
+Kullanici Sentry hesabini acti ve uc proje olusturdu. Hesap **AB bolgesinde**
+(`ingest.de.sentry.io`) — hata verisi Avrupa'da kaliyor, KVKK acisindan ABD bolgesinden rahat.
+
+### Iki farkli baglama yolu — sebebi onemli
+
+| Uygulama | Degisken                 | Okundugu an | Nereye yazildi                |
+| -------- | ------------------------ | ----------- | ----------------------------- |
+| API      | `SENTRY_DSN`             | **calisma** | sunucuda `.env` (600)         |
+| Panel    | `NEXT_PUBLIC_SENTRY_DSN` | **derleme** | imaja gomulu + repo degiskeni |
+| Mobil    | `EXPO_PUBLIC_SENTRY_DSN` | derleme     | HENUZ YOK (EAS build'e kaldi) |
+
+API DSN'i kullanici sunucuda gizli okunan betikle girdi (`sentry-baglan.sh`) — degeri bana
+gecmedi. Panel DSN'i derleme aninda gomuldugu ve imaji ben derledigim icin paylasildi;
+**sir degil**: tarayiciya giden pakette zaten yer alir ve yalniz hata GONDERMEYE yarar.
+CI icin repo **degiskeni** olarak kaydedildi (secret degil, ayni sebeple).
+
+### Yakalanan hata (kendi payim)
+
+Panel imajini ilk kez DSN ile derlerken `--build-arg NEXT_PUBLIC_SENTRY_DSN=...` gonderdim ama
+**Dockerfile'da o `ARG` tanimli degildi** → Docker degeri SESSIZCE yok sayiyor. Derleme basariyla
+biterdi, Sentry ise bos kalirdi ve "kurdum" demis olurdum. `ARG`/`ENV` eklendi ve gomulme
+imajin ICINDEN dogrulandi (`grep` ile client chunk'ta DSN bulundu), sonra canli paketten tekrar.
+
+**Ders:** `--build-arg` sessizce yutulur; gomuldugunu VARSAYMA, cikti icinde ara.
+
+### Dogrulama
+
+- API'den kontrollu test olayi: `Sentry.captureMessage` + `flush(15s)` → **`flush: true`**,
+  olay kimligi alindi. Gercek bir hata uretmeden, prod kirilmadan.
+- Panel: canli sitedeki `main-app-*.js` chunk'inda `ingest.de.sentry.io` bulundu.
+
+### Faz 5 ops durumu
+
+Kalan tek ops maddesi yoktu; **hepsi kapandi**. §13'te acik kalan iki sey urun isi:
+magaza paketleri ve prod HTTP ucuyla yuk olcumu (DB katmani 17.07'de olculmustu: 20k harekette
+274ms).
+
+**Hala acik (kod tarafi):** davet ekraninda QR yok · "sifremi unuttum" posta gonderemiyor
+(Resend) · panel imaji CI'da 30 dk asiyor (dagitim elle).
+
+---
+
 ## 2026-07-20 (ogleden sonra) · R2 BAGLANDI — §11.6 gercekten kapandi
 
 Kullanici Cloudflare hesabini acti ve R2 baglandi. Yedegin **gercek dis konumu** artik var.
