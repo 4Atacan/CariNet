@@ -23,4 +23,12 @@ const config: NextConfig = {
 };
 
 // §11.8 — Sentry sarmalayici. DSN/authToken yoksa kaynak-harita yuklemesini atlar, build kirilmaz.
-export default withSentryConfig(config, { silent: true });
+export default withSentryConfig(config, {
+  silent: true,
+  // Sentry webpack eklentisi derleme sirasinda sentry.io'ya telemetri gonderiyor.
+  // CI'da bu istek takilip panel derlemesini 30 dk zaman asimina dusurdu — ayni derleme
+  // yerelde 37 sn. Kapatildi: derleme dis aga cikmasin (font da bu yuzden depoya alinmisti).
+  telemetry: false,
+  // Kaynak-harita yuklemesi zaten authToken ister; token yoksa eklenti hic calismasin.
+  disableLogger: true,
+});
