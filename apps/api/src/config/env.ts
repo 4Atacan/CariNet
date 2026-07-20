@@ -25,6 +25,9 @@ export const envSchema = z.object({
 
   SMTP_HOST: z.string().default('localhost'),
   SMTP_PORT: z.coerce.number().int().positive().default(1025),
+  /** Prod'da Resend SMTP: kullanici "resend", parola API anahtari. Lokal Mailpit'te ikisi de bos. */
+  SMTP_USER: z.string().optional(),
+  SMTP_PASSWORD: z.string().optional(),
   MAIL_FROM: z.string().default('no-reply@carinet.local'),
   RESEND_API_KEY: z.string().optional(),
 
