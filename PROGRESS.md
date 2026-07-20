@@ -7,6 +7,60 @@
 
 ---
 
+## 2026-07-20 (ogleden sonra) · R2 BAGLANDI — §11.6 gercekten kapandi
+
+Kullanici Cloudflare hesabini acti ve R2 baglandi. Yedegin **gercek dis konumu** artik var.
+
+### Yapilan
+
+- `mc` (MinIO istemcisi) db makinesine kuruldu; `r2-baglan.sh` anahtarlari **gizli** okuyor
+  (komut satirina yazilmaz → `ps` ve kabuk gecmisine dusmez, kural #10). Betik yalniz
+  baglanmakla kalmiyor, **yazma ve silme yetkisini de** test ediyor — bunu yedek gecesi
+  ogrenmek istemeyiz.
+- **Token TEK bucket'a kisitli:** `mc ls carinet-r2` (hesabi listele) _Access Denied_ veriyor,
+  bucket'in kendisi calisiyor. Dogru yapilandirma budur, dogrulandi.
+- `backup.sh` R2 yuklemesi eklendi. Artik **UC konum**: db makinesi (yerel) + app makinesi
+  (ikinci sunucu, hizli geri donus) + **R2 (ayri saglayici, asil koruma)**. Retention (30 gun)
+  ucunde de uygulaniyor. R2 yuklemesi basarisiz olursa **sessizce gecilmiyor**, stderr'e hata
+  yaziliyor — dis yedegin olmadigini fark etmemek en kotu senaryo.
+
+### RESTORE PROVASI — kaynak R2 (kritik)
+
+`/opt/carinet/r2-restore-provasi.sh`: yerel kopyalari KULLANMAZ, dosyayi R2'den indirir, cozer,
+AYRI bir veritabanina yukler, dogrular, prova DB'sini siler.
+
+    tablo sayisi: 30 · ledger indeksi: 1 · migrasyon: 7
+    satici: 1 · kullanici: 1 · platform admini: 1
+
+Sayilar prod'un gercek durumuyla birebir. "Yedek var" ile "yedekten donulebiliyor" ayni sey
+degildir; ikincisi artik kanitli.
+
+### Hatalar (kendi payim)
+
+Betigi yerinde duzenlemeye calisirken iki kez tokezledim: (1) uzak komutu tek tirnakla
+sardigim icin icindeki kesme isaretleri diziyi bozdu; (2) tirnaksiz heredoc'ta kabuk,
+Python kaynagini genisletip `pg_dump | age` satirini kirdi — **prod'daki betik bir an bozuldu**,
+`.bak`'tan hemen geri alindi. Dogru yol: parca parca duzenleme yerine tam dosyayi yerelde
+yazip `install` etmek. Bir de Git Bash `/tmp` ile Windows Python `/tmp` ayni yer degil;
+Python dosyayi bulamadi ama `scp` bulup DEGISMEMIS halini gonderdi — "guncelledim" sanip
+gecmemek icin sunucuda `grep -c R2` ile dogrulandi.
+
+### CI hala kirik — denenen ve ISE YARAMAYAN hipotezler
+
+Panel imaji CI'da 30 dk zaman asimina dusmeye devam ediyor (ayni derleme yerelde **37 sn**).
+API tarafi `cache-to: mode=min` ile DUZELDI. Panel icin denenenler:
+
+1. **`cache-to` `mode=max` → `mode=min`** — API'yi duzeltti, paneli DUZELTMEDI.
+2. **Sentry webpack telemetrisi** (`telemetry: false`) — DUZELTMEDI.
+3. (Onceki tur) **`next/font/google`** — bu gercek bir sorundu ve cozuldu; ama panel
+   asilmasinin tek sebebi degilmis.
+
+**Dagitim elle kaliyor:** imajlar yerelde derlenip `docker save | ssh docker load` ile
+gonderiliyor, compose `carinet-*:local` kullaniyor. Bir sonraki denemede yukaridaki uc yol
+TEKRAR denenmemeli.
+
+---
+
 ## 2026-07-20 · Eksik arayuzler + platform modulu + CI/dagitim gerilemesi
 
 Kullanici "eksik arayuzleri yaz" dedi. Davet akisi vardi ama TETIKLEYECEK bir sey yoktu:
