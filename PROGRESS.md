@@ -7,6 +7,54 @@
 
 ---
 
+## 2026-07-20 (gece) · Acik maddeler: posta TAMAM, QR ORTAM engeline takildi
+
+### 1) "Sifremi unuttum" — artik gercekten posta gonderiyor
+
+Saglayici degistirmek gerekmedi: **Resend SMTP konusuyor**, nodemailer zaten oradaydi, eksik olan
+kimlik dogrulamasiydi. `SMTP_USER` / `SMTP_PASSWORD` eklendi ve kimlik **yalniz ikisi de doluysa**
+gonderiliyor — Mailpit auth beklemez, gonderirsek el sikismayi reddeder.
+
+**Sessiz basarisizlik kapatildi.** Uc §11.1 geregi her zaman `{ok:true}` doner (e-posta kayitli
+mi sizdirilmez), dolayisiyla disaridan bakinca **bozuk bir posta katmani calisanla ayni gorunur.**
+2FA zorunlu oldugu icin (kural #11) postayi alamayan saticinin hesabina donmenin baska yolu yok.
+Bu yuzden: gonderim hatasi artik Sentry'ye de gidiyor (log YETMEZ), ve prod'da `SMTP_HOST` hala
+`localhost` ise BOOT'ta hata loglaniyor.
+
+Test HTTP yanitina GUVENMIYOR — Mailpit'in gelen kutusunu okuyor: (1) kayitli e-postada mesaj
+uretiliyor ve icinde `/sifre-sifirla?token=` var, (2) kayitsiz e-postada mesaj YOK ama yanit AYNI.
+e2e 170 → **172**.
+
+**Kalan (kullanici adimi):** Resend hesabi + `SMTP_*` degerlerinin sunucuya girilmesi.
+**VARSAYIM/UYARI:** Resend, dogrulanmis alan adi olmadan yalnizca hesap sahibinin adresine
+gonderim yapar. Gercek saticilara posta gitmesi icin **alan adi gerekiyor** (sslip.io yetmez).
+
+### 2) 2FA QR kodu — kod degil ORTAM engeli
+
+Uc kez denendi, ucunde de `pnpm add` duserek: `ERR_PNPM_ENOENT ... <paket>_tmp_NNNN/node_modules`.
+Once `archiver-utils`, sonra dogrudan `qrcode` uzerinde patladi — yani **pakete ozgu degil.**
+
+Sebep: **depo OneDrive altinda** ve OneDrive senkronizasyonu pnpm'in atomik dizin taşımalarini
+kesiyor. Sonuc: **bu makinede yeni bagimlilik eklenemiyor.** Docker icindeki `pnpm install`
+sorunsuz calisiyor (imajlar derleniyor), yani hata yalniz Windows/OneDrive tarafinda.
+
+Denenen ve ise yaramayanlar: `pnpm add` (3 kez), `--virtual-store-dir` (tam yeniden kurulum
+istiyor), sorunlu dizinleri silip tekrar deneme (bu sefer baska pakette patladi).
+
+`package.json` ve lockfile **geri alindi**, calisma alani temiz ve typecheck yesil.
+Kurulum anahtari elle giriliyor — calisiyor, yalnizca iki dakika fazla suruyor.
+
+**Kalici cozum:** depoyu OneDrive disina tasi (or. `C:\src\CariNet`). Bu yapilmadan QR ve
+BASKA HER yeni paket bloke. CLAUDE.md §13'e yazildi.
+
+### 3) Mobil DSN
+
+`EXPO_PUBLIC_SENTRY_DSN` kodda hazir (`app/_layout.tsx`, DSN yoksa no-op). Mobil henuz
+derlenmedigi ve `eas.json` olmadigi icin baglanmadi; yarim bir EAS yapilandirmasi birakmak
+yerine EAS build'e ertelendi. `.env.example` zaten degiskeni belgeliyor.
+
+---
+
 ## 2026-07-20 (aksam) · SENTRY BAGLANDI — Faz 5 ops maddeleri kapandi
 
 Kullanici Sentry hesabini acti ve uc proje olusturdu. Hesap **AB bolgesinde**
